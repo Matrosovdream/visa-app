@@ -1,46 +1,43 @@
 <?php
-Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' => ['auth', 'verified', 'isAdmin']],function(){
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\Admin\AdminArticlesController;
+use App\Http\Controllers\Admin\AdminCountriesController;
+use App\Http\Controllers\Admin\AdminDirectionsController;
+use App\Http\Controllers\Admin\AdminOrdersController;
+use App\Http\Controllers\Admin\AdminProductsController;
+use App\Http\Controllers\Admin\AdminSettingsController;
+
+
+
+Route::group(['as' => '','prefix' =>'admin','namespace' => '', 'middleware' => ['auth', 'verified', 'isAdmin']],function(){
     
-    Route::get('users', function () {
-        return 123;
-    });
+    // Home dashboard page
+    Route::get('/', [AdminHomeController::class, 'index'])->name('admin.home');
+
+    // User
+    Route::get('users', [AdminUsersController::class, 'index'])->name('admin.users.index');
+    Route::get('users/{user_id}', [AdminUsersController::class, 'show'])->name('admin.users.show');
+
+    // Countries
+    Route::get('countries', [AdminCountriesController::class, 'index'])->name('admin.countries.index');
+
+    // Directions
+    Route::get('directions', [AdminDirectionsController::class, 'index'])->name('admin.directions.index');
+
+    // Products
+    Route::get('products', [AdminProductsController::class, 'index'])->name('admin.products.index');
+
+    // Orders
+    Route::get('orders', [AdminOrdersController::class, 'index'])->name('admin.orders.index');
+
+    // Articles
+    Route::get('articles', [AdminArticlesController::class, 'index'])->name('admin.articles.index');
+
+    // Settings
+    Route::get('settings', [AdminSettingsController::class, 'index'])->name('admin.settings.index');
 
 });
 
-/*
-Route::prefix('dashboard')->group(function () {
-
-    Route::get('/', function () {
-        return view('admin.index');
-    });
-
-    Route::get('users', function () {
-        return 123;
-    });
-
-    Route::get('countries', function () {
-        return view('admin.countries');
-    });
-
-    Route::get('directions', function () {
-        return view('admin.directions');
-    });
-
-    Route::get('products', function () {
-        return view('admin.products');
-    });
-
-    Route::get('orders', function () {
-        return view('admin.orders');
-    });
-
-    Route::get('articles', function () {
-        return view('admin.articles');
-    });
-
-    Route::get('settings', function () {
-        return view('admin.settings');
-    });
-
-})->middleware(['auth', 'verified', 'isAdmin']);
-*/
