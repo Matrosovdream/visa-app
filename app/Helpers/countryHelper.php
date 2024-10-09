@@ -24,8 +24,8 @@ class countryHelper
                 $batchInsert[] = [
                     'name' => $name,
                     'slug' => $slug,
-                    'country_from_id' => $countryFrom->id,
-                    'country_to_id' => $countryTo->id,
+                    //'country_from_id' => $countryFrom->id,
+                    //'country_to_id' => $countryTo->id,
                     'country_from_code' => $countryFrom->code,
                     'country_to_code' => $countryTo->code
                 ];
@@ -37,10 +37,10 @@ class countryHelper
                 $batchInsert[] = [
                     'name' => $name,
                     'slug' => $slug,
-                    'country_from_id' => $countryTo->id,
-                    'country_to_id' => $countryFrom->id,
-                    'country_from_code' => $countryFrom->code,
-                    'country_to_code' => $countryTo->code
+                    //'country_from_id' => $countryTo->id,
+                    //'country_to_id' => $countryFrom->id,
+                    'country_from_code' => $countryTo->code,
+                    'country_to_code' => $countryFrom->code
                 ];
 
         

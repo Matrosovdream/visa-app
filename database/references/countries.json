@@ -242,5 +242,13 @@
 {"name": "Western Sahara", "code": "EH"}, 
 {"name": "Yemen", "code": "YE"}, 
 {"name": "Zambia", "code": "ZM"}, 
-{"name": "Zimbabwe", "code": "ZW"} 
+{"name": "Zimbabwe", "code": "ZW"},
+{"name": "Bonaire, St Eustatius and Saba", "code": "BQ"}, 
+{"name": "Curacao", "code": "CW"}, 
+{"name": "Kosovo", "code": "XK"}, 
+{"name": "Saint Barthelemy", "code": "BL"}, 
+{"name": "Saint Martin", "code": "MF"}, 
+{"name": "Sint Maarten", "code": "SX"}, 
+{"name": "South Sudan", "code": "SS"}
 ]
+
