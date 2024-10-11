@@ -29,6 +29,12 @@ Route::group(['as' => '','prefix' =>'admin','namespace' => '', 'middleware' => [
 
     // Products
     Route::get('products', [AdminProductsController::class, 'index'])->name('admin.products.index');
+    Route::get('products/create', [AdminProductsController::class, 'create'])->name('admin.products.create');
+    Route::post('products', [AdminProductsController::class, 'store'])->name('admin.products.store');
+    Route::get('products/{product_id}', [AdminProductsController::class, 'show'])->name('admin.products.show');
+    Route::get('products/{product_id}/edit', [AdminProductsController::class, 'edit'])->name('admin.products.edit');
+    Route::post('products/{product_id}', [AdminProductsController::class, 'update'])->name('admin.products.update');
+    Route::delete('products/{product_id}', [AdminProductsController::class, 'destroy'])->name('admin.products.destroy');
 
     // Orders
     Route::get('orders', [AdminOrdersController::class, 'index'])->name('admin.orders.index');

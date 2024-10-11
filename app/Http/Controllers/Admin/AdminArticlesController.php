@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Helpers\adminSettingsHelper;
 
 class AdminArticlesController extends Controller
 {
@@ -12,7 +13,8 @@ class AdminArticlesController extends Controller
 
         $data = [
             'title' => 'Articles',
-            'articles' => Article::all()
+            'articles' => Article::all(),
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.articles.index', $data);
@@ -24,7 +26,8 @@ class AdminArticlesController extends Controller
 
         $data = [
             'title' => 'Edit '.$article->title,
-            'article' => $article
+            'article' => $article,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.articles.show', $data);
@@ -33,7 +36,8 @@ class AdminArticlesController extends Controller
     public function create()
     {
         $data = [
-            'title' => 'Create Article'
+            'title' => 'Create Article',
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.articles.create', $data);
