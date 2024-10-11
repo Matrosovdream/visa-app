@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Helpers\adminSettingsHelper;
 
 class AdminUsersController extends Controller
 {
@@ -12,7 +13,8 @@ class AdminUsersController extends Controller
 
         $data = [
             'title' => 'Users',
-            'users' => User::all()
+            'users' => User::all(),
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.users.index', $data);

@@ -22,4 +22,10 @@ class Product extends Model
         'published_at',
     ];
 
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class, 'product_countries', 'product_id', 'country_id');
+    }
+    
+
 }

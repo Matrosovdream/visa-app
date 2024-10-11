@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Helpers\adminSettingsHelper;
 
 class AdminCountriesController extends Controller
 {
@@ -12,7 +13,8 @@ class AdminCountriesController extends Controller
 
         $data = [
             'title' => 'Countries',
-            'countries' => Country::all()
+            'countries' => Country::all(),
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.countries.index', $data);
