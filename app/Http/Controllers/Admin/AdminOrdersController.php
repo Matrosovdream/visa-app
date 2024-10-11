@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Helpers\adminSettingsHelper;
 
 class AdminOrdersController extends Controller
 {
@@ -12,7 +13,8 @@ class AdminOrdersController extends Controller
 
         $data = [
             'title' => 'Orders',
-            'orders' => Order::all()
+            'orders' => Order::all(),
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.orders.index', $data);
@@ -24,7 +26,8 @@ class AdminOrdersController extends Controller
 
         $data = [
             'title' => 'Order',
-            'order' => $order
+            'order' => $order,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.orders.show', $data);
@@ -36,7 +39,8 @@ class AdminOrdersController extends Controller
 
         $data = [
             'title' => 'Edit Order',
-            'order' => $order
+            'order' => $order,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.orders.edit', $data);
