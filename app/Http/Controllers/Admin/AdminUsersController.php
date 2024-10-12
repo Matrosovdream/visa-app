@@ -13,7 +13,7 @@ class AdminUsersController extends Controller
 
         $data = [
             'title' => 'Users',
-            'users' => User::all(),
+            'users' => User::paginate(10),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 

@@ -72,9 +72,14 @@
                                     {{ $product->description }}
                                 </td>
                                 <td class="text-center pe-0">
+                                    <div class="badge badge-light-primary fs-5 fw-bold">
+                                        {{ $product->countries->count() }}
+                                    </div>
+                                    <?php /*
                                     @foreach($product->countries as $country)
                                         <div class="badge badge-light-primary">{{ $country->name }}</div>
                                     @endforeach
+                                    */ ?>
                                 </td>
                                 <td class="text-center pe-0">
                                     {{ $product->price }}$

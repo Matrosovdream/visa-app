@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            //$table->foreignId('country_from_id')->on('countries');
-            //$table->foreignId('country_to_id')->on('countries');
+            $table->foreignId('country_from_id')->on('countries');
+            $table->foreignId('country_to_id')->on('countries');
             $table->string('country_from_code');
             $table->string('country_to_code');
             $table->boolean('visa_req')->default(false);

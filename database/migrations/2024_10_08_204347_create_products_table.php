@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->decimal('price', 10, 2);
             $table->boolean('published')->default(false);
-            $table->timestamp('published_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

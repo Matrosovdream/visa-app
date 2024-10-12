@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CountrySeeder::class,
             TravelDirectionSeeder::class,
+            ProductSeeder::class,
+            OrderSeeder::class,
+            GatewaySeeder::class,
+            OrderStatusSeeder::class,
         ]);
 
     }
