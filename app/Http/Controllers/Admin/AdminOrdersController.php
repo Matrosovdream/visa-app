@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Helpers\adminSettingsHelper;
+use App\Models\OrderStatus;
 
 class AdminOrdersController extends Controller
 {
@@ -13,10 +14,10 @@ class AdminOrdersController extends Controller
 
         $data = [
             'title' => 'Orders',
-            'orders' => Order::all(),
+            'orders' => Order::paginate(10),
+            'orderStatuses' => OrderStatus::all(),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
-
         return view('admin.orders.index', $data);
     }
 
@@ -27,6 +28,7 @@ class AdminOrdersController extends Controller
         $data = [
             'title' => 'Order',
             'order' => $order,
+            'orderStatuses' => OrderStatus::all(),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
