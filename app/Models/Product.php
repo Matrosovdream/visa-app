@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -17,15 +18,19 @@ class Product extends Model
         'description',
         'content',
         'image',
-        'price',
-        'published',
-        'published_at',
+        'price'
     ];
 
     public function countries()
     {
         return $this->belongsToMany(Country::class, 'product_countries', 'product_id', 'country_id');
     }
-    
+
+    // Cast a slug from name using Str::slug
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
 
 }

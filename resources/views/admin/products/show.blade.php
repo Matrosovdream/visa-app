@@ -9,7 +9,7 @@
 
 	@csrf
 
-	<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10"
+	<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-250px min-w-250px mb-7 me-lg-10"
 		data-select2-id="select2-data-130-l6c6">
 
 		<div class="card card-flush py-4">
