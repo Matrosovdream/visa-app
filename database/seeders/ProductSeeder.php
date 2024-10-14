@@ -17,9 +17,9 @@ class ProductSeeder extends Seeder
         
         // Add a few products and sync all countries to them
         $products = [
-            ['name' => 'Product 1', 'price' => 100, 'description' => 'Description Product 1', 'published' => 1],
-            ['name' => 'Product 2', 'price' => 200, 'description' => 'Description Product 2', 'published' => 1],
-            ['name' => 'Product 3', 'price' => 300, 'description' => 'Description Product 3', 'published' => 1],
+            ['name' => 'Universal eVisa 60 days', 'price' => 100, 'description' => 'Description Product 1', 'published' => 1],
+            ['name' => 'Universal eVisa 90 days', 'price' => 200, 'description' => 'Description Product 2', 'published' => 1],
+            ['name' => 'Universal eVisa 365 days', 'price' => 300, 'description' => 'Description Product 3', 'published' => 1],
         ];
 
         foreach ($products as $product) {

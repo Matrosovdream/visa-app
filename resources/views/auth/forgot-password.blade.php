@@ -1,25 +1,34 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <form class="form w-100" novalidate="novalidate" id="kt_sign_up_form" method="POST" action="{{ route('password.email') }}">
 
-    <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
+        <div class="text-center mb-11">
+            <h1 class="text-gray-900 fw-bolder mb-3">Forgot password</h1>
+            <div class="text-gray-500 fw-semibold fs-6"></div>
+        </div>
+
+        <div class="fv-row mb-8">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <x-text-input id="email" class="form-control bg-transparent" type="email" name="email" :value="old('email')" required autofocus />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+
+        <div class="d-grid mb-10">
+            <x-primary-button class="btn btn-primary">
                 {{ __('Email Password Reset Link') }}
             </x-primary-button>
         </div>
+ 
+        <div class="text-gray-500 text-center fw-semibold fs-6">Already have an Account?
+            <a href="{{ route('login') }}" class="link-primary fw-semibold">Sign in</a>
+        </div>
+
     </form>
+
 </x-guest-layout>
+
+
+

@@ -5,24 +5,60 @@
 <main>
 
     <!-- hero start -->
-    <section class="hero hero__style-one bg_img" data-background="{{ asset('user/assets/img/bg/hero_bg.jpg') }}">
+    <section class="hero hero__style-one bg_img"
+        data-background="{{ asset('user/assets/img/hero/homepage-hero.webp') }}" style="min-height: 600px;">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-xl-6 col-lg-7">
+                <div class="col-xl-10 col-lg-7">
                     <div class="hero__content">
-                        <h1 class="wow skewIn">Immigration visa <br> <span>Consulting</span></h1>
-                        <p class="wow fadeInUp" data-wow-delay="200ms" data-wow-duration=".6s">Expert Guidance for a
-                            Seamless Immigration Journey</p>
-                        <ul class="xb-list list-unstyled mt-40 mb-60 wow fadeInUp" data-wow-delay="400ms"
-                            data-wow-duration=".6s">
-                            <li><i class="far fa-check"></i>Expert Legal Support</li>
-                            <li><i class="far fa-check"></i>Meeting Your Unique Needs</li>
-                            <li><i class="far fa-check"></i>Tailored Immigration Solutions</li>
-                        </ul>
-                        <div class="btns wow fadeInUp" data-wow-delay="600ms" data-wow-duration=".6s">
-                            <a class="thm-btn" href="contact.html">Book Appointment</a>
-                            <a class="thm-btn thm-btn--white" href="about.html">Read Story</a>
+                        <h1 class="wow skewIn fs-1">
+                            Get your travel visa for <br> <span>ANY COUNTRY</span>
+                        </h1>
+
+                        <div class="p-4 bg-light rounded shadow w-100">
+                            <form method="POST" action="{{ route('user.direction.apply') }}">
+
+                                @csrf
+
+                                <div class="row g-3">
+                                    <!-- Where am I from? -->
+                                    <div class="col-md-5">
+                                        <label for="fromCountry" class="form-label">Where am I from?</label>
+                                        <select class="nice-select1 form-control" name="country_from">
+                                            <option selected disabled></option>
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ $country->name }} - {{ $country->code }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Where am I going? -->
+                                    <div class="col-md-5">
+                                        <label for="toCountry" class="form-label">Where am I going?</label>
+                                        <select class="nice-select1 form-control" name="country_to">
+                                            <option selected disabled></option>
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ $country->name }} - {{ $country->code }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Get Started Button -->
+                                    <div class="col-md-2 d-flex align-items-end ">
+                                        <button type="submit" class="btn btn-success w-100" style="height: 50px;">
+                                            Get started!
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </form>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -1114,13 +1150,16 @@
                                 <div class="xb-item--holder">
                                     <span class="xb-item--category">Consulting</span>
                                     <ul class="xb-item--meta ul_li mb-20">
-                                        <li><img src="{{ asset('user/assets/img/icon/user.svg') }}" alt="">By farugia</li>
-                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">16 August 2023</li>
+                                        <li><img src="{{ asset('user/assets/img/icon/user.svg') }}" alt="">By farugia
+                                        </li>
+                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">16 August
+                                            2023</li>
                                     </ul>
                                     <h3 class="xb-item--title border-effect"><a href="blog-single.html">Cultural
                                             adjustment thriving in a new country..</a></h3>
                                     <a class="xb-item--link" href="blog-single.html">Read the article<span><img
-                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}" alt=""></span></a>
+                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}"
+                                                alt=""></span></a>
                                 </div>
                                 <a class="xb-overlay xb-overlay-link" href="blog-single.html"></a>
                             </div>
@@ -1130,18 +1169,22 @@
                         <div class="xb-blog">
                             <div class="xb-item--inner">
                                 <div class="xb-item--img">
-                                    <a href="blog-single.html"><img src="{{ asset('user/assets/img/blog/img_02.jpg') }}" alt=""></a>
+                                    <a href="blog-single.html"><img src="{{ asset('user/assets/img/blog/img_02.jpg') }}"
+                                            alt=""></a>
                                 </div>
                                 <div class="xb-item--holder">
                                     <a class="xb-item--category color-2" href="#!">Immigration</a>
                                     <ul class="xb-item--meta ul_li mb-20">
-                                        <li><img src="{{ asset('user/assets/img/icon/user.svg') }}" alt="">By Andrew</li>
-                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">16 September 2023</li>
+                                        <li><img src="{{ asset('user/assets/img/icon/user.svg') }}" alt="">By Andrew
+                                        </li>
+                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">16
+                                            September 2023</li>
                                     </ul>
                                     <h3 class="xb-item--title border-effect"><a href="blog-single.html">Essential
                                             documents for a successful visa application..</a></h3>
                                     <a class="xb-item--link" href="blog-single.html">Read the article<span><img
-                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}" alt=""></span></a>
+                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}"
+                                                alt=""></span></a>
                                 </div>
                                 <a class="xb-overlay xb-overlay-link" href="blog-single.html"></a>
                             </div>
@@ -1151,18 +1194,21 @@
                         <div class="xb-blog">
                             <div class="xb-item--inner">
                                 <div class="xb-item--img">
-                                    <a href="blog-single.html"><img src="{{ asset('user/assets/img/blog/img_03.jpg') }}" alt=""></a>
+                                    <a href="blog-single.html"><img src="{{ asset('user/assets/img/blog/img_03.jpg') }}"
+                                            alt=""></a>
                                 </div>
                                 <div class="xb-item--holder">
                                     <a class="xb-item--category color-3" href="#!">Consulting</a>
                                     <ul class="xb-item--meta ul_li mb-20">
                                         <li><img src="{{ asset('user/assets/img/icon/user.svg') }}" alt="">By Kurtz</li>
-                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">22 August 2023</li>
+                                        <li><img src="{{ asset('user/assets/img/icon/calendar.svg') }}" alt="">22 August
+                                            2023</li>
                                     </ul>
                                     <h3 class="xb-item--title border-effect"><a href="blog-single.html">A guide to
                                             navigating student visas tips for success..</a></h3>
                                     <a class="xb-item--link" href="blog-single.html">Read the article<span><img
-                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}" alt=""></span></a>
+                                                src="{{ asset('user/assets/img/icon/right_arrow.svg') }}"
+                                                alt=""></span></a>
                                 </div>
                                 <a class="xb-overlay xb-overlay-link" href="blog-single.html"></a>
                             </div>
@@ -1190,20 +1236,23 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="xb-item--field">
-                                            <span><img src="{{ asset('user/assets/img/icon/c_user.svg') }}" alt=""></span>
+                                            <span><img src="{{ asset('user/assets/img/icon/c_user.svg') }}"
+                                                    alt=""></span>
                                             <input type="text" placeholder="Goladria Gomez">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="xb-item--field">
-                                            <span><img src="{{ asset('user/assets/img/icon/c_mail.svg') }}" alt=""></span>
+                                            <span><img src="{{ asset('user/assets/img/icon/c_mail.svg') }}"
+                                                    alt=""></span>
                                             <input type="text" placeholder="e.visa@services.com">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="xb-item--field">
-                                            <span><img src="{{ asset('user/assets/img/icon/c_select.svg') }}" alt=""></span>
-                                            <select name="select" id="nice-select">
+                                            <span><img src="{{ asset('user/assets/img/icon/c_select.svg') }}"
+                                                    alt=""></span>
+                                            <select name="select" class="nice-select">
                                                 <option value="1">Student Visa</option>
                                                 <option value="2">Tourist Visa</option>
                                                 <option value="3">Commercial Visa</option>
@@ -1214,13 +1263,15 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="xb-item--field">
-                                            <span><img src="{{ asset('user/assets/img/icon/c_call.svg') }}" alt=""></span>
+                                            <span><img src="{{ asset('user/assets/img/icon/c_call.svg') }}"
+                                                    alt=""></span>
                                             <input type="text" placeholder="+888 -8867 3333">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="xb-item--field">
-                                            <span><img src="{{ asset('user/assets/img/icon/c_message.svg') }}" alt=""></span>
+                                            <span><img src="{{ asset('user/assets/img/icon/c_message.svg') }}"
+                                                    alt=""></span>
                                             <textarea name="message" id="message" cols="30" rows="10"
                                                 placeholder="Write Your Message..."></textarea>
                                         </div>

@@ -13,7 +13,7 @@ class AdminCountriesController extends Controller
 
         $data = [
             'title' => 'Countries',
-            'countries' => Country::all(),
+            'countries' => Country::paginate(30),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 

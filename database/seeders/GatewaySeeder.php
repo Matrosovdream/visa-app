@@ -19,7 +19,7 @@ class GatewaySeeder extends Seeder
                 'name' => 'Authorize.Net',
                 'slug' => 'authnet',
                 'description' => 'Authorize.Net payment gateway',
-                'image' => 'paypal.png',
+                'image' => 'authnet.png',
                 'is_active' => true
             ]
         ];

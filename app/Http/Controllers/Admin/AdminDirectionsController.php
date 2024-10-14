@@ -13,11 +13,24 @@ class AdminDirectionsController extends Controller
 
         $data = [
             'title' => 'Directions',
-            'directions' => TravelDirection::all(),
+            'directions' => TravelDirection::paginate(30),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.directions.index', $data);
+    }
+
+    public function show($direction_id)
+    {
+        $direction = TravelDirection::find($direction_id);
+
+        $data = [
+            'title' => 'Direction',
+            'direction' => $direction,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
+        ];
+
+        return view('admin.directions.show', $data);
     }
 
 }
