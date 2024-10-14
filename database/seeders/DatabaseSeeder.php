@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             GatewaySeeder::class,
             OrderStatusSeeder::class,
+            ArticleSeeder::class,
         ]);
 
     }

@@ -21,7 +21,26 @@ class adminSettingsHelper {
                     ),
                     array(
                         'title' => 'Payment gateways',
-                        'url' => route('admin.settings.index'),
+                        'url' => route('admin.gateways.index'),
+                    ),
+                ),
+            ),
+            array(
+                'title' => 'Content',
+                'url' => '',
+                'icon' => 'ki-file',
+                'childs' => array(
+                    array(
+                        'title' => 'Articles',
+                        'url' => route('admin.articles.index'),
+                    ),
+                    array(
+                        'title' => 'Countries',
+                        'url' => route('admin.countries.index'),
+                    ),
+                    array(
+                        'title' => 'Travel Directions',
+                        'url' => route('admin.directions.index'),
                     ),
                 ),
             ),
@@ -30,21 +49,10 @@ class adminSettingsHelper {
                 'url' => '',
                 'icon' => 'ki-element-11',
                 'childs' => array(
-                    array(
-                        'title' => 'Countries',
-                        'url' => route('admin.countries.index'),
-                    ),
+                    
                     array(
                         'title' => 'Users',
                         'url' => route('admin.users.index'),
-                    ),
-                    array(
-                        'title' => 'Articles',
-                        'url' => route('admin.articles.index'),
-                    ),
-                    array(
-                        'title' => 'Directions',
-                        'url' => route('admin.directions.index'),
                     ),
                 ),
             ),

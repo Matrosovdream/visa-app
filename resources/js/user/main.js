@@ -348,6 +348,7 @@
 
 	// nice select
 	$('#nice-select').niceSelect();
+	$('.nice-select').niceSelect();
 
 	/* magnificPopup img view */
 	$('.popup-image').magnificPopup({
