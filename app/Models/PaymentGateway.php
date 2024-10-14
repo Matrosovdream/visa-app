@@ -18,4 +18,6 @@ class PaymentGateway extends Model
         'is_active',
     ];
 
+    
+
 }

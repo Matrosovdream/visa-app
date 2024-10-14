@@ -8,6 +8,7 @@ use App\Http\Controllers\User\ArticleController;
 
 // Index page
 Route::get('/', [IndexController::class, 'index'])->name('user.index');
+Route::post('/', [IndexController::class, 'directionApply'])->name('user.direction.apply');
 
 // Countries
 Route::get('/country/{country}', [CountryController::class, 'index'])->name('user.country.index');

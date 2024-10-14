@@ -20,4 +20,25 @@ class AdminUsersController extends Controller
         return view('admin.users.index', $data);
     }
 
+    public function show($user_id)
+    {
+        $user = User::find($user_id);
+
+        $data = [
+            'title' => 'User details',
+            'user' => $user,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
+        ];
+
+        return view('admin.users.show', $data);
+    }
+
+    public function destroy($user_id)
+    {
+        $user = User::find($user_id);
+        $user->delete();
+
+        return redirect()->route('admin.users.index');
+    }
+
 }

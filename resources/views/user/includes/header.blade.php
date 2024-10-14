@@ -24,33 +24,47 @@
                 <div class="main-menu__wrap ul_li navbar navbar-expand-lg">
                     <nav class="main-menu collapse navbar-collapse">
                         <ul>
-                            <li class="menu-item-has-children active"><a href="index.html"><span>Home</span></a>
-                                <ul class="submenu">
-                                    <li class="active"><a href="index.html"><span>Immigration</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children">
-                                <a href="#!"><span>Pages</span></a>
-                                <ul class="submenu">
-                                    <li><a href="services.html"><span>Services</span></a></li>
-                                </ul>
-                            </li>
-                            <li><a href="about.html"><span>About us</span></a></li>
-                            <li class="menu-item-has-children">
-                                <a href="#!"><span>Country</span></a>
-                                <ul class="submenu">
-                                    <li><a href="country.html"><span>Country</span></a></li>
-                                    <li><a href="country-single.html"><span>Country Details</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children">
-                                <a href="#!"><span>Blog</span></a>
-                                <ul class="submenu">
-                                    <li><a href="blog.html"><span>Blog</span></a></li>
-                                    <li><a href="blog-single.html"><span>Blog Details</span></a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact.html"><span>Contact</span></a></li>
+
+                            @foreach( $menuTop as $menu )
+                                <li class="@if( isset($menu['childs']) ) menu-item-has-children @endif">
+                                    <a href="{{ $menu['url'] }}"><span>{{ $menu['title'] }}</span></a>
+
+                                    @if( isset($menu['childs']) )
+                                        <ul class="submenu">
+                                            @foreach( $menu['childs'] as $subMenu )
+                                                <li class="menu-item">
+                                                    <a href="{{ $subMenu->url }}"><span>{{ $subMenu->title }}</span></a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+
+                                </li>   
+                            @endforeach
+
+                            @if( Auth::check() )
+                                <li class="menu-item menu-item-has-children">
+                                    <a href="{{ route('admin.home') }}">
+                                        <span>Dashboard</span>
+                                    </a>
+                                    <ul class="submenu">
+                                        <li class="menu-item">
+                                            <!-- Log out -->
+                                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <span>Logout</span>
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>   
+                            @else
+                                <li class="menu-item">
+                                    <a href="{{ route('login') }}"><span>Login</span></a>
+                                </li>   
+                            @endif
+
                         </ul>
                     </nav>
                 </div>
@@ -69,7 +83,8 @@
                     <li>
                         <div class="header__language">
                             <ul>
-                                <li><a href="#!" class="lang-btn">
+                                <li>
+                                    <a href="#!" class="lang-btn">
                                         <div class="flag">
                                             <img src="{{ asset('user/assets/img/icon/us_flag.png') }}" alt="">
                                         </div>
