@@ -32,14 +32,14 @@
             @if( $direction->visa_req == 1 )
 
                 <!-- Form Section -->
-                <form class="mt-4">
+                <form class="mt-4" method="GET" action="{{ route('user.country.apply', $country->slug) }}">
                     <!-- Nationality -->
                     <div class="mb-4">
                         <label for="nationality" class="form-label">What is your nationality?</label>
-                        <select class="form-select" id="nationality" aria-label="Nationality">
+                        <select class="form-select" name="nationality" id="nationality" aria-label="Nationality">
                             @foreach($countries as $country)
                                 <option></option>
-                                <option value="{{ $country->id }}" 
+                                <option value="{{ $country->slug }}" data-slug="{{ $country->slug }}"
                                     @if( isset($countryFrom) && $country->slug == $countryFrom->slug ) selected @endif>
                                     {{ $country->name }} - {{ $country->code }}
                                 </option>
@@ -55,7 +55,11 @@
                             <label for="visaType" class="form-label">Applying for</label>
                             <select class="form-select" id="visaType" aria-label="Visa Type" name="product_id">
                                 @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                    <option 
+                                        value="{{ $product->id }}"
+                                        >
+                                        {{ $product->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -75,18 +79,31 @@
         <div class="col-md-4">
 
             @if( $direction->visa_req == 1 )
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Egypt eVisa
-                        </h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Valid for:</strong> 90 days after issued</li>
-                            <li><strong>Number of entries:</strong> Single entry</li>
-                            <li><strong>Max stay:</strong> 30 days in total</li>
-                        </ul>
-                    </div>
-                </div>
+
+                @if( isset( $products ) && count($products) > 0 )
+
+                    @php $key=0; @endphp
+                    @foreach($products as $product)
+
+                        <div 
+                            class="custom-card mt-5 product-card" 
+                            id="product-card-{{ $product->id }}" @if( $key !=0 ) style="display: none" @endif 
+                            >
+                            <h6 class="text-uppercase">{{ $product->name }}</h6>
+                            <h3>{{ $product->getMeta('valid_for') }} days</h3>
+                            <ul class="custom-list mb-4">
+                                <li><strong>Valid for: </strong> {{ $product->getMeta('valid_for') }} days</li>
+                                <li><strong>Number of entries: </strong> {{ $product->getMeta('entries_number') }}</li>
+                                <li><strong>Max stay: </strong> {{ $product->getMeta('max_stay') }} days in total</li>
+                            </ul>
+                        </div>
+
+                        @php $key++; @endphp
+
+                    @endforeach
+
+                @endif
+
             @endif
 
         </div>
@@ -96,5 +113,56 @@
 </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    // Redirect after changin nationality
+    jQuery(document).ready(function() {
+        jQuery('#nationality').change(function() {
+            var selectedNationalitySlug = jQuery(this).find(':selected').data('slug');
+            window.location.href = window.location.pathname + "?nationality=" + selectedNationalitySlug;
+        });
+    });
+
+    // Show product details
+    jQuery(document).ready(function() {
+        jQuery('#visaType').change(function() {
+            var selectedProductId = jQuery(this).find(':selected').val();
+            jQuery('.product-card').hide();
+            jQuery('#product-card-' + selectedProductId).show();
+        });
+    });
+
+</script>
+
+<style>
+        .custom-card {
+            background-color: #e0f7fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .custom-card h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .custom-list {
+            text-align: left;
+            list-style: none;
+            padding-left: 0;
+        }
+        .custom-list li {
+            display: flex;
+            align-items: center;
+        }
+        .custom-list li::before {
+            content: "✔";
+            color: #007bff;
+            margin-right: 8px;
+        }
+    </style>
 
 @endsection

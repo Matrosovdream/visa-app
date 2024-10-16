@@ -54,6 +54,10 @@
 			</li>
 			<li class="nav-item" role="presentation">
 				<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+					href="#kt_ecommerce_add_product_fields" aria-selected="true" role="tab">Fields</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
 					href="#kt_ecommerce_add_product_countries" aria-selected="false" role="tab"
 					tabindex="-1">Countries</a>
 			</li>
@@ -338,6 +342,41 @@
 					<!--end::Pricing-->
 				</div>
 			</div>
+
+			<div class="tab-pane fade" id="kt_ecommerce_add_product_fields" role="tab-panel">
+				<div class="d-flex flex-column gap-7 gap-lg-10">
+
+					<div class="card card-flush py-4">
+						<div class="card-header">
+							<div class="card-title">
+								<h2>Fields</h2>
+							</div>
+						</div>
+						<div class="card-body pt-0">
+
+							@foreach( $productFields as $field ) 
+
+								<div class="mb-10 fv-row fv-plugins-icon-container">
+									<label class="required form-label">{{ $field['title'] }}</label>
+									<input type="text" name="fields[{{ $field['slug'] }}]" class="form-control mb-2"
+										placeholder="" value="{{ $field['value'] }}">
+									<div class="text-muted fs-7">
+										
+									</div>
+									<div
+										class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+									</div>
+								</div>
+
+							@endforeach
+
+						</div>
+					</div>	
+
+				</div>
+			</div>			
+
+
 			<div class="tab-pane fade active" id="kt_ecommerce_add_product_countries" role="tab-panel">
 				<div class="d-flex flex-column gap-7 gap-lg-10">
 

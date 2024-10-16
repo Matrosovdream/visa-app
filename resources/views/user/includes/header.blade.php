@@ -17,7 +17,7 @@
         <div class="container">
             <div class="header__inner ul_li_between">
                 <div class="header__logo">
-                    <a href="index.html">
+                    <a href="/">
                         <img src="{{ asset('user/assets/img/logo/logo.svg') }}" alt="">
                     </a>
                 </div>
