@@ -33,10 +33,9 @@ class AdminProductsController extends Controller
             'title' => 'Product',
             'product' => $product,
             'countries' => Country::all(),
+            'productFields' => $this->getProductFields( $product ),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
-
-        //dd(Country::all());
 
         return view('admin.products.show', $data);
     }
@@ -50,6 +49,7 @@ class AdminProductsController extends Controller
             'product' => $product,
             'countries' => Country::all(),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
+            'productFields' => $this->getProductFields(),
         ];
 
         return view('admin.products.edit', $data);
@@ -81,7 +81,13 @@ class AdminProductsController extends Controller
         $product->published = ( request('status') == 'published' ) ? 1 : 0;
         $product->save();
 
+        // Sync countries
         $product->countries()->attach(request('countries'));
+
+        // Create meta fields
+        foreach( request('fields') as $field=>$value ) {
+            $product->updateMeta( $field, $value );
+        }
 
         return redirect()->route('admin.products.index');
     }
@@ -103,6 +109,24 @@ class AdminProductsController extends Controller
         ];
 
         return view('admin.products.create', $data);
+    }
+
+    public function getProductFields( $product=null ) {
+
+        $fields = [
+            ['slug' => 'valid_for', 'title' => 'Valid For (days)', 'type' => 'text', 'value' => ''],
+            ['slug' => 'entries_number', 'title' => 'Number entries', 'type' => 'text', 'value' => ''],
+            ['slug' => 'max_stay', 'title' => 'Max stay (days)', 'type' => 'text', 'value' => ''],
+        ];
+
+        if( isset($product) ) {
+            foreach ($fields as $key => $field) {
+                $fields[$key]['value'] = $product->getMeta($field['slug']);
+            }
+        }
+
+        return $fields;
+
     }
 
 

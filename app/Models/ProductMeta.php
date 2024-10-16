@@ -10,6 +10,8 @@ class ProductMeta extends Model
 
     use HasFactory;
 
+    protected $table = 'product_meta';
+
     protected $fillable = [
         'product_id',
         'key',

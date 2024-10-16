@@ -26,6 +26,30 @@ class Product extends Model
         return $this->belongsToMany(Country::class, 'product_countries', 'product_id', 'country_id');
     }
 
+    public function meta()
+    {
+        return $this->hasMany(ProductMeta::class);
+    }
+
+    public function getMeta( $slug )
+    {
+        return $this->meta->where('key', $slug)->first()->value;
+    }
+
+    public function updateMeta( $slug, $value )
+    {
+        $meta = $this->meta->where('key', $slug)->first();
+        if ($meta) {
+            $meta->value = $value;
+            $meta->save();
+        } else {
+            $this->meta()->create([
+            'key' => $slug,
+            'value' => $value
+            ]);
+        }
+    }
+
     // Cast a slug from name using Str::slug
     public function setNameAttribute($value)
     {
