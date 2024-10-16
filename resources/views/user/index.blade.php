@@ -27,7 +27,10 @@
                                         <select class="nice-select1 form-control" name="country_from">
                                             <option selected disabled></option>
                                             @foreach($countries as $country)
-                                                <option value="{{ $country->id }}">
+                                                <option 
+                                                    value="{{ $country->id }}"
+                                                    @if( $location['countryCode'] == $country->code ) selected @endif
+                                                    >
                                                     {{ $country->name }} - {{ $country->code }}
                                                 </option>
                                             @endforeach

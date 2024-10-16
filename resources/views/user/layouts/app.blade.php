@@ -18,6 +18,7 @@
         'resources/css/user/main.css'
     ])
 
+
     
 
     @stack('styles_top')

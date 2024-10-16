@@ -4,16 +4,18 @@ use App\Http\Controllers\Controller;
 use App\Helpers\userSettingsHelper;
 use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Services\LocationService;
 
 class indexController extends Controller {
-    
-    public function index()
+
+    public function index( Request $request )
     {
 
         $data = array(
             'title' => 'Homepage',
             'menuTop' => userSettingsHelper::getTopMenu(),
             'countries' => Country::all(),
+            'location' => LocationService::getLocation( $request->ip() )
         );
 
         return view('user.index', $data);
