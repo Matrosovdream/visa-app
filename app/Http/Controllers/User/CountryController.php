@@ -37,6 +37,7 @@ class CountryController extends Controller
         $data = $this->getDirectionData( $request );
 
         $data['product'] = Product::find($request->product_id);
+        $data['totalPrice'] = $data['product']->offers->first()->price + $data['product']->extras->sum('price');
 
         if ( $data['country'] ) {
             return view('user.country.apply', $data);

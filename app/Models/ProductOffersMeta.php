@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderMeta extends Model
+class ProductOffersMeta extends Model
 {
 
-    protected $table = 'order_meta';
+    protected $table = 'product_offers_meta';
 
     protected $fillable = [
-        'order_id',
+        'offer_id',
         'key',
         'value',
     ];
 
-    public function order()
+    public function offer()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(ProductOffers::class, 'offer_id');
     }
 
 }
