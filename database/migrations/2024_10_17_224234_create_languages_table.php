@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->on('users')->nullable();
-            $table->string('session_id')->nullable();
-            $table->foreignId('order_id')->on('orders')->nullable();
-            $table->string('status')->default('open');
-            $table->string('currency')->default('USD');
+            $table->string('name');
+            $table->string('code');
+            $table->boolean('is_default')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('languages');
     }
 };

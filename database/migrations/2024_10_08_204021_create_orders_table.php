@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('status_id')->constained('order_statuses')->onDelete('cascade');
-            $table->string('payment_method_id');
+            $table->string('hash')->unique();
+            $table->foreignId('user_id')->on('users')->nullable();
+            $table->string('status_id')->on('order_statuses')->nullable();
+            $table->string('payment_method_id')->on('payment_gateways')->nullable();
+            $table->decimal('total_price', 10, 2)->default(0);
             $table->timestamps();
         });
     }

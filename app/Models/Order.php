@@ -4,16 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 
 class Order extends Model
 {
 
-    use HasFactory;
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            $order->hash = Str::random(32);
+        });
+    }
 
     protected $fillable = [
+        'hash',
         'user_id',
-        'total',
+        'total_price',
+        'payment_method_id',
         'status_id',
     ];
 
@@ -29,8 +39,7 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'order_products')
-            ->withPivot('quantity', 'price', 'total');
+        return $this->hasMany(CartProduct::class);
     }
 
     public function status()
@@ -53,6 +62,11 @@ class Order extends Model
         return $this->products->sum(function ($product) {
             return $product->price;
         });
+    }
+
+    public static function getByHash($hash)
+    {
+        return static::where('hash', $hash)->first();
     }
 
 }
