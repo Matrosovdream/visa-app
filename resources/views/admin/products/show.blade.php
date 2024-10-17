@@ -25,8 +25,7 @@
 			<div class="card-body pt-0">
 
 				<select class="form-select mb-2" data-control="select2" data-hide-search="true"
-					data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select"
-					name="status">
+					data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select" name="status">
 					<option></option>
 					<option value="published" selected="selected">Published</option>
 					<option value="draft">Draft</option>
@@ -58,6 +57,14 @@
 			</li>
 			<li class="nav-item" role="presentation">
 				<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+					href="#kt_ecommerce_add_product_offers" aria-selected="true" role="tab">Offers</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+					href="#kt_ecommerce_add_product_extras" aria-selected="true" role="tab">Extras</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
 					href="#kt_ecommerce_add_product_countries" aria-selected="false" role="tab"
 					tabindex="-1">Countries</a>
 			</li>
@@ -74,8 +81,7 @@
 								<h2>General</h2>
 							</div>
 						</div>
-						<!--end::Card header-->
-						<!--begin::Card body-->
+
 						<div class="card-body pt-0">
 							<!--begin::Input group-->
 							<div class="mb-10 fv-row fv-plugins-icon-container">
@@ -123,22 +129,15 @@
 								<h2>Pricing</h2>
 							</div>
 						</div>
-						<!--end::Card header-->
-						<!--begin::Card body-->
+
 						<div class="card-body pt-0">
 							<!--begin::Input group-->
 							<div class="mb-10 fv-row fv-plugins-icon-container">
 								<!--begin::Label-->
 								<label class="required form-label">Base Price</label>
-								<!--end::Label-->
-								<!--begin::Input-->
 								<input type="text" name="price" class="form-control mb-2" placeholder="Product price"
-									value="{{ $product->price }}"
-									name="price">
-								<!--end::Input-->
-								<!--begin::Description-->
+									value="{{ $product->price }}" name="price">
 								<div class="text-muted fs-7">Set the product price.</div>
-								<!--end::Description-->
 								<div
 									class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
 								</div>
@@ -184,8 +183,7 @@
 										</label>
 										<!--end::Option-->
 									</div>
-									<!--end::Col-->
-									<!--begin::Col-->
+
 									<div class="col">
 										<!--begin::Option-->
 										<label
@@ -206,34 +204,26 @@
 										</label>
 										<!--end::Option-->
 									</div>
-									<!--end::Col-->
-									<!--begin::Col-->
+
 									<div class="col">
-										<!--begin::Option-->
 										<label
 											class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6"
 											data-kt-button="true">
-											<!--begin::Radio-->
 											<span
 												class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
 												<input class="form-check-input" type="radio" name="discount_option"
 													value="3">
 											</span>
-											<!--end::Radio-->
-											<!--begin::Info-->
 											<span class="ms-5">
 												<span class="fs-4 fw-bold text-gray-800 d-block">Fixed Price</span>
 											</span>
-											<!--end::Info-->
 										</label>
-										<!--end::Option-->
 									</div>
-									<!--end::Col-->
+
 								</div>
 								<!--end::Row-->
 							</div>
-							<!--end::Input group-->
-							<!--begin::Input group-->
+
 							<div class="mb-10 fv-row d-none" id="kt_ecommerce_add_product_discount_percentage">
 								<!--begin::Label-->
 								<label class="form-label">Set Discount Percentage</label>
@@ -260,36 +250,29 @@
 										</div>
 									</div>
 								</div>
-								<!--end::Slider-->
-								<!--begin::Description-->
+
 								<div class="text-muted fs-7">Set a percentage discount to be applied on this product.
 								</div>
-								<!--end::Description-->
+
 							</div>
-							<!--end::Input group-->
-							<!--begin::Input group-->
+
 							<div class="mb-10 fv-row d-none" id="kt_ecommerce_add_product_discount_fixed">
 								<!--begin::Label-->
 								<label class="form-label">Fixed Discounted Price</label>
-								<!--end::Label-->
-								<!--begin::Input-->
 								<input type="text" name="dicsounted_price" class="form-control mb-2"
 									placeholder="Discounted price">
-								<!--end::Input-->
-								<!--begin::Description-->
+
 								<div class="text-muted fs-7">Set the discounted product price. The product will be
 									reduced at the determined fixed price</div>
 								<!--end::Description-->
 							</div>
-							<!--end::Input group-->
-							<!--begin::Tax-->
+
 							<div class="d-flex flex-wrap gap-5">
 								<!--begin::Input group-->
 								<div class="fv-row w-100 flex-md-root fv-plugins-icon-container">
 									<!--begin::Label-->
 									<label class="required form-label">Tax Class</label>
-									<!--end::Label-->
-									<!--begin::Select2-->
+
 									<select class="form-select mb-2 select2-hidden-accessible" name="tax"
 										data-control="select2" data-hide-search="true"
 										data-placeholder="Select an option" data-select2-id="select2-data-15-jvx0"
@@ -299,47 +282,26 @@
 										<option value="1" selected="selected" data-select2-id="select2-data-17-78w5">
 											Taxable Goods</option>
 										<option value="2">Downloadable Product</option>
-									</select><span class="select2 select2-container select2-container--bootstrap5"
-										dir="ltr" data-select2-id="select2-data-16-36yp" style="width: 100%;"><span
-											class="selection"><span
-												class="select2-selection select2-selection--single form-select mb-2"
-												role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
-												aria-disabled="false" aria-labelledby="select2-tax-54-container"
-												aria-controls="select2-tax-54-container"><span
-													class="select2-selection__rendered" id="select2-tax-54-container"
-													role="textbox" aria-readonly="true" title="Taxable Goods">Taxable
-													Goods</span><span class="select2-selection__arrow"
-													role="presentation"><b
-														role="presentation"></b></span></span></span><span
-											class="dropdown-wrapper" aria-hidden="true"></span></span>
-									<!--end::Select2-->
-									<!--begin::Description-->
+									</select>
+
 									<div class="text-muted fs-7">Set the product tax class.</div>
 									<!--end::Description-->
 									<div
 										class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
 									</div>
 								</div>
-								<!--end::Input group-->
-								<!--begin::Input group-->
+
 								<div class="fv-row w-100 flex-md-root">
-									<!--begin::Label-->
 									<label class="form-label">VAT Amount (%)</label>
-									<!--end::Label-->
-									<!--begin::Input-->
 									<input type="text" class="form-control mb-2" value="35">
-									<!--end::Input-->
-									<!--begin::Description-->
 									<div class="text-muted fs-7">Set the product VAT about.</div>
-									<!--end::Description-->
 								</div>
 								<!--end::Input group-->
 							</div>
 							<!--end:Tax-->
 						</div>
-						<!--end::Card header-->
+
 					</div>
-					<!--end::Pricing-->
 				</div>
 			</div>
 
@@ -354,14 +316,14 @@
 						</div>
 						<div class="card-body pt-0">
 
-							@foreach( $productFields as $field ) 
+							@foreach($productFields as $field) 
 
 								<div class="mb-10 fv-row fv-plugins-icon-container">
 									<label class="required form-label">{{ $field['title'] }}</label>
 									<input type="text" name="fields[{{ $field['slug'] }}]" class="form-control mb-2"
 										placeholder="" value="{{ $field['value'] }}">
 									<div class="text-muted fs-7">
-										
+
 									</div>
 									<div
 										class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
@@ -371,11 +333,174 @@
 							@endforeach
 
 						</div>
-					</div>	
+					</div>
 
 				</div>
-			</div>			
+			</div>
 
+			<div class="tab-pane fade" id="kt_ecommerce_add_product_offers" role="tab-panel">
+				<div class="d-flex flex-column gap-7 gap-lg-10">
+
+					<div class="card card-flush py-4">
+						<div class="card-header">
+							<div class="card-title">
+								<h2>Offers</h2>
+							</div>
+						</div>
+
+						<div class="card-body pt-0">
+							<div class="" data-kt-ecommerce-catalog-add-product="auto-options">
+
+								<div id="kt_ecommerce_add_product_options">
+
+									<div class="form-group">
+										<div data-repeater-list="kt_ecommerce_add_product_options"
+											class="d-flex flex-column gap-3">
+
+											<div data-repeater-item=""
+												class="form-group d-flex flex-wrap align-items-center gap-5">
+
+												<div class="w-100 w-md-200px">Title</div>
+												<div class="w-100 w-md-100px">Price</div>
+												<div class="w-200 w-md-200px">Duration title</div>
+												<div class="w-100 w-md-100px text-right">Duration hours</div>
+												<div class="w-50 w-md-50px"></div>
+
+											</div>
+
+											@foreach($product->offers as $offer)
+
+												<div data-repeater-item=""
+													class="form-group d-flex flex-wrap align-items-center gap-5">
+
+													<div class="w-100 w-md-200px">
+														<input type="text" class="form-control" name="offer_name[]"
+														placeholder="Offer name" value="{{ $offer->name }}" />
+													</div>
+
+													<div class="w-100 w-md-100px">
+														<input type="text" class="form-control" name="offer_price[]"
+															placeholder="Offer price" value="{{ $offer->price }}" />
+													</div>
+
+													<div class="w-200 w-md-200px">	
+														<input type="text" class="form-control" name="offer_duration_title[]"
+															placeholder="Offer duration title" value="{{ $offer->getMeta('duration') }}" />
+													</div>
+
+													<div class="w-100 w-md-100px">
+														<input type="text" class="form-control" name="offer_duration_title[]"
+															placeholder="Offer duration hours" value="{{ $offer->getMeta('duration_hours') }}" />
+													</div>
+
+													<div class="w-50 w-md-50px">
+														<button type="button" data-repeater-delete=""
+															class="btn btn-sm btn-icon btn-light-danger">
+															<i class="ki-duotone ki-cross fs-1">
+																<span class="path1"></span>
+																<span class="path2"></span>
+															</i>
+														</button>
+													</div>
+
+												</div>
+
+											@endforeach
+
+										</div>
+									</div>
+
+									<div class="form-group mt-5">
+										<button type="button" data-repeater-create=""
+											class="btn btn-sm btn-light-primary">
+											<i class="ki-duotone ki-plus fs-2"></i>Add another offer</button>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="kt_ecommerce_add_product_extras" role="tab-panel">
+				<div class="d-flex flex-column gap-7 gap-lg-10">
+
+					<div class="card card-flush py-4">
+						<div class="card-header">
+							<div class="card-title">
+								<h2>Extras</h2>
+							</div>
+						</div>
+
+						<div class="card-body pt-0">
+							<div class="" data-kt-ecommerce-catalog-add-product="auto-options">
+
+								<div id="kt_ecommerce_add_product_options">
+
+									<div class="form-group">
+										<div data-repeater-list="kt_ecommerce_add_product_options"
+											class="d-flex flex-column gap-3">
+
+											<div data-repeater-item=""
+												class="form-group d-flex flex-wrap align-items-center gap-5">
+
+												<div class="w-100 w-md-200px">Title</div>
+												<div class="w-100 w-md-100px">Price</div>
+												<div class="w-50 w-md-50px"></div>
+
+											</div>
+
+											@foreach($product->extras as $extra)
+
+												<div data-repeater-item=""
+													class="form-group d-flex flex-wrap align-items-center gap-5">
+
+													<div class="w-100 w-md-200px">
+														<input type="text" class="form-control" name="offer_name[]"
+														placeholder="Offer name" value="{{ $extra->name }}" />
+													</div>
+
+													<div class="w-100 w-md-100px">
+														<input type="text" class="form-control" name="offer_price[]"
+															placeholder="Offer price" value="{{ $extra->price }}" />
+													</div>
+
+													<div class="w-50 w-md-50px">
+														<button type="button" data-repeater-delete=""
+															class="btn btn-sm btn-icon btn-light-danger">
+															<i class="ki-duotone ki-cross fs-1">
+																<span class="path1"></span>
+																<span class="path2"></span>
+															</i>
+														</button>
+													</div>
+
+												</div>
+
+											@endforeach
+
+										</div>
+									</div>
+
+									<div class="form-group mt-5">
+										<button type="button" data-repeater-create=""
+											class="btn btn-sm btn-light-primary">
+											<i class="ki-duotone ki-plus fs-2"></i>Add another extra product</button>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
 
 			<div class="tab-pane fade active" id="kt_ecommerce_add_product_countries" role="tab-panel">
 				<div class="d-flex flex-column gap-7 gap-lg-10">
@@ -390,18 +515,19 @@
 						<div class="card-body pt-0">
 							<div class="mb-10 fv-row fv-plugins-icon-container">
 								<label class="required form-label">Countries list</label>
-								
+
 								<select multiple class="form-select mb-2" data-control="select2" data-hide-search="true"
 									data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select"
 									name="countries[]">
 									<option></option>
-									
+
 									@foreach($countries as $country)
-										<option value="{{ $country->id }}" {{ in_array($country->id, $product->countries->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $country->name }}</option>
+										<option value="{{ $country->id }}" {{ in_array($country->id, $product->countries->pluck('id')->toArray()) ? 'selected' : '' }}>
+											{{ $country->name }}</option>
 									@endforeach
 
 								</select>
-								
+
 								<div class="text-muted fs-7">Set the product countries.</div>
 
 							</div>

@@ -31,6 +31,16 @@ class Product extends Model
         return $this->hasMany(ProductMeta::class);
     }
 
+    public function extras()
+    {
+        return $this->hasMany(ProductExtras::class);
+    }
+
+    public function offers()
+    {
+        return $this->hasMany(ProductOffers::class);
+    }
+
     public function getMeta( $slug )
     {
         return $this->meta->where('key', $slug)->first()->value;

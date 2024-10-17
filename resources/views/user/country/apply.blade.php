@@ -24,23 +24,31 @@
     <div class="row">
 
         <div class="col-md-8">
-            <form id="multiStepForm" class="xb-item--form contact-from">
+            <form 
+                id="multiStepForm" 
+                class="xb-item--form contact-from" 
+                method="POST" 
+                action="{{ route('user.order.create-apply') }}"
+                >
 
                 @csrf
 
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="product_price" value="{{ $product->price }}">
+                <input type="hidden" name="country_id" value="{{ $country->id }}">
+                <input type="hidden" name="country_from_id" value="{{ $countryFrom->id }}">
+                <input type="hidden" name="product_price" value="{{ $totalPrice }}">
                 <input type="hidden" name="currency" value="{{ $currency }}">
+                <input type="hidden" name="quantity" value="1">
 
                 <div id="step-1" class="form-step form-step-active">
                     <h3>Trip details</h3>
                     <div class="mb-3 xb-item--field">
-                        <label for="arrivalDate" class="form-label w-100">When do you arrive in Canada?</label>
-                        <input type="date" class="form-control w-75" name="time-arrival" id="arrivalDate" required>
+                        <label for="arrivalDate" class="form-label w-100">When do you arrive in {{ $country->name }}?</label>
+                        <input type="date" class="form-control w-75" name="time_arrival" id="arrivalDate" required>
                     </div>
                     <div class="mb-3 xb-item--field">
                         <label for="arrivalAirport" class="form-label w-100">Where will you arrive?</label>
-                        <select class="nice-select w-75" id="arrivalAirport" name="destination-point" required>
+                        <select class="nice-select w-75" id="arrivalAirport" name="destination_point" required>
                             <option value="" selected>Select your airport</option>
                             <option value="Billy Bishop Toronto City Airport">Billy Bishop Toronto City Airport (YTZ)
                             </option>
@@ -63,22 +71,22 @@
 
                         <div class="mb-3 xb-item--field">
                             <label class="form-label w-100">First and middle name</label>
-                            <input type="text" name="travelers[fm-names]" class="form-control w-75" required>
+                            <input type="text" name="travelers[name][]" class="form-control w-75" required>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label class="form-label w-100">Last name</label>
-                            <input type="text" name="travelers[lastname]" class="form-control w-75" required>
+                            <input type="text" name="travelers[lastname][]" class="form-control w-75" required>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label for="arrivalDate" class="form-label w-100">Birthday</label>
-                            <input type="date" name="travelers[birthday]" class="form-control w-75" id="arrivalDate" required>
+                            <input type="date" name="travelers[birthday][]" class="form-control w-75" id="arrivalDate" required>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label for="arrivalDate" class="form-label w-100">Passport number</label>
-                            <input type="date" name="travelers[passport]" class="form-control w-75" id="arrivalDate" required>
+                            <input type="date" name="travelers[passport][]" class="form-control w-75" id="arrivalDate" required>
                         </div>
 
                         <div class="row">
@@ -86,7 +94,7 @@
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select day of the month -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-day]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-day][]" required>
                                         <option value="" selected>Day</option>
                                         @for ($i = 1; $i <= 31; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
@@ -97,7 +105,7 @@
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select Month -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-month]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-month][]" required>
                                         <option value="" selected>Month</option>
                                         <option value="1">January</option>
                                         <option value="2">February</option>
@@ -117,7 +125,7 @@
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select Year -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-year]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-year][]" required>
                                         <option value="" selected>Year</option>
                                         @for ($i = date('Y'); $i <= date('Y') + 10; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
@@ -141,12 +149,37 @@
 
                 </div>
 
+                <div id="step-3" class="form-step form-step">
+                    <h3>Choose your processing time</h3>
+
+                    <ul class="list-group">
+                        @foreach( $product->offers as $offer )
+                            <li class="list-group-item">
+                                <div class="form-check
+                                    @if( $loop->first ) active @endif">
+                                    <input class="form-check-input" type="radio" name="offer_id" id="offer-{{ $offer->id }}" value="{{ $offer->id }}" @if( $loop->first ) checked @endif>
+                                    <label class="form-check label" for="offer-{{ $offer->id }}">
+                                        <h5>{{ $offer->name }}</h5>
+                                        <p>{{ $offer->description }}</p>
+                                        <p>{{ $offer->price }} {{ $currency }}</p>
+                                    </label>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>    
+
+                    <br/>
+                    <button type="button" class="btn btn-secondary" id="prev-3">Previous</button>
+
+                </div>
+
                 <div id="step-3" class="form-step">
                     <h3>Checkout</h3>
                     <p>Confirm your details and proceed to checkout.</p>
                     <button type="button" class="btn btn-secondary" id="prev-3">Previous</button>
                     <button type="submit" class="btn btn-success">Save and Continue</button>
                 </div>
+
             </form>
         </div>
 
@@ -162,21 +195,25 @@
                             </td>
                             <td><p id="traveler-count">1 traveler</p></td>
                         </tr>
-                        <tr>
-                            <td>+ Government fees</td>
-                            <td>0</td>
-                        </tr>
+
+                        @foreach( $product->extras as $extra ) 
+                            <tr>
+                                <td>+ {{ $extra->name }}</td>
+                                <td>{{ $extra->price }} {{ $currency }}</td>
+                            </tr>
+                        @endforeach
+
                         <tr>
                             <td>+ Service fees</td>
                             <td>
-                                <span id="price-span">{{ $product->price }} {{ $currency }}</span>
+                                <span id="price-span">{{ $product->offers->first()->price }} {{ $currency }}</span>
                             </td>
                         </tr>
 
                     </tbody>
                 </table>
 
-                <button type="button" class="btn btn-primary w-100 mt-3">Save and continue</button>
+                <button type="button" class="btn btn-primary w-100 mt-3 pay-button">Pay order</button>
 
             </div>
         </div>
@@ -196,6 +233,11 @@
         function updateStepIndicator(step) {
             $('.step-indicator div').removeClass('active');
             $('#step-indicator-' + step).addClass('active');
+            if (step == 3) {
+                $('.pay-button').show();
+            } else {
+                $('.pay-button').hide();
+            }
         }
 
         $('#next-1').click(function () {
@@ -222,12 +264,6 @@
             updateStepIndicator(2);
         });
 
-        // Handle form submission (for now just prevent page reload)
-        $('#multiStepForm').submit(function (e) {
-            e.preventDefault();
-            alert('Form submitted successfully!');
-        });
-
         // Add traveler logic
         var travelerCount = 1;
         $('#add_traveler').click(function () {
@@ -248,6 +284,10 @@
             
         });
 
+        // Submit form
+        $('.pay-button').click(function () {
+            $('#multiStepForm').submit();
+        });
 
     });
 </script>
@@ -255,6 +295,10 @@
 
 
 <style>
+
+    .pay-button {
+        display: none;
+    }
 
     .summary-table {
         --tw-bg-opacity: 1;
