@@ -34,8 +34,11 @@
                 @csrf
 
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="country_id" value="{{ $country->id }}">
+                <input type="hidden" name="country_to_id" value="{{ $country->id }}">
+                <input type="hidden" name="country_to_code" value="{{ $country->code }}">
                 <input type="hidden" name="country_from_id" value="{{ $countryFrom->id }}">
+                <input type="hidden" name="country_from_code" value="{{ $countryFrom->code }}">
+
                 <input type="hidden" name="product_price" value="{{ $totalPrice }}">
                 <input type="hidden" name="currency" value="{{ $currency }}">
                 <input type="hidden" name="quantity" value="1">
@@ -46,16 +49,17 @@
                         <label for="arrivalDate" class="form-label w-100">When do you arrive in {{ $country->name }}?</label>
                         <input type="date" class="form-control w-75" name="time_arrival" id="arrivalDate" required>
                     </div>
+
                     <div class="mb-3 xb-item--field">
-                        <label for="arrivalAirport" class="form-label w-100">Where will you arrive?</label>
-                        <select class="nice-select w-75" id="arrivalAirport" name="destination_point" required>
-                            <option value="" selected>Select your airport</option>
-                            <option value="Billy Bishop Toronto City Airport">Billy Bishop Toronto City Airport (YTZ)
-                            </option>
-                            <option value="Toronto Pearson International Airport">Toronto Pearson International Airport
-                                (YYZ)</option>
-                        </select>
+                        <label for="full_name" class="form-label  w-100">Your full name</label>
+                        <input type="text" class="form-control w-75" id="full_name" name="full_name" required>
                     </div>
+
+                    <div class="mb-3 xb-item--field">
+                        <label for="phone" class="form-label  w-100">Phone number</label>
+                        <input type="tel" class="form-control w-75" id="phone" name="phone" required>
+                    </div>
+                    
                     <div class="mb-3 xb-item--field">
                         <label for="email" class="form-label  w-100">Email address</label>
                         <input type="email" class="form-control w-75" id="email" name="email" placeholder="example@mail.com" required>
@@ -86,7 +90,7 @@
 
                         <div class="mb-3 xb-item--field">
                             <label for="arrivalDate" class="form-label w-100">Passport number</label>
-                            <input type="date" name="travelers[passport][]" class="form-control w-75" id="arrivalDate" required>
+                            <input type="text" name="travelers[passport][]" class="form-control w-75" id="arrivalDate" required>
                         </div>
 
                         <div class="row">

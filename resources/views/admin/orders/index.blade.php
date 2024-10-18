@@ -57,13 +57,13 @@
                                     data-kt-check-target="#kt_ecommerce_products_table .form-check-input" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-200px">Order ID</th>
-                        <th class="min-w-200px">Customer</th>
-                        <th class="text-center max-w-100px">Status</th>
+                        <th class="">ID</th>
+                        <th class="">Customer</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Product</th>
                         <th class="text-center min-w-100px">Total</th>
-                        <th class="text-center min-w-100px">Date added</th>
-                        <th class="text-center min-w-100px">Date modified</th>
+                        <th class="text-center min-w-100px">Added</th>
+                        <th class="text-center min-w-100px">Modified</th>
                         <th class="text-center min-w-70px">Actions</th>
                     </tr>
                 </thead>
@@ -87,18 +87,16 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="{{ route('admin.users.show', $order->user->id) }}"
-                                    class="text-gray-800 text-hover-primary fs-5 fw-bold"
-                                    data-kt-ecommerce-product-filter="product_name">
+                                @if( $order->user ) 
                                     {{ $order->user->name }}
-                                </a>
+                                @endif
                             </td>
                             <td class="text-center pe-0">
-                                @if ( $order->status->slug == 'pending' )
+                                @if ($order->status->slug == 'pending')
                                     <div class="badge badge-light-primary">{{ $order->status->name }}</div>
-                                @elseif ( $order->status->slug == 'completed' )
+                                @elseif ($order->status->slug == 'completed')
                                     <div class="badge badge-light-success">{{ $order->status->name }}</div>
-                                @elseif ( $order->status->slug == 'cancelled' )
+                                @elseif ($order->status->slug == 'cancelled')
                                     <div class="badge badge-light-danger">{{ $order->status->name }}</div>
                                 @else
                                     <div class="badge badge-light-primary">{{ $order->status->name }}</div>
@@ -106,13 +104,20 @@
                             </td>
                             <td class="text-center pe-0">
 
-                                @foreach($order->products as $product)
-                                    <a href="{{ route('admin.products.show', $product->id) }}"
+                                @foreach($order->cartProducts as $item)
+                                    <a href="{{ route('admin.products.show', $item->product->id) }}"
                                         class="text-gray-800 text-hover-primary"
                                         data-kt-ecommerce-product-filter="product_name">
-                                        {{ $product->name }}
+                                        {{ $item->product->name }}
+                                        ( {{ $item->offer->name }} )
+                                        <div class="extras">
+                                            @foreach($item->product->extras as $extra)
+                                                <span class="">+ {{ $extra->name }}</span>
+                                            @endforeach
+                                        </div>
                                     </a>
                                 @endforeach
+
                             </td>
                             <td class="text-center pe-0">
                                 {{ $order->getTotal() }}$
@@ -125,30 +130,30 @@
                             </td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
-                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                    Actions
                                     <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                                    data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="{{ route('admin.orders.edit', $order->id) }}"
-                                            class="menu-link px-3">Edit</a>
+
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
+                                        data-kt-menu="true">
+
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('admin.orders.edit', $order->id) }}"
+                                                class="menu-link px-3">Edit</a>
+                                        </div>
+
+                                        <div class="menu-item px-3">
+                                            <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="menu-link px-3" type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+
                                     </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="menu-link px-3" type="submit">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu-->
+
                             </td>
                         </tr>
 

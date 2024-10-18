@@ -25,6 +25,8 @@ class AdminOrdersController extends Controller
     {
         $order = Order::find($id);
 
+        //dd($order->getTravellers());
+
         $data = [
             'title' => 'Order',
             'order' => $order,

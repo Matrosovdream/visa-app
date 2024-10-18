@@ -19,11 +19,13 @@ class OrderController extends Controller
     public function show($hash)
     {
 
+        $order = Order::getByHash($hash);
+
         $data = array(
             'title' => 'Homepage',
             'menuTop' => userSettingsHelper::getTopMenu(),
             'countries' => Country::all(),
-            'order' => Order::getByHash($hash)
+            'order' => $order
         );
 
         return view('user.order.show', $data);
@@ -48,9 +50,19 @@ class OrderController extends Controller
         ]);
 
         // Add order meta fields
-        $fields = ['time_arrival', 'destination_point', 'email', 'travelers'];
+        $fields = [
+            'country_to_id', 
+            'country_to_code', 
+            'country_from_id', 
+            'country_from_code',
+            'currency',
+            'time_arrival',
+            'full_name',
+            'phone',
+            'email',
+            'travelers'
+        ];
         foreach ($fields as $field) {
-
             $value = request($field);
             if( is_array($value) ) {
                 $value = json_encode($value);
@@ -82,6 +94,13 @@ class OrderController extends Controller
             'quantity' => request('quantity'),
             'price' => $price,
             'total' => $price * request('quantity'),
+        ]);
+
+        // Add history
+        $order->history()->create([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'comment' => 'Order created',
         ]);
 
         // Redirect to the order page
