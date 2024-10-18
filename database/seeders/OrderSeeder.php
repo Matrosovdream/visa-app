@@ -45,6 +45,7 @@ class OrderSeeder extends Seeder
             $order_id = Order::create($orderData);
 
             // Order products
+            /*
             $orderProducts = [];
             foreach( $order['products'] as $product_id ) {
 
@@ -63,40 +64,10 @@ class OrderSeeder extends Seeder
             foreach ($orderProducts as $orderProduct) {
                 OrderProducts::create($orderProduct);
             }
+            */
 
         }
-
-        // Order products
-        /*
-        foreach( $product_ids as $product_id ) {
-
-            $product = Product::find($product_id);
-
-            $orderProducts[] = [
-                'order_id' => 1,
-                'product_id' => $product_id,
-                'quantity' => 1,
-                'price' => $product->price,
-                'total' => $product->price,
-            ];
-
-        }
-
-        foreach ($orderProducts as $orderProduct) {
-            OrderProducts::create($orderProduct);
-        }
-
-        // Sync order products by random
-        $order = Order::find(1);
-        $order->products()->sync([1, 2]);
-
-        $order = Order::find(2);
-        $order->products()->sync([2, 3]);
-
-        $order = Order::find(3);
-        $order->products()->sync([1, 2, 3]);
-        */
-
+S
     }
 
 }

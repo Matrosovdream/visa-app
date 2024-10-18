@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ProductExtrasSeeder::class,
 
             // Store orders
-            OrderSeeder::class,
+            //OrderSeeder::class,
             GatewaySeeder::class,
             OrderStatusSeeder::class,
 
