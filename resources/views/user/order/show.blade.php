@@ -16,13 +16,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($order->products as $product)
-                        <tr>
-                            <td>{{ $product->product->name }}</td>
-                            <td class="text-center">{{ $product->quantity }}</td>
-                            <td>{{ $product->price }}</td>
-                            <td>{{ $product->total }}</td>
-                        </tr>
+                        @foreach($order->cartProducts as $product)
+                            <tr>
+                                <td>{{ $product->product->name }}</td>
+                                <td class="text-center">{{ $product->quantity }}</td>
+                                <td>{{ $product->price }}$</td>
+                                <td>{{ $product->total }}$</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
