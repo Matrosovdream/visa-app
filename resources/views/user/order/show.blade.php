@@ -38,7 +38,9 @@
 
             <h1 class="mb-20">Payment</h1>
 
+            @php /*
             @include('user.order.payment')
+            */ @endphp
 
         </div>
 
