@@ -40,6 +40,8 @@
                 <input type="hidden" name="country_from_code" value="{{ $countryFrom->code }}">
 
                 <input type="hidden" name="product_price" value="{{ $totalPrice }}">
+                <input type="hidden" name="product_extras_price" value="{{ $product->extras->sum('price') }}">
+
                 <input type="hidden" name="currency" value="{{ $currency }}">
                 <input type="hidden" name="quantity" value="1">
 
@@ -203,7 +205,12 @@
                         @foreach( $product->extras as $extra ) 
                             <tr>
                                 <td>+ {{ $extra->name }}</td>
-                                <td>{{ $extra->price }} {{ $currency }}</td>
+                                <td>
+                                    <span id="extras-price-span">
+                                        {{ $extra->price }} 
+                                        {{ $currency }}
+                                    </span>
+                                </td>
                             </tr>
                         @endforeach
 
@@ -283,8 +290,10 @@
 
             // Update price with currency
             var price = parseFloat($('input[name="product_price"]').val());
+            var extras_price = parseFloat($('input[name="product_extras_price"]').val());
             var currency = $('input[name="currency"]').val();
             $('#price-span').text(price * travelerCount + ' ' + currency);
+            $('#extras-price-span').text(extras_price * travelerCount + ' ' + currency);
             
         });
 

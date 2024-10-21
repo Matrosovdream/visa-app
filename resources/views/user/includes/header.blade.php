@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+
     <div class="header__wrap stricky">
         <div class="container">
             <div class="header__inner ul_li_between">
@@ -92,9 +93,13 @@
                                         <div class="arrow_down"><img src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
                                     </a>
                                     <ul class="lang_sub_list">
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">Arabic</a></li>
-                                        <li><a href="#">Bangla</a></li>
+                                        @foreach( $languages as $language )
+                                            <li>
+                                                <a href="?setlang={{ $language->code }}">
+                                                    {{ $language->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </li>
                             </ul>
