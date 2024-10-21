@@ -5,7 +5,7 @@
     <div class="container mt-30 mb-30">
         <div class="row">
             <div class="col-md-12">
-                <h1>Order Details #{{ $order->id }}</h1>
+                <h1 class="mb-20">Order Details #{{ $order->id }}</h1>
                 <table class="table">
                     <thead>
                         <tr>
@@ -33,6 +33,15 @@
 
             </div>
         </div>
+
+        <div class="row mt-50">
+
+            <h1 class="mb-20">Payment</h1>
+
+            @include('user.order.payment')
+
+        </div>
+
     </div>
 
 @endsection
