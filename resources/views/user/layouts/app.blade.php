@@ -6,17 +6,19 @@
     @include('user.includes.metas')
 
     <!-- Scripts -->
-    @vite([
-        'resources/css/user/bootstrap.min.css',
-        'resources/css/user/fontawesome.css',
-        'resources/css/user/animate.css',
-        'resources/css/user/swiper.min.css',
-        'resources/css/user/odometer.css',
-        'resources/css/user/nice-select.css',
-        'resources/css/user/jquery-ui.min.css',
-        'resources/css/user/magnific-popup.css',
-        'resources/css/user/main.css'
-    ])
+    @foreach([
+        '/css/user/bootstrap.min.css',
+        '/css/user/fontawesome.css',
+        '/css/user/animate.css',
+        '/css/user/swiper.min.css',
+        '/css/user/odometer.css',
+        '/css/user/nice-select.css',
+        '/css/user/jquery-ui.min.css',
+        '/css/user/magnific-popup.css',
+        '/css/user/main.css'
+    ] as $asset)
+        <link rel="stylesheet" href="{{ asset($asset) }}">
+    @endforeach
 
 
     
@@ -66,21 +68,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 
     <!-- Scripts -->
-    @vite([
-        'resources/js/user/jquery-3.7.1.min.js',
-        'resources/js/user/bootstrap.bundle.min.js',
-        'resources/js/user/swiper.min.js',
+    @foreach([
+        '/js/user/jquery-3.7.1.min.js',
+        '/js/user/bootstrap.bundle.min.js',
+        '/js/user/swiper.min.js',
         //'resources/js/user/wow.min.js',
-        'resources/js/user/appear.js',
-        'resources/js/user/odometer.min.js',
-        'resources/js/user/jquery.nice-select.min.js',
-        'resources/js/user/imagesloaded.pkgd.min.js',
-        'resources/js/user/isotope.pkgd.min.js',
-        'resources/js/user/jquery.magnific-popup.min.js',
-        'resources/js/user/jquery-ui.min.js',
-        'resources/js/user/parallax-scroll.js',
-        'resources/js/user/main.js'
-    ])
+        '/js/user/appear.js',
+        '/js/user/odometer.min.js',
+        '/js/user/jquery.nice-select.min.js',
+        '/js/user/imagesloaded.pkgd.min.js',
+        '/js/user/isotope.pkgd.min.js',
+        '/js/user/jquery.magnific-popup.min.js',
+        '/js/user/jquery-ui.min.js',
+        '/js/user/parallax-scroll.js',
+        '/js/user/main.js'
+    ] as $asset)
+        <script src="{{ asset($asset) }}"></script>
+    @endforeach
 
     @include('user.includes.footer')
 
