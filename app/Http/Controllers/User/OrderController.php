@@ -11,6 +11,7 @@ use App\Models\CartProduct;
 use App\Models\Order;
 use App\Models\Country;
 use App\Helpers\userSettingsHelper;
+use App\Models\ProductOffers;
 
 
 class OrderController extends Controller
@@ -36,7 +37,8 @@ class OrderController extends Controller
 
         // Calculate product price
         $product = Product::find(request('product_id'));
-        $price = $product->offers->first()->price + $product->extras->sum('price');
+        $offer = ProductOffers::find(request('offer_id'));
+        $price = $offer->price + $product->extras->sum('price');
 
         // Calculate total price
         $totalPrice = $price * request('quantity');

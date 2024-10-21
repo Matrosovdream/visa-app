@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\User;
+
 use App\Http\Controllers\Controller;
 use App\Helpers\userSettingsHelper;
 use App\Models\Country;
