@@ -93,6 +93,7 @@
                                         <div class="arrow_down"><img src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
                                     </a>
                                     <ul class="lang_sub_list">
+                                        @php /*
                                         @foreach( $languages as $language )
                                             <li>
                                                 <a href="?setlang={{ $language->code }}">
@@ -100,6 +101,7 @@
                                                 </a>
                                             </li>
                                         @endforeach
+                                        */ @endphp
                                     </ul>
                                 </li>
                             </ul>
