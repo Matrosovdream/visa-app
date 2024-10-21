@@ -7,7 +7,7 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Services\LocationService;
 
-class indexController extends Controller {
+class IndexController extends Controller {
 
     public function index( Request $request )
     {
