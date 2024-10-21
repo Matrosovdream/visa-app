@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -12,9 +11,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(GlobalsService::class, function ($app) {
+        /*$this->app->singleton(GlobalsService::class, function ($app) {
             return new GlobalsService();
-        });
+        });*/
     }
 
     /**
@@ -22,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(GlobalsService $globalsService): void
     {
-        \View::share('geoData', $globalsService->getGlobals()['geoData']);
-        \View::share('languages', $globalsService->getGlobals()['languages']);
+        /*\View::share('geoData', $globalsService->getGlobals()['geoData']);
+        \View::share('languages', $globalsService->getGlobals()['languages']);*/
     }
 }
