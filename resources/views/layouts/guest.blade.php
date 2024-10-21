@@ -8,12 +8,14 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Scripts -->
-        @vite([
-            'resources/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.css',
-            'resources/assets/admin/plugins/custom/datatables/datatables.bundle.css',
-            'resources/assets/admin/plugins/global/plugins.bundle.css',
-            'resources/assets/admin/css/style.bundle.css',
-            ])
+        @foreach([
+            '/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.css',
+            '/assets/admin/plugins/custom/datatables/datatables.bundle.css',
+            '/assets/admin/plugins/global/plugins.bundle.css',
+            '/assets/admin/css/style.bundle.css',
+        ] as $asset)
+            <link rel="stylesheet" href="{{ asset($asset) }}">
+        @endforeach
 
     </head>
 
