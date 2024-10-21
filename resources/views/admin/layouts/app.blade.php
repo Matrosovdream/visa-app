@@ -11,12 +11,14 @@
         <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" rel="stylesheet"/>
 
         <!-- Scripts -->
-        @vite([
-            'resources/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.css',
-            'resources/assets/admin/plugins/custom/datatables/datatables.bundle.css',
-            'resources/assets/admin/plugins/global/plugins.bundle.css',
-            'resources/assets/admin/css/style.bundle.css',
-            ])
+        @foreach([
+            '/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.css',
+            '/assets/admin/plugins/custom/datatables/datatables.bundle.css',
+            '/assets/admin/plugins/global/plugins.bundle.css',
+            '/assets/admin/css/style.bundle.css',
+        ] as $style)
+            <link href="{{ asset($style) }}" rel="stylesheet"/>
+        @endforeach
 
     </head>
 
@@ -98,9 +100,9 @@
         @stack('scripts_bottom')
 
         <!-- jQuery, bootrsap, popper -->
-        <script src="http://127.0.0.1:5173/resources/assets/admin/plugins/global/plugins.bundle.js"></script>
-        <script src="http://127.0.0.1:5173/resources/assets/admin/js/scripts.bundle.js"></script>
-        <script src="http://127.0.0.1:5173/resources/assets/admin/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script src="{{ asset('/assets/admin/plugins/global/plugins.bundle.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/scripts.bundle.js') }}"></script>
+        <script src="{{ asset('/assets/admin/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 
         <!-- Global Scripts -->
         @vite([
@@ -109,17 +111,19 @@
         ])
 
         <!-- Page Scripts -->
-        @vite([
-            'resources/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.js',
+        @foreach([
+            '/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.js',
             //'resources/assets/admin/plugins/custom/datatables/datatables.bundle.js',
-            'resources/assets/admin/js/widgets.bundle.js',
-            'resources/assets/admin/js/custom/widgets.js',
+            '/assets/admin/js/widgets.bundle.js',
+            '/assets/admin/js/custom/widgets.js',
             //'resources/assets/admin/js/custom/apps/chat/chat.js',
             //'resources/assets/admin/js/custom/utilities/modals/upgrade-plan.js',
             //'resources/assets/admin/js/custom/utilities/modals/create-app.js',
             //'resources/assets/admin/js/custom/utilities/modals/new-target.js',
             //'resources/assets/admin/js/custom/utilities/modals/users-search.js',    
-        ])
+        ] as $script)
+            <script src="{{ asset($script) }}"></script>
+        @endforeach
 
     </body>
 
