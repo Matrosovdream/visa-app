@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('order_payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->on('users')->nullable();
             $table->foreignId('order_id')->on('orders');
             $table->string('payment_gateway_id');
             $table->string('transaction_id');
+            $table->string('status');
+            $table->string('currency');
+            $table->decimal('amount', 10, 2);
+            $table->text('payment_response');
             $table->timestamps();
         });
     }

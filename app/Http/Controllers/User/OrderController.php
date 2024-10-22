@@ -29,7 +29,7 @@ class OrderController extends Controller
             'order' => $order
         );
 
-        return view('user.order.show', $data);
+        return view('web.order.show', $data);
     }
     
     public function createApply(Request $request)
@@ -106,7 +106,7 @@ class OrderController extends Controller
         ]);
 
         // Redirect to the order page
-        return redirect()->route('user.order.show', $order->hash);
+        return redirect()->route('web.order.show', $order->hash);
 
     }
 
@@ -122,7 +122,7 @@ class OrderController extends Controller
         $order->save();
 
         // Redirect to the order page
-        return redirect()->route('user.order.show', $order->hash);
+        return redirect()->route('web.order.show', $order->hash);
     }
 
 }
