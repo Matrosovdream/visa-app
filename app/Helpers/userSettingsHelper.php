@@ -8,11 +8,11 @@ class userSettingsHelper {
         $menu = array(
             array(
                 'title' => 'Main',
-                'url' => route('user.index'),
+                'url' => route('web.index'),
             ),
             array(
                 'title' => 'Articles',
-                'url' => route('user.articles.index'),
+                'url' => route('web.articles.index'),
             )
             
             /*
@@ -23,15 +23,15 @@ class userSettingsHelper {
                 'childs' => array(
                     array(
                         'title' => 'Articles',
-                        'url' => route('admin.articles.index'),
+                        'url' => route('dashboard.articles.index'),
                     ),
                     array(
                         'title' => 'Countries',
-                        'url' => route('admin.countries.index'),
+                        'url' => route('dashboard.countries.index'),
                     ),
                     array(
                         'title' => 'Travel Directions',
-                        'url' => route('admin.directions.index'),
+                        'url' => route('dashboard.directions.index'),
                     ),
                 ),
             ),

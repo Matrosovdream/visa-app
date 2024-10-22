@@ -6,6 +6,7 @@ use App\Helpers\userSettingsHelper;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Services\LocationService;
+use App\Models\Article;
 
 class IndexController extends Controller {
 
@@ -16,10 +17,11 @@ class IndexController extends Controller {
             'title' => 'Homepage',
             'menuTop' => userSettingsHelper::getTopMenu(),
             'countries' => Country::all(),
+            'articles' => Article::paginate(3),
             'location' => LocationService::getLocation( $request->ip() )
         );
 
-        return view('user.index', $data);
+        return view('web.index', $data);
     }
 
     public function directionApply( Request $request )
@@ -29,7 +31,7 @@ class IndexController extends Controller {
         $country_from = Country::find($request->country_from);
         $country_to = Country::find($request->country_to);
 
-        return redirect()->route('user.country.index', 
+        return redirect()->route('web.country.index', 
             [
             'country' => $country_to->slug, 
             'nationality' => $country_from->slug
