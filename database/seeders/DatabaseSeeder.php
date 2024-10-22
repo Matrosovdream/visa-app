@@ -38,6 +38,9 @@ class DatabaseSeeder extends Seeder
 
             // Content
             ArticleSeeder::class,
+
+            // Settings
+            SiteSettingsSeeder::class,
             
         ]);
 

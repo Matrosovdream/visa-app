@@ -13,15 +13,15 @@ class adminSettingsHelper {
                 'childs' => array(
                     array(
                         'title' => 'Products',
-                        'url' => route('admin.products.index'),
+                        'url' => route('dashboard.products.index'),
                     ),
                     array(
                         'title' => 'Orders',
-                        'url' => route('admin.orders.index'),
+                        'url' => route('dashboard.orders.index'),
                     ),
                     array(
                         'title' => 'Payment gateways',
-                        'url' => route('admin.gateways.index'),
+                        'url' => route('dashboard.gateways.index'),
                     ),
                 ),
             ),
@@ -32,29 +32,30 @@ class adminSettingsHelper {
                 'childs' => array(
                     array(
                         'title' => 'Articles',
-                        'url' => route('admin.articles.index'),
+                        'url' => route('dashboard.articles.index'),
                     ),
                     array(
                         'title' => 'Countries',
-                        'url' => route('admin.countries.index'),
+                        'url' => route('dashboard.countries.index'),
                     ),
                     array(
                         'title' => 'Travel Directions',
-                        'url' => route('admin.directions.index'),
+                        'url' => route('dashboard.directions.index'),
                     ),
                 ),
             ),
             array(
                 'title' => 'Settings',
-                'url' => '',
+                'url' => route('dashboard.settings.index'),
                 'icon' => 'ki-element-11',
                 'childs' => array(
                     
                     array(
-                        'title' => 'Users',
-                        'url' => route('admin.users.index'),
+                        'title' => 'General',
+                        'url' => route('dashboard.settings.index'),
                     ),
                 ),
+
             ),
         );
 

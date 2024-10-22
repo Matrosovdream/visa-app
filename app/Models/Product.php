@@ -49,13 +49,14 @@ class Product extends Model
     public function updateMeta( $slug, $value )
     {
         $meta = $this->meta->where('key', $slug)->first();
+
         if ($meta) {
             $meta->value = $value;
             $meta->save();
         } else {
             $this->meta()->create([
-            'key' => $slug,
-            'value' => $value
+                'key' => $slug,
+                'value' => $value
             ]);
         }
     }

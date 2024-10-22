@@ -26,7 +26,7 @@ class CountryController extends Controller
         $data = $this->getDirectionData( $request );
 
         if ( $data['country'] ) {
-            return view('user.country.index', $data);
+            return view('web.country.index', $data);
         } 
 
     }
@@ -40,7 +40,7 @@ class CountryController extends Controller
         $data['totalPrice'] = $data['product']->offers->first()->price + $data['product']->extras->sum('price');
 
         if ( $data['country'] ) {
-            return view('user.country.apply', $data);
+            return view('web.country.apply', $data);
         }
 
     }

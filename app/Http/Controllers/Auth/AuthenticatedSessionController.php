@@ -28,6 +28,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        return redirect()->intended(route('dashboard', absolute: false));
+
+        /*
         if( Auth::user()->isAdmin() ) {
             return redirect()->intended(route('admin.home', absolute: false));
         } elseif( Auth::user()->isManager() ) {
@@ -35,6 +38,7 @@ class AuthenticatedSessionController extends Controller
         } else {
             return redirect()->intended(route('dashboard', absolute: false));
         }
+        */
 
     }
 
