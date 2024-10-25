@@ -8,18 +8,13 @@ use App\Models\TravelDirection;
 use Illuminate\Http\Request;
 use App\Models\Country;
 use App\Helpers\userSettingsHelper;
-use App\Services\LocationService;
+use App\Services\CurrencyConverterService;
+
+
 
 class CountryController extends Controller
 {
 
-    protected $locationService;
-
-    public function __construct(LocationService $locationService)
-    {
-        $this->locationService = $locationService;
-    }
-    
     public function index(Request $request)
     {
 
@@ -38,6 +33,26 @@ class CountryController extends Controller
 
         $data['product'] = Product::find($request->product_id);
         $data['totalPrice'] = $data['product']->offers->first()->price + $data['product']->extras->sum('price');
+        $data['currency'] = isset($_COOKIE['currency']) ? $_COOKIE['currency'] : 'USD';
+        $data['extrasPrice'] = $data['product']->extras->sum('price');
+
+        // Convert currency
+        $data['totalPrice'] = CurrencyConverterService::convert('USD', $data['currency'], $data['totalPrice']);
+        $data['extrasPrice'] = CurrencyConverterService::convert('USD', $data['currency'], $data['extrasPrice']);
+
+        // Convert offers price
+        $offers = $data['product']->offers;
+        foreach ($offers as $offer) {
+            $offer->price = CurrencyConverterService::convert('USD', $data['currency'], $offer->price);
+        }
+        $data['product']->offers = $offers;
+
+        // Convert extras price
+        $extras = $data['product']->extras;
+        foreach ($extras as $extra) {
+            $extra->price = CurrencyConverterService::convert('USD', $data['currency'], $extra->price);
+        }
+        $data['product']->extras = $extras;
 
         if ( $data['country'] ) {
             return view('web.country.apply', $data);

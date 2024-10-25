@@ -101,31 +101,28 @@
         @stack('styles_bottom')
         @stack('scripts_bottom')
 
-        <!-- jQuery, bootrsap, popper -->
+        <!--begin::Javascript-->
+        <script>var hostUrl = "{{ asset('/assets/admin/') }}";</script>
+        <!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{{ asset('/assets/admin/plugins/global/plugins.bundle.js') }}"></script>
         <script src="{{ asset('/assets/admin/js/scripts.bundle.js') }}"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Vendors Javascript(used for this page only)-->
         <script src="{{ asset('/assets/admin/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+        <!--end::Vendors Javascript-->
+        <!--begin::Custom Javascript(used for this page only)-->
+        <script src="{{ asset('/assets/admin/js/custom/apps/ecommerce/sales/listing.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/widgets.bundle.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/custom/widgets.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/custom/apps/chat/chat.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/custom/utilities/modals/create-app.js') }}"></script>
+        <script src="{{ asset('/assets/admin/js/custom/utilities/modals/users-search.js') }}"></script>
+        <!--end::Custom Javascript-->
+        <!--end::Javascript-->
 
-        <!-- Global Scripts -->
-        @vite([
-            //'resources/assets/admin/plugins/global/plugins.bundle.js',
-            //'resources/assets/admin/js/scripts.bundle.js',
-        ])
+        @yield('footer-scripts')
 
-        <!-- Page Scripts -->
-        @foreach([
-            '/assets/admin/plugins/custom/fullcalendar/fullcalendar.bundle.js',
-            //'resources/assets/admin/plugins/custom/datatables/datatables.bundle.js',
-            '/assets/admin/js/widgets.bundle.js',
-            '/assets/admin/js/custom/widgets.js',
-            //'resources/assets/admin/js/custom/apps/chat/chat.js',
-            //'resources/assets/admin/js/custom/utilities/modals/upgrade-plan.js',
-            //'resources/assets/admin/js/custom/utilities/modals/create-app.js',
-            //'resources/assets/admin/js/custom/utilities/modals/new-target.js',
-            //'resources/assets/admin/js/custom/utilities/modals/users-search.js',    
-        ] as $script)
-            <script src="{{ asset($script) }}"></script>
-        @endforeach
 
     </body>
 

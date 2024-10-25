@@ -7,13 +7,21 @@ use App\Helpers\adminSettingsHelper;
 
 class DashboardCountriesController extends Controller
 {
+
+    public $perPage = 30;
     
     public function index()
     {
 
+        if( request('s') ) {
+            $items = Country::search(request('s'))->paginate($this->perPage);
+        } else {
+            $items = Country::paginate($this->perPage);
+        }
+
         $data = [
             'title' => 'Countries',
-            'countries' => Country::paginate(30),
+            'countries' => $items,
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 

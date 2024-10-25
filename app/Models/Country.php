@@ -14,4 +14,16 @@ class Country extends Model
         'code',
     ];
 
+    // Search
+    public function scopeSearch($query, $s)
+    {
+        // Search in name and description, content
+        if ( $s != '' ) {
+            $query->where('name', 'like', '%'.$s.'%')
+                ->orWhere('code', 'like', '%'.$s.'%');
+        }
+
+        return $query;
+    }
+
 }

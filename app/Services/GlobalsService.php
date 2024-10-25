@@ -69,4 +69,12 @@ class GlobalsService {
         return Currency::where('code', $code)->first();
     }
 
+    public function setCurrency($code) {
+        setcookie('currency', $code, time() + 60 * 60 * 24 * 30, '/');
+    }
+
+    public function setLanguage($code) {
+        setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/');
+    }
+
 }
