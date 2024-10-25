@@ -10,6 +10,8 @@ use App\Http\Controllers\Dashboard\DashboardOrdersController;
 use App\Http\Controllers\Dashboard\DashboardProductsController;
 use App\Http\Controllers\Dashboard\DashboardSettingsController;
 use App\Http\Controllers\Dashboard\DashboardGatewaysController;
+use App\Http\Controllers\Dashboard\DashboardMyOrdersController;
+use App\Http\Controllers\Dashboard\DashboardProfileController;
 
 
 
@@ -18,6 +20,7 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
     // Home dashboard page
     Route::get('/', [DashboardHomeController::class, 'index'])->name('dashboard.home');
 
+    // Admin routes
     Route::middleware('isAdmin')->group(function () {
 
         // User
@@ -65,6 +68,23 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
         // Settings
         Route::get('settings', [DashboardSettingsController::class, 'index'])->name('dashboard.settings.index');
         Route::post('settings', [DashboardSettingsController::class, 'store'])->name('dashboard.settings.store');
+
+    });
+
+    // User routes
+    Route::middleware('isUser')->group(function () {
+
+        // dashboard.profile.destroy, dashboard.password.update, dashboard.profile.update
+
+        // User
+        Route::get('profile', [DashboardProfileController::class, 'profile'])->name('dashboard.profile');
+        Route::post('profile', [DashboardProfileController::class, 'updateProfile'])->name('dashboard.profile.update');
+        Route::post('profile/password', [DashboardProfileController::class, 'updatePassword'])->name('dashboard.password.update');
+        Route::post('profile/destroy', [DashboardProfileController::class, 'destroy'])->name('dashboard.profile.destroy');
+
+        // Orders
+        Route::get('my-orders', [DashboardMyOrdersController::class, 'index'])->name('dashboard.my-orders');
+        Route::get('my-orders/{order_id}', [DashboardMyOrdersController::class, 'show'])->name('dashboard.my-orders.show');
 
     });
 

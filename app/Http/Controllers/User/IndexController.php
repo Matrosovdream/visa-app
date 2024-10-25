@@ -7,6 +7,7 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Services\LocationService;
 use App\Models\Article;
+use App;
 
 class IndexController extends Controller {
 

@@ -25,4 +25,16 @@ class Article extends Model
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
 
+    public function scopeSearch($query, $s)
+    {
+        // Search in name and description, content
+        if ( $s != '' ) {
+            $query->where('title', 'like', '%'.$s.'%')
+                ->orWhere('short_description', 'like', '%'.$s.'%')
+                ->orWhere('content', 'like', '%'.$s.'%');
+        }
+
+        return $query;
+    }
+
 }

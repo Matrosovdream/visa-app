@@ -94,6 +94,16 @@ class Order extends Model
         return $this->total_price;
     }
 
+    public function getCurrency()
+    {
+        return $this->meta->where('key', 'currency')->first()->value;
+    }
+
+    public function getMeta($key)
+    {
+        return $this->meta->where('key', $key)->first()->value;
+    }
+
     public function countryFrom()
     {
         $country_id = $this->meta->where('key', 'country_from_id')->first()->value;

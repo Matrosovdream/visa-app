@@ -4,31 +4,35 @@
 
     <div class="card card-flush">
 
-        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-            <div class="card-title">
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
-                    <input type="text" data-kt-ecommerce-product-filter="search"
-                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Product">
+        <form action="{{ route('dashboard.products.index') }}" method="GET">
+
+            <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                <div class="card-title">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" name="s" value="{{ request()->s }}"
+                            class="form-control form-control-solid w-250px ps-12" placeholder="Search Product">
+                    </div>
+                </div>
+
+                <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                    <div class="w-100 mw-150px">
+                        <select class="form-select form-select-solid" data-control="select2" data-hide-search="true"
+                            data-placeholder="Status" name="status">
+                            <option></option>
+                            <option value="all">All</option>
+                            <option value="published">Published</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">Add Product</a>
                 </div>
             </div>
 
-            <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                <div class="w-100 mw-150px">
-                    <select class="form-select form-select-solid" data-control="select2" data-hide-search="true"
-                        data-placeholder="Status" data-kt-ecommerce-product-filter="status">
-                        <option></option>
-                        <option value="all">All</option>
-                        <option value="published">Published</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                </div>
-                <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">Add Product</a>
-            </div>
-        </div>
+        </form>
 
         <div class="card-body pt-0">
             <div class="table-responsive">

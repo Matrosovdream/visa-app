@@ -9,15 +9,23 @@ use Str;
 
 class DashboardProductsController extends Controller
 {
+
+    public $perPage = 10;
     
     public function index()
     {
 
-        $perPage = 10;
+        $perPage = $this->perPage;
+
+        if( request('s') ) {
+            $products = Product::search(request('s'))->paginate($perPage);
+        } else {
+            $products = Product::paginate($perPage);
+        }
 
         $data = [
             'title' => 'Products',
-            'products' => Product::paginate(10),
+            'products' => $products,
             'perPage' => $perPage,
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
@@ -74,12 +82,12 @@ class DashboardProductsController extends Controller
         }
 
         // Offers sync
-        foreach( request('offers') as $offer ) {
+        /*foreach( request('offers') as $offer ) {
             $product->offers()->create([
                 'name' => $offer['name'],
                 'price' => $offer['price'],
             ]);
-        }
+        }*/
 
         return redirect()->route('dashboard.products.show', $id);
     }

@@ -40,7 +40,7 @@
                 <input type="hidden" name="country_from_code" value="{{ $countryFrom->code }}">
 
                 <input type="hidden" name="product_price" value="{{ $totalPrice }}">
-                <input type="hidden" name="product_extras_price" value="{{ $product->extras->sum('price') }}">
+                <input type="hidden" name="product_extras_price" value="{{ $extrasPrice }}">
 
                 <input type="hidden" name="currency" value="{{ $currency }}">
                 <input type="hidden" name="quantity" value="1">
@@ -234,9 +234,7 @@
 <br/>
 <br/>
 
-<!-- Bootstrap JS and jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
     $(document).ready(function () {
@@ -252,15 +250,19 @@
         }
 
         $('#next-1').click(function () {
-            $('#step-1').removeClass('form-step-active');
-            $('#step-2').addClass('form-step-active');
-            updateStepIndicator(2);
+            if( validate_step1() ) {
+                $('#step-1').removeClass('form-step-active');
+                $('#step-2').addClass('form-step-active');
+                updateStepIndicator(2);
+            }
         });
 
         $('#next-2').click(function () {
-            $('#step-2').removeClass('form-step-active');
-            $('#step-3').addClass('form-step-active');
-            updateStepIndicator(3);
+            if( validate_step2() ) {
+                $('#step-2').removeClass('form-step-active');
+                $('#step-3').addClass('form-step-active');
+                updateStepIndicator(3);
+            }
         });
 
         $('#prev-2').click(function () {
@@ -303,11 +305,123 @@
         });
 
     });
+
+    function validate_step1() {
+        
+        // Manual validation
+        var arrivalDate = $('#arrivalDate').val();
+        var fullName = $('#full_name').val();
+        var phone = $('#phone').val();
+        var email = $('#email').val();
+
+        var isValid = true;
+
+        $('label.error').remove();
+
+        // Check all fields and if not valid, show error label.error after the fields
+        if (arrivalDate == '') {
+            $('#arrivalDate').after('<label class="error">This field is required</label>');
+            isValid = false;
+        } 
+
+        if (fullName == '') {
+            $('#full_name').after('<label class="error">This field is required</label>');
+            isValid = false;
+        } 
+
+        if (phone == '') {
+            $('#phone').after('<label class="error">This field is required</label>');
+            isValid = false;
+        }
+
+        if (email == '' || !check_email(email)) {
+            $('#email').after('<label class="error">Check email value</label>');
+            isValid = false;
+        }
+
+        return isValid;
+
+    }
+
+    function validate_step2() {
+
+        // Check all traveller fields
+        var isValid = true;
+
+        $('label.error').remove();
+
+        // Check all fields and if not valid, show error label.error after the fields
+        $('input[name^="travelers[name]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        $('input[name^="travelers[lastname]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        $('input[name^="travelers[birthday]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        $('input[name^="travelers[passport]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        /*
+        $('select[name^="travelers[passport-expiration-day]"]').each(function() {
+            console.log( $(this).find('option:selected').attr('value') );
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        $('select[name^="travelers[passport-expiration-month]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+
+        $('select[name^="travelers[passport-expiration-year]"]').each(function() {
+            if ($(this).val() == '') {
+                $(this).after('<label class="error">This field is required</label>');
+                isValid = false;
+            }
+        });
+        */
+
+        return isValid;
+
+    }
+
+    function check_email(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
 </script>
 
 
 
 <style>
+
+    label.error {
+        color: red;
+        font-size: 14px;
+    }
 
     .pay-button {
         display: none;

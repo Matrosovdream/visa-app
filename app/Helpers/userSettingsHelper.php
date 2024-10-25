@@ -42,6 +42,66 @@ class userSettingsHelper {
 
     }
 
+    public static function getSidebarMenu() {
+
+        $menu = array(
+            array(
+                'title' => 'Store',
+                'url' => '',
+                'icon' => 'ki-basket',
+                'childs' => array(
+                    array(
+                        'title' => 'Products',
+                        'url' => route('dashboard.products.index'),
+                    ),
+                    array(
+                        'title' => 'Orders',
+                        'url' => route('dashboard.orders.index'),
+                    ),
+                    array(
+                        'title' => 'Payment gateways',
+                        'url' => route('dashboard.gateways.index'),
+                    ),
+                ),
+            ),
+            array(
+                'title' => 'Content',
+                'url' => '',
+                'icon' => 'ki-file',
+                'childs' => array(
+                    array(
+                        'title' => 'Articles',
+                        'url' => route('dashboard.articles.index'),
+                    ),
+                    array(
+                        'title' => 'Countries',
+                        'url' => route('dashboard.countries.index'),
+                    ),
+                    array(
+                        'title' => 'Travel Directions',
+                        'url' => route('dashboard.directions.index'),
+                    ),
+                ),
+            ),
+            array(
+                'title' => 'Settings',
+                'url' => route('dashboard.settings.index'),
+                'icon' => 'ki-element-11',
+                'childs' => array(
+                    
+                    array(
+                        'title' => 'General',
+                        'url' => route('dashboard.settings.index'),
+                    ),
+                ),
+
+            ),
+        );
+
+        return self::setActiveMenus($menu);
+
+    }
+
     public static function setActiveMenus( $menu ) {
 
         // Lets mark active menus using routes data

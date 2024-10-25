@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('web.layouts.app')
 
 @section('content')
 
@@ -20,16 +20,13 @@
                             <tr>
                                 <td>{{ $product->product->name }}</td>
                                 <td class="text-center">{{ $product->quantity }}</td>
-                                <td>{{ $product->price }}$</td>
-                                <td>{{ $product->total }}$</td>
+                                <td>{{ $product->price }} {{ $order->getCurrency() }}</td>
+                                <td>{{ $product->total }} {{ $order->getCurrency() }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                <h3>Total: {{ $order->getTotal() }}$</h3>
-
-                <!-- Pay with Authorize.net -->
-                
+                <h3>Total: {{ $order->getTotal() }} {{ $order->getCurrency() }}</h3>
 
             </div>
         </div>
@@ -38,7 +35,7 @@
 
             <h1 class="mb-20">Payment</h1>
 
-            @include('user.order.payment')
+            @include('web.order.payment')
 
         </div>
 
