@@ -46,6 +46,19 @@ class Product extends Model
         return $this->meta->where('key', $slug)->first()->value;
     }
 
+    // Search by fields
+    public function scopeSearch($query, $s)
+    {
+        // Search in name and description, content
+        if ( $s != '' ) {
+            $query->where('name', 'like', '%'.$s.'%')
+                ->orWhere('description', 'like', '%'.$s.'%')
+                ->orWhere('content', 'like', '%'.$s.'%');
+        }
+
+        return $query;
+    }
+
     public function updateMeta( $slug, $value )
     {
         $meta = $this->meta->where('key', $slug)->first();

@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Country;
 use App\Helpers\userSettingsHelper;
 use App\Models\ProductOffers;
+use App\Services\CurrencyConverterService;
 
 
 class OrderController extends Controller
@@ -35,10 +36,13 @@ class OrderController extends Controller
     public function createApply(Request $request)
     {
 
+        $currency = request('currency');
+
         // Calculate product price
         $product = Product::find(request('product_id'));
         $offer = ProductOffers::find(request('offer_id'));
         $price = $offer->price + $product->extras->sum('price');
+        $price = CurrencyConverterService::convert('USD', $currency, $price);
 
         // Calculate total price
         $totalPrice = $price * request('quantity');
@@ -84,7 +88,7 @@ class OrderController extends Controller
             'order_id' => $order->id,
             'session_id' => session()->getId(),
             'status' => 'active',
-            'currency' => request('currency'),
+            'currency' => $currency,
         ]);
 
         // Add products to the cart

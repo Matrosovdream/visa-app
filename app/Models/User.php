@@ -39,6 +39,12 @@ class User extends Authenticatable
         return $this->roles()->where('slug', 'manager')->exists();
     }
 
+    // Check if user has role user
+    public function isUser()
+    {
+        return $this->roles()->where('slug', 'user')->exists();
+    }
+
     // Get the user role
     public function getRole()
     {
@@ -49,6 +55,15 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function assignRole($role_slug)
+    {
+        $role = Role::where('slug', $role_slug)->first();
+        if (!$role) {
+            return false;
+        }
+        return $this->roles()->attach($role);
     }
 
     /**

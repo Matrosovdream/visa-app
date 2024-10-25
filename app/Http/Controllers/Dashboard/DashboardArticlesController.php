@@ -7,13 +7,21 @@ use App\Helpers\adminSettingsHelper;
 
 class DashboardArticlesController extends Controller
 {
+
+    public $perPage = 10;
     
     public function index()
     {
 
+        if( request('s') ) {
+            $items = Article::search(request('s'))->paginate($this->perPage);
+        } else {
+            $items = Article::paginate($this->perPage);
+        }
+
         $data = [
             'title' => 'Articles',
-            'articles' => Article::paginate(20),
+            'articles' => $items,
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 

@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\GlobalsService;
 use App\Models\Language;
 use App\Models\Currency;
+use App;
+use App\Services\CurrencyService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(GlobalsService $globalsService): void
     {
+
+        // if GET parameter is set, set the language
+        if (isset($_GET['setlang'])) {
+            $globalsService->setLanguage($_GET['setlang']);
+        }
+
+        // if GET parameter is set, set the currency
+        if (isset($_GET['setcurrency'])) {
+            $globalsService->setCurrency($_GET['setcurrency']);
+        }
+
+        // set the locale
+        if( $globalsService->getActiveLanguage()->code ) {
+            App::setLocale( $globalsService->getActiveLanguage()->code );
+        }
+
         //\View::share('geoData', $globalsService->getGlobals()['geoData']);
         \View::share('languages', $globalsService->getLanguages());
         \View::share('currencies', $globalsService->getCurrencies());
@@ -30,25 +48,6 @@ class AppServiceProvider extends ServiceProvider
         \View::share('activeCurrency', $globalsService->getActiveCurrency());
         \View::share('siteSettings', $globalsService->getGlobals()['siteSettings']);
 
-        // if GET parameter is set, set the language
-        if (isset($_GET['setlang'])) {
-            $language = Language::where('code', $_GET['setlang'])->first();
-            if ($language) {
-                setcookie('language', $language->code, time() + 60 * 60 * 24 * 30, '/');
-                //return redirect()->back();
-            }
-        }
-
-        // if GET parameter is set, set the currency
-        if (isset($_GET['setcurrency'])) {
-            $currency = Currency::where('code', $_GET['setcurrency'])->first();
-            if ($currency) {
-                setcookie('currency', $currency->code, time() + 60 * 60 * 24 * 30, '/');
-                //return redirect()->back();
-            }
-        }
-
-
-
+        
     }
 }
