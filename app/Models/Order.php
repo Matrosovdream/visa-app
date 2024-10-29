@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-
+use App\Helpers\orderHelper;
+use App\Models\Traveller;
 
 class Order extends Model
 {
@@ -37,9 +38,22 @@ class Order extends Model
         return $this->hasMany(OrderMeta::class);
     }
 
+    public function travellers()
+    {
+        return $this->belongsToMany(Traveller::class, 'traveller_orders');
+    }
+
     public function cartProducts()
     {
         return $this->hasMany(CartProduct::class);
+    }
+
+    public function getProduct() {
+        return $this->cartProducts()->first()->product;
+    }
+
+    public function getOffer() {
+        return $this->cartProducts()->first()->offer;
     }
 
     public function paymentMethod()
@@ -50,22 +64,6 @@ class Order extends Model
     public function payments()
     {
         return $this->hasMany(OrderPayment::class);
-    }
-
-    public function customerFields()
-    {
-        
-        $metafields = $this->getListCustomerFields();
-
-        foreach( $metafields as $field ) {
-            $meta = $this->meta->where('key', $field)->first();
-            if( $meta ) {
-                $fields[$field] = $meta->value;
-            } else {
-                $fields[$field] = '';
-            }
-        }
-        return $fields;
     }
 
     public function status()
@@ -89,6 +87,22 @@ class Order extends Model
         });
     }
 
+    public function customerFields()
+    {
+        
+        $metafields = $this->getListCustomerFields();
+
+        foreach( $metafields as $field ) {
+            $meta = $this->meta->where('key', $field)->first();
+            if( $meta ) {
+                $fields[$field] = $meta->value;
+            } else {
+                $fields[$field] = '';
+            }
+        }
+        return $fields;
+    }
+
     public function getTotal()
     {
         return $this->total_price;
@@ -104,6 +118,24 @@ class Order extends Model
         return $this->meta->where('key', $key)->first()->value;
     }
 
+    public function setMeta($key, $value)
+    {
+        $meta = $this->meta->where('key', $key)->first();
+        if( $meta ) {
+            $meta->value = $value;
+            $meta->save();
+        } else {
+            $this->meta()->create([
+                'key' => $key,
+                'value' => $value,
+            ]);
+        }
+    }
+
+    public function getProgress() {
+        return orderHelper::getProgress($this);
+    }
+
     public function countryFrom()
     {
         $country_id = $this->meta->where('key', 'country_from_id')->first()->value;
@@ -116,20 +148,9 @@ class Order extends Model
         return Country::find($country_id);
     }
 
-    public function getTravellers() {
-
-        $travellers = $this->meta->where('key', 'travelers')->first()->value;
-        $data =  json_decode($travellers, true);
-
-        $groupedData = [];
-        foreach ($data as $key => $values) {
-            foreach ($values as $index => $value) {
-                $groupedData[$index][$key] = $value;
-            }
-        }
-
-        return $groupedData;
-
+    public function getListCustomerFields()
+    {
+        return ['full_name', 'email', 'phone', 'time_arrival'];
     }
 
     public static function getByHash($hash)
@@ -137,9 +158,16 @@ class Order extends Model
         return static::where('hash', $hash)->first();
     }
 
-    public function getListCustomerFields()
+    public static function getOrdersByUser($user_id)
     {
-        return ['full_name', 'email', 'phone', 'time_arrival'];
+        return static::where('user_id', $user_id);
     }
+
+    public static function checkUserAccess($user_id, $order_id)
+    {
+        return static::where('user_id', $user_id)->where('id', $order_id)->exists();
+    }
+
+    
 
 }

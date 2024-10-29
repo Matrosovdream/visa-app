@@ -12,29 +12,14 @@ class ArticleController extends Controller
     
     public function index( Request $request )
     {
-
-        $data = array(
-            'title' => 'Articles',
-            'menuTop' => userSettingsHelper::getTopMenu(),
-            'countries' => Country::all(),
-            'articles' => Article::paginate(10),
-        );
-
+        $data = array('title' => 'Articles', 'articles' => Article::paginate(10));
         return view('web.articles.index', $data);
     }
 
     public function show($article_slug)
     {
-
         $article = Article::where('slug', $article_slug)->first();
-
-        $data = array(
-            'title' => 'Homepage',
-            'menuTop' => userSettingsHelper::getTopMenu(),
-            'countries' => Country::all(),
-            'article' => $article,
-        );
-
+        $data = array('title' => 'Homepage','article' => $article);
         return view('web.articles.show', $data);
     }
 

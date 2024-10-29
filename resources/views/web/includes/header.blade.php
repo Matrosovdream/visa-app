@@ -9,11 +9,11 @@
                 </div>
                 <ul class="header__top-info ul_li">
                     <li><img src="{{ asset('user/assets/img/icon/time.svg') }}" alt="">
-                    {{ $siteSettings['work_time'] }}
-                </li>
-                <li><img src="{{ asset('user/assets/img/icon/location.svg') }}" alt="">
-                    {{ $siteSettings['address'] }}
-                </li>
+                        {{ $siteSettings['work_time'] }}
+                    </li>
+                    <li><img src="{{ asset('user/assets/img/icon/location.svg') }}" alt="">
+                        {{ $siteSettings['address'] }}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -31,13 +31,13 @@
                     <nav class="main-menu collapse navbar-collapse">
                         <ul>
 
-                            @foreach( $menuTop as $menu )
-                                <li class="@if( isset($menu['childs']) ) menu-item-has-children @endif">
+                            @foreach($menuTop as $menu)
+                                <li class="@if(isset($menu['childs'])) menu-item-has-children @endif">
                                     <a href="{{ $menu['url'] }}"><span>{{ $menu['title'] }}</span></a>
 
-                                    @if( isset($menu['childs']) )
+                                    @if(isset($menu['childs']))
                                         <ul class="submenu">
-                                            @foreach( $menu['childs'] as $subMenu )
+                                            @foreach($menu['childs'] as $subMenu)
                                                 <li class="menu-item">
                                                     <a href="{{ $subMenu->url }}"><span>{{ $subMenu->title }}</span></a>
                                                 </li>
@@ -45,31 +45,8 @@
                                         </ul>
                                     @endif
 
-                                </li>   
+                                </li>
                             @endforeach
-
-                            @if( Auth::check() )
-                                <li class="menu-item menu-item-has-children">
-                                    <a href="{{ route('dashboard.home') }}">
-                                        <span>Dashboard</span>
-                                    </a>
-                                    <ul class="submenu">
-                                        <li class="menu-item">
-                                            <!-- Log out -->
-                                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                <span>Logout</span>
-                                            </a>
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                @csrf
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </li>   
-                            @else
-                                <li class="menu-item">
-                                    <a href="{{ route('login') }}"><span>Login</span></a>
-                                </li>   
-                            @endif
 
                         </ul>
                     </nav>
@@ -80,12 +57,73 @@
                     </div>
                 </div>
                 <ul class="header__action ul_li">
+
+                    @if(Auth::check())
+
+                        <li style="">
+                            <div class="header__language">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="lang-btn">
+                                            <div class="flag">
+                                                <img src="{{ asset('user/assets/img/icon/c_user.svg') }}" alt="">
+                                            </div>
+                                            {{ __('Dashboard') }}
+                                            <div class="arrow_down">
+                                                <img src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt="">
+                                            </div>
+                                        </a>
+                                        <ul class="lang_sub_list">
+                                            <li>
+                                                <a href="{{ route('web.account.index') }}">
+                                                    {{ __('Account') }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('web.account.orders') }}">
+                                                    {{ __('Orders') }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    <span>{{ __('Log out') }}</span>
+                                                </a>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @else
+                        <li>
+                            <div class="header__language">
+                                <ul>
+                                    <li>
+                                        <a href="{{ route('login') }}" class="lang-btn">
+                                            <div class="flag">
+                                                <img src="{{ asset('user/assets/img/icon/c_user.svg') }}" alt="">
+                                            </div>
+                                            {{ __('Login') }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+
+                    <!--
                     <li>
                         <a class="header__search header-search-btn" href="javascript:void(0);">
                             <img src="{{ asset('user/assets/img/icon/search.svg') }}" alt="">
                             Search
                         </a>
                     </li>
+-->
                     <li>
                         <div class="header__language">
                             <ul>
@@ -95,10 +133,11 @@
                                             <img src="{{ asset('user/assets/img/icon/us_flag.png') }}" alt="">
                                         </div>
                                         {{ $activeLanguage->name }}
-                                        <div class="arrow_down"><img src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
+                                        <div class="arrow_down"><img
+                                                src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
                                     </a>
                                     <ul class="lang_sub_list">
-                                        @foreach( $languages as $language )
+                                        @foreach($languages as $language)
                                             <li>
                                                 <a href="?setlang={{ $language->code }}">
                                                     {{ $language->name }}
@@ -113,14 +152,15 @@
                     <li>
                         <div class="header__language">
                             <ul>
-                            <li>
+                                <li>
                                     <a href="#!" class="lang-btn">
                                         <span>{{ $activeCurrency->symbol }}</span>
                                         {{ $activeCurrency->name }}
-                                        <div class="arrow_down"><img src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
+                                        <div class="arrow_down"><img
+                                                src="{{ asset('user/assets/img/icon/arrow_down.svg') }}" alt=""></div>
                                     </a>
                                     <ul class="lang_sub_list">
-                                        @foreach( $currencies as $currency )
+                                        @foreach($currencies as $currency)
                                             <li>
                                                 <a href="?setcurrency={{ $currency->code }}">
                                                     <span>{{ $currency->symbol }}</span>

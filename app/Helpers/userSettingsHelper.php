@@ -8,11 +8,11 @@ class userSettingsHelper {
         $menu = array(
             array(
                 'title' => 'Main',
-                'url' => route('web.index'),
+                'url' => '/',
             ),
             array(
                 'title' => 'Articles',
-                'url' => route('web.articles.index'),
+                'url' => '/articles',
             )
             
             /*
