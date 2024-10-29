@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Traveller extends Model
+{
+
+    protected $fillable = [
+        'full_name',
+        'name',
+        'lastname',
+        'birthday',
+        'passport',
+    ];
+
+    public function meta()
+    {
+        return $this->hasMany(TravellerMeta::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'traveller_orders');
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(TravellerDocuments::class);
+    }
+
+    public function getMeta($key)
+    {
+        return $this->meta->where('key', $key)->first()->value;
+    }
+
+}

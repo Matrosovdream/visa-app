@@ -37,13 +37,15 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // set the locale
-        if( $globalsService->getActiveLanguage()->code ) {
-            App::setLocale( $globalsService->getActiveLanguage()->code );
+        if( isset($globalsService->getActiveLanguage()->code) ) {
+            App::setLocale( strtolower($globalsService->getActiveLanguage()->code) );
         }
 
         //\View::share('geoData', $globalsService->getGlobals()['geoData']);
         \View::share('languages', $globalsService->getLanguages());
+        \View::share('menuTop', $globalsService->getMenuTop());
         \View::share('currencies', $globalsService->getCurrencies());
+        \View::share('countries', $globalsService->getCountries());
         \View::share('activeLanguage', $globalsService->getActiveLanguage());
         \View::share('activeCurrency', $globalsService->getActiveCurrency());
         \View::share('siteSettings', $globalsService->getGlobals()['siteSettings']);

@@ -2,11 +2,7 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
-use Omnipay\Omnipay;
-use App\Models\Payment;
-use App\Models\OrderPayment;
-use Exception;
-use App\Mixins\Order\OrderPaymentProcesser;
+use App\Actions\Web\PaymentActions;
  
 class PaymentController extends Controller
 {
@@ -28,20 +24,7 @@ class PaymentController extends Controller
             'cvv' => 'required',
         ]);
 
-        // Prepare payment data
-        $params = [];
-        $params['cart_data'] = [
-            'cc_number' => $request->input('cc_number'),
-            'expiry_month' => $request->input('expiry_month'),
-            'expiry_year' => $request->input('expiry_year'),
-            'cvv' => $request->input('cvv'),
-        ];
-
-        // Init payment
-        $orderPayment = new OrderPaymentProcesser( $request->input('order_id'), $params);
-
-        // Process payment
-        $res = $orderPayment->charge();
+        $res = PaymentActions::processPayment($request);
 
         if( $res['status'] == 'failed' ) {
             return redirect()->back()->with('error', $res['errors']);
