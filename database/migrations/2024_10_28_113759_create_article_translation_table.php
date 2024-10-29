@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
-            $table->id();
+
+        Schema::create('article_translations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('article_id')->on('articles')->onDelete('cascade');
+            $table->string('locale')->index();
             $table->string('title')->nullable();
-            $table->string('slug')->unique();
             $table->text('short_description')->nullable();
             $table->text('content')->nullable();
-            $table->foreignId('author_id')->on('users');
-            $table->string('image')->nullable();
-            $table->boolean('published')->default(false);
-            $table->timestamp('published_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
+         
+            $table->unique(['article_id','locale']);
+            
         });
+
     }
 
     /**
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('article_translations');
     }
 };

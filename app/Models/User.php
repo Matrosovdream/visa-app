@@ -57,7 +57,7 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function assignRole($role_slug)
+    public function setRole($role_slug)
     {
         $role = Role::where('slug', $role_slug)->first();
         if (!$role) {

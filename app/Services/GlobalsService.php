@@ -4,7 +4,9 @@ namespace App\Services;
 use App\Models\Language;
 use App\Models\Currency;
 use App\Services\LocationService;
-use App\Models\SiteSettings;
+use App\Models\Country;
+use App\Services\SiteSettingsService;
+use App\Helpers\userSettingsHelper;
 
 
 class GlobalsService {
@@ -19,6 +21,8 @@ class GlobalsService {
         return [
             //'geoData' => $this->locationService->getLocation(),
             'languages' => $this->getLanguages(),
+            'currencies' => $this->getCurrencies(),
+            'countries' => $this->getCountries(),
             'siteSettings' => $this->getSiteSettings()
         ];
     }
@@ -34,6 +38,10 @@ class GlobalsService {
             $language->active = $language->code == $this->getActiveLanguage()->code;
         }
         return $list;
+    }
+
+    public function getCountries() {
+        return Country::all();
     }
 
     public function getCurrencies() {
@@ -67,6 +75,10 @@ class GlobalsService {
             $code = 'USD';
         }
         return Currency::where('code', $code)->first();
+    }
+
+    public function getMenuTop() {
+        return userSettingsHelper::getTopMenu();
     }
 
     public function setCurrency($code) {
