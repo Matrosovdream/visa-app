@@ -87,6 +87,18 @@ class Order extends Model
         });
     }
 
+    public function isCompletedForm()
+    {
+        // Check travellers
+        $travellers = $this->travellers;
+        foreach( $travellers as $traveller ) {
+            if( !$traveller->isCompletedForm() ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function customerFields()
     {
         

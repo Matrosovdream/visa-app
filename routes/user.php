@@ -40,7 +40,10 @@ Route::group(['as' => '','prefix' =>'/account/order/{order_id}','namespace' => '
 
         // Documents
         Route::get('/applicant/{applicant_id}/documents', [OrderController::class, 'applicantDocuments'])->name('web.account.order.applicant.documents');
-        Route::post('/applicant/{applicant_id}/documents', [OrderController::class, 'applicantDocumentsUpdate'])->name('web.account.order.applicant.documents');
+        Route::post('/applicant/{applicant_id}/documents', [OrderController::class, 'applicantDocumentsUpdate'])->name('web.account.order.applicant.documents.store');
+
+        // Document single
+        Route::delete('/applicant/{applicant_id}/document/{document_id}', [OrderController::class, 'applicantDocumentDelete'])->name('web.account.order.applicant.document.delete');
         
         // Personal
         Route::get('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonal'])->name('web.account.order.applicant.personal');
