@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('traveller_documents', function (Blueprint $table) {
+        Schema::create('product_traveller_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('traveller_id')->on('travellers');
+            $table->string('name');
             $table->string('type');
-            $table->string('filename');
-            $table->string('path');
-            $table->text('description')->nullable();
+            $table->foreignId('category_id')->on('traveller_field_categories');
+            $table->boolean('is_required')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->softDeletes();  
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('traveller_documents');
+        Schema::dropIfExists('product_traveller_fields');
     }
 };

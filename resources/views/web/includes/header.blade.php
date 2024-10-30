@@ -5,7 +5,9 @@
             <div class="header__top ul_li_between">
                 <div class="header__top-cta">
                     <img src="{{ asset('user/assets/img/icon/n_pad.svg') }}" alt="">
-                    <span>Help Desk :</span> {{ $siteSettings['phone'] }}
+                    <span>
+                        {{ __('Help Desk') }}:</span> 
+                        {{ $siteSettings['phone'] }}
                 </div>
                 <ul class="header__top-info ul_li">
                     <li><img src="{{ asset('user/assets/img/icon/time.svg') }}" alt="">
@@ -29,8 +31,7 @@
                 </div>
                 <div class="main-menu__wrap ul_li navbar navbar-expand-lg">
                     <nav class="main-menu collapse navbar-collapse">
-                        <ul>
-
+                        <ul class="menu-top">
                             @foreach($menuTop as $menu)
                                 <li class="@if(isset($menu['childs'])) menu-item-has-children @endif">
                                     <a href="{{ $menu['url'] }}"><span>{{ $menu['title'] }}</span></a>
@@ -262,3 +263,4 @@
         </form>
     </div>
 </div>
+

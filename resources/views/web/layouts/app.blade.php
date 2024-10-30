@@ -15,7 +15,8 @@
         '/css/user/nice-select.css',
         '/css/user/jquery-ui.min.css',
         '/css/user/magnific-popup.css',
-        '/css/user/main.css'
+        '/css/user/main.css',
+        'css/user/extra.css'
     ] as $asset)
         <link rel="stylesheet" href="{{ asset($asset) }}">
     @endforeach    

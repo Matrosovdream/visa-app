@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('traveller_documents', function (Blueprint $table) {
+        Schema::create('product_traveller_fields_link', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('traveller_id')->on('travellers');
-            $table->string('type');
-            $table->string('filename');
-            $table->string('path');
-            $table->text('description')->nullable();
+            $table->foreignId('product_id')->on('products');
+            $table->foreignId('field_id')->on('product_traveller_fields');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('traveller_documents');
+        Schema::dropIfExists('product_traveller_fields');
     }
 };

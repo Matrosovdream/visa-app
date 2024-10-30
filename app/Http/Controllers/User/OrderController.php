@@ -10,6 +10,8 @@ use App\Models\Country;
 use App\Helpers\userSettingsHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Traveller;
+use Illuminate\Support\Facades\Storage;
+use App\Models\TravellerDocuments;
 
 
 class OrderController extends Controller
@@ -56,12 +58,33 @@ class OrderController extends Controller
     public function applicantDocumentsUpdate(Request $request, $order_id, $applicant_id)
     {
 
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('document_type', $request->document_type);
-        $applicant->setMeta('document_number', $request->document_number);
-        $applicant->setMeta('document_date', $request->document_date);
-        $applicant->setMeta('document_expire', $request->document_expire);
+
+        $traveller = Traveller::find($applicant_id);    
+
+        // Store the file in the 'uploads' directory
+        if ($request->hasFile('document')) {
+            $filePath = $request->file('document')->store('uploads/documents', 'public');
+
+            // Optional: Get the file URL if needed
+            $fileUrl = Storage::url($filePath);
+
+            // Save the file path in the database
+            $traveller->documents()->create([
+                'type' => 'general',
+                'filename' => $request->file('document')->getClientOriginalName(),
+                'path' => $filePath,
+                'description' => 'test',
+            ]);
+
+        }
+        
+        return redirect()->route('web.account.order.applicant.documents', [$order_id, $applicant_id]);
+    }
+
+    public function applicantDocumentDelete($order_id, $applicant_id, $document_id)
+    {
+        
+        TravellerDocuments::find($document_id)->delete();
 
         return redirect()->route('web.account.order.applicant.documents', [$order_id, $applicant_id]);
     }

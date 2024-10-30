@@ -1,8 +1,11 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Traveller;
+
 class TravellerHelper
 {
+
     public static function preparePostTraveller($data)
     {
 
@@ -43,6 +46,54 @@ class TravellerHelper
         return [
             'traveller' => $travellers_fields,
             'meta' => $meta_fields,
+        ];
+
+    }
+
+    public static function isCompletedForm( $traveller )
+    {
+
+        $fields = self::getRequiredFields( $traveller->id );
+
+        // Check main fields
+        foreach ($fields['main'] as $field) {
+            if (empty($traveller->$field)) {
+                return false;
+            }
+        }
+
+        // Check meta fields
+        foreach ($fields['meta'] as $field) {
+            if (empty($traveller->getMeta($field))) {
+                return false;
+            }
+        }
+
+        return true;
+        
+    }
+
+    public static function getRequiredFields( $traveller_id ) {
+
+        $traveller = Traveller::find($traveller_id);
+        $order = $traveller->orders()->first();
+
+        $fields_main = [
+            'name',
+            'lastname',
+            'birthday',
+            'passport',
+        ];
+
+        $fields_meta = [
+            'passport_expiration_day',
+            'passport_expiration_month',
+            'passport_expiration_year',
+        ];
+
+        return [
+            'main' => $fields_main,
+            'meta' => $fields_meta,
         ];
 
     }

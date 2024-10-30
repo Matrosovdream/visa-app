@@ -5,17 +5,17 @@ class orderHelper {
 
     public static function getProgress( $order ) {
 
-        $status = $order->status->name;
+        $status = $order->status->slug;
         $progress = 0;
         switch ($status) {
-            case 'Pending':
+            case 'pending':
                 $progress = 1;
                 break;
-            case 'Processing':
-                $progress = 3;
+            case 'processing':
+                $progress = 2;
                 break;
-            case 'Completed':
-                $progress = 4;
+            case 'completed':
+                $progress = 3;
                 break;
         }
 
