@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\TravellerHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +34,13 @@ class Traveller extends Model
 
     public function getMeta($key)
     {
-        return $this->meta->where('key', $key)->first()->value;
+        $value = $this->meta->where('key', $key)->first();
+        return $value ? $value->value : null;
+    }
+
+    public function isCompletedForm()
+    {
+        return TravellerHelper::isCompletedForm($this);
     }
 
 }

@@ -3,56 +3,70 @@
 @section('content')
 
 <div class="container my-4">
+
+    <h2 class="mb-25">
+        {{ $order->getProduct()->name }} - {{ __('Documents') }}
+    </h2>
+
     <div class="row">
         <div class="col-md-3">
             @include('web.account.orders.partials.sidebar')
         </div>
 
         <div class="col-md-9">
-            <!-- General Information Form -->
             <div class="card p-4">
-                <h3 class="card-title">General Information</h3>
+                <h3 class="card-title">{{ __('Documents') }}</h3>
 
-                <form method="POST" action="{{ route('web.account.order.trip.update', $order->id) }}">
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    @foreach($applicant->documents as $document)
+                        <div class="col">
+                            <div class="card shadow-sm h-100">
+                                <!-- We display filename, path, description and remove form -->
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $document->filename }}</h5>
+                                    <p class="card-text">Description: {{ $document->description }}</p>
+
+                                    <form action="{{ route('web.account.order.applicant.document.delete', ['order_id' => $order->id, 'applicant_id' => $applicant->id, 'document_id' => $document->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="text-right">
+                                            <button type="submit" class="btn btn-danger btn-remove mt-15">
+                                                {{ __('Remove') }}
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <br/>
+                <hr class="mb-15 mt-25">
+                <h5 class="card-title">{{ __('Add new document') }}</h5>
+
+                <!-- Documents form with the one field input file and description -->
+                <form action="{{ route('web.account.order.applicant.documents.store', ['order_id' => $order->id, 'applicant_id' => $applicant->id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
-                    <div id="step-1" class="form-step form-step-active">
-
-                        <div class="mb-3 xb-item--field">
-                            <label for="phone" class="form-label  w-100">Phone number</label>
-                            <input type="tel" class="form-control w-75" id="phone" name="phone"
-                                value="{{ $order->getMeta('phone') }}">
-                        </div>
-
-                        <div class="mb-3 xb-item--field">
-                            <label for="arrivalDate" class="form-label w-100">When do you arrive in
-                                {{ $order->countryTo()->name }}?</label>
-                            <input type="date" class="form-control w-75" name="time_arrival"
-                                value="{{ $order->getMeta('time_arrival') }}">
-                        </div>
-
-                        <div class="mb-3 xb-item--field">
-
-                            <label for="fromCountry" class="form-label">What country are you departing from?</label>
-                            <select class="nice-select1 form-control" name="country_from">
-                                <option selected disabled></option>
-                                @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" @if($order->countryFrom()->code == $country->code)
-                                    selected @endif>
-                                        {{ $country->name }} - {{ $country->code }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-
-
-                        <button type="submit" class="btn btn-primary" id="next-1">Save and continue</button>
-
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="document" name="document">
                     </div>
-
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            {{ __('Document Description') }}
+                        </label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Add file') }}
+                    </button>
                 </form>
+
+                
+
+                
+                
             </div>
         </div>
     </div>

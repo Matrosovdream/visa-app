@@ -5,7 +5,6 @@
 <div class="container my-4">
 
     <h2 class="mb-25">{{ __('My orders') }}</h2>
-
     <hr/>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-10">
@@ -17,18 +16,30 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <span class="card-status">{{ $order->status->name }}</span>
-                            <span class="card-progress">{{ $order->getProgress() }}/4</span>
+                            <span class="card-progress">{{ $order->getProgress() }}/3</span>
                         </div>
                         <h5 class="card-title mt-3">{{ $order->getProduct()->name }}</h5>
                         <div class="card-country mb-2">
                             <strong>{{ $order->countryTo()->name }}</strong>
                         </div>
-                        <p class="card-text text-muted">#{{ $order->id }}</p>
-                        <p class="card-text">{{ __('We need more information from you') }}</p>
+                        <p class="card-text text-muted">Order #{{ $order->id }}</p>
+                        
+                        @if( $order->getProgress() == 1 )
+                            <p class="card-text">{{ __('We need more information from you') }}</p>
+                        @elseif( $order->getProgress() == 2 )
+                            <p class="card-text">{{ __('We are preparing your order') }}</p>
+                        @elseif( $order->getProgress() == 3 )
+                            <p class="card-text">{{ __('Your order is completed') }}</p>
+                        @endif
+
                     </div>
                     <div class="card-footer bg-white mb-10 mt-10 border-0 d-flex justify-content-between align-items-center">
                         <a href="{{ route('web.account.order', $order->id) }}" class="text-decoration-none">
-                            {{ __('Find out why') }}
+                            @if( $order->getProgress() == 1 )
+                                {{ __('Find out why') }}
+                            @else
+                                {{ __('View details') }}
+                            @endif
                         </a>
                         <a href="{{ route('web.account.order', $order->id) }}" class="btn-arrow">&#10132;</a>
                     </div>

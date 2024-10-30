@@ -3,6 +3,11 @@
 @section('content')
 
 <div class="container my-4">
+
+    <h2 class="mb-25">
+        {{ $order->getProduct()->name }} - {{ __('Trip Details') }}
+    </h2>
+    
     <div class="row">
         <div class="col-md-3">
             @include('web.account.orders.partials.sidebar')

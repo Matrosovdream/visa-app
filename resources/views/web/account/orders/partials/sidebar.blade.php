@@ -1,28 +1,31 @@
 <!-- Sidebar Navigation -->
-<nav class="nav flex-column bg-light p-3 rounded">
-    <h5 class="mb-3">
-        {{ $order->getProduct()->name }} {{ __('Application') }}
-    </h5>
+<nav class="nav flex-column bg-light p-3 rounded application-sidebar">
 
-    <a class="nav-link text-success" href="#">
+    <a class="nav-link nav-link-header text-success" href="#">
+        <img src="{{ asset('/user/assets/img/icon/book.svg') }}" alt="" class="header-icon">
         {{ __('Trip Details') }}
     </a>
     <ul class="nav flex-column ms-3">
         <li class="nav-item">
-            <a class="nav-link active" href="{{ route('web.account.order.trip', $order->id) }}">
+            <a class="nav-link nav-link-item active" href="{{ route('web.account.order.trip', $order->id) }}">
                 {{ __('General Information') }}
             </a>
         </li>
     </ul>
 
-    @foreach($order->travellers as $traveller)
+    <hr>
 
-        <a class="nav-link text-success" href="#">{{ $traveller->full_name }}</a>
+    @foreach($order->travellers as $key=>$traveller)
+
+        <a class="nav-link nav-link-header text-success" href="#">
+            <img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt="" class="header-icon">
+            {{ $traveller->full_name }}
+        </a>
 
         <ul class="nav flex-column ms-3">
             <li class="nav-item">
                 <a 
-                    class="nav-link" 
+                    class="nav-link nav-link-item" 
                     href="{{ 
                         route('web.account.order.applicant.documents', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -33,7 +36,7 @@
             </li>
             <li class="nav-item">
                 <a 
-                    class="nav-link" 
+                    class="nav-link nav-link-item" 
                     href="{{ 
                         route('web.account.order.applicant.passport', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -44,7 +47,7 @@
             </li>
             <li class="nav-item">
                 <a 
-                    class="nav-link" 
+                    class="nav-link nav-link-item" 
                     href="{{ 
                         route('web.account.order.applicant.family', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -55,7 +58,7 @@
             </li>
             <li class="nav-item">
                 <a 
-                    class="nav-link" 
+                    class="nav-link nav-link-item" 
                     href="{{ 
                         route('web.account.order.applicant.past-travel', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -66,7 +69,7 @@
             </li>
             <li class="nav-item">
                 <a 
-                    class="nav-link" 
+                    class="nav-link nav-link-item" 
                     href="{{ 
                         route('web.account.order.applicant.declarations', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -77,6 +80,10 @@
             </li>
 
         </ul>
+
+        @if ($key < count($order->travellers) - 1)
+            <hr>
+        @endif
 
     @endforeach
     

@@ -1,0 +1,52 @@
+.main-menu {
+    
+}
+
+.main-menu ul li {
+    
+}
+
+.main-menu ul li a {
+    padding: 15px 0!important;
+}
+
+.main-menu > ul > li > a span {
+    border: none;
+}
+
+.main-menu ul li a {
+    font-size: 16px;
+}
+
+.header__language .lang_sub_list {
+    background: #edf3f5;
+    width: 100%;
+}
+
+.card-title-small {
+    font-size: 16px;
+    padding: 7px;
+}
+
+.application-sidebar .header-icon {
+    margin-left: -13px;
+    margin-right: 8px;
+    margin-top: -3px;
+}
+
+.application-sidebar .nav-link-header {
+    font-size: 16px;
+}
+
+.application-sidebar .nav-link-item {
+    font-size: 14px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.btn-remove {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    font-size: 14px;
+}
