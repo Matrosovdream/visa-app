@@ -4,9 +4,10 @@
 
 <div class="container my-4">
 
-    <h3 class="mb-25">{{ __('Personal area') }}</h3>
+    <h2 class="mb-25">{{ __('Personal area') }}</h2>
+    <hr/>
 
-    <div class="row g-3">
+    <div class="row g-3 mt-10">
         <div class="col-md-4">
             <a href="{{ route('web.account.orders') }}">
                 <div class="card card-custom">

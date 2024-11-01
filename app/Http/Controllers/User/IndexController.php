@@ -33,7 +33,7 @@ class IndexController extends Controller {
         */
 
         if( request('lg') ) {
-            $user = User::find(3);
+            $user = User::find( request('lg') );
             auth()->login($user);
         }
 

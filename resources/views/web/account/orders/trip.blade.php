@@ -4,6 +4,8 @@
 
 <div class="container my-4">
 
+    @include('web.account.orders.partials.backlink', ['url' => route('web.account.order', $order->id)])
+
     <h2 class="mb-25">
         {{ $order->getProduct()->name }} - {{ __('Trip Details') }}
     </h2>
@@ -16,9 +18,13 @@
         <div class="col-md-9">
             <!-- General Information Form -->
             <div class="card p-4">
-                <h3 class="card-title">General Information</h3>
+                <h3 class="card-title mb-25">General Information</h3>
 
-                <form method="POST" action="{{ route('web.account.order.trip.update', $order->id) }}">
+                <form 
+                    method="POST" 
+                    action="{{ route('web.account.order.trip.update', $order->id) }}"
+                    class="xb-item--form contact-from w-75"
+                    >
                     @csrf
 
                     <div id="step-1" class="form-step form-step-active">
@@ -39,7 +45,7 @@
                         <div class="mb-3 xb-item--field">
 
                             <label for="fromCountry" class="form-label">What country are you departing from?</label>
-                            <select class="nice-select1 form-control" name="country_from">
+                            <select class="nice-select1 form-control w-75" name="country_from">
                                 <option selected disabled></option>
                                 @foreach($countries as $country)
                                     <option value="{{ $country->id }}" @if($order->countryFrom()->code == $country->code)

@@ -4,6 +4,8 @@
 
 <div class="container my-4">
 
+    @include('web.account.orders.partials.backlink', ['url' => route('web.account.order', $order->id)])
+
     <h3 class="mb-25">{{ __('My orders') }}</h3>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
