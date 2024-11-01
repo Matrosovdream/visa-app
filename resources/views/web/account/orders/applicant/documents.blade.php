@@ -4,6 +4,8 @@
 
 <div class="container my-4">
 
+    @include('web.account.orders.partials.backlink', ['url' => route('web.account.order', $order->id)])
+
     <h2 class="mb-25">
         {{ $order->getProduct()->name }} - {{ __('Documents') }}
     </h2>
@@ -15,7 +17,8 @@
 
         <div class="col-md-9">
             <div class="card p-4">
-                <h3 class="card-title">{{ __('Documents') }}</h3>
+                
+                <h3 class="card-title mb-25">{{ __('Documents') }}</h3>
 
                 <div class="row row-cols-1 row-cols-md-2 g-4">
                     @foreach($applicant->documents as $document)

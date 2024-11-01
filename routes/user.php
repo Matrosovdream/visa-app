@@ -44,10 +44,13 @@ Route::group(['as' => '','prefix' =>'/account/order/{order_id}','namespace' => '
 
         // Document single
         Route::delete('/applicant/{applicant_id}/document/{document_id}', [OrderController::class, 'applicantDocumentDelete'])->name('web.account.order.applicant.document.delete');
+
+        // Fields update
+        Route::post('/applicant/{applicant_id}/fields', [OrderController::class, 'applicantFieldsUpdate'])->name('web.account.order.applicant.fields.update');
         
         // Personal
-        Route::get('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonal'])->name('web.account.order.applicant.personal');
-        Route::post('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonalUpdate'])->name('web.account.order.applicant.personal');
+        //Route::get('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonal'])->name('web.account.order.applicant.personal');
+        //Route::post('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonalUpdate'])->name('web.account.order.applicant.personal');
 
         // Passport
         Route::get('/applicant/{applicant_id}/passport', [OrderController::class, 'applicantPassport'])->name('web.account.order.applicant.passport');

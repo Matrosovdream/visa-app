@@ -38,6 +38,17 @@ class Traveller extends Model
         return $value ? $value->value : null;
     }
 
+    public function setMeta($key, $value)
+    {
+        $meta = $this->meta->where('key', $key)->first();
+        if ($meta) {
+            $meta->value = $value;
+            $meta->save();
+        } else {
+            $this->meta()->create(['key' => $key, 'value' => $value]);
+        }
+    }
+
     public function isCompletedForm()
     {
         return TravellerHelper::isCompletedForm($this);

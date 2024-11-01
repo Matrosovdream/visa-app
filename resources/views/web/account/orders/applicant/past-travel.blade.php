@@ -4,6 +4,8 @@
 
 <div class="container my-4">
 
+    @include('web.account.orders.partials.backlink', ['url' => route('web.account.order', $order->id)])
+
     <h2 class="mb-25">
         {{ $order->getProduct()->name }} - {{ __('Past travel') }}
     </h2>
@@ -16,48 +18,21 @@
         <div class="col-md-9">
             <!-- General Information Form -->
             <div class="card p-4">
-                <h3 class="card-title">General Information</h3>
+                <h3 class="card-title">Past travel</h3>
 
-                <form method="POST" action="{{ route('web.account.order.trip.update', $order->id) }}">
+                <form method="POST"
+                    action="{{ route('web.account.order.applicant.fields.update', ['order_id' => $order->id, 'applicant_id' => $applicant->id]) }}"
+                    class="xb-item--form contact-from w-75">
                     @csrf
 
-                    <div id="step-1" class="form-step form-step-active">
+                    @include('web.account.orders.partials.applicant-fields')
 
-                        <div class="mb-3 xb-item--field">
-                            <label for="phone" class="form-label  w-100">Phone number</label>
-                            <input type="tel" class="form-control w-75" id="phone" name="phone"
-                                value="{{ $order->getMeta('phone') }}">
-                        </div>
-
-                        <div class="mb-3 xb-item--field">
-                            <label for="arrivalDate" class="form-label w-100">When do you arrive in
-                                {{ $order->countryTo()->name }}?</label>
-                            <input type="date" class="form-control w-75" name="time_arrival"
-                                value="{{ $order->getMeta('time_arrival') }}">
-                        </div>
-
-                        <div class="mb-3 xb-item--field">
-
-                            <label for="fromCountry" class="form-label">What country are you departing from?</label>
-                            <select class="nice-select1 form-control" name="country_from">
-                                <option selected disabled></option>
-                                @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" @if($order->countryFrom()->code == $country->code)
-                                    selected @endif>
-                                        {{ $country->name }} - {{ $country->code }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-
-
-                        <button type="submit" class="btn btn-primary" id="next-1">Save and continue</button>
-
-                    </div>
+                    <button type="submit" class="btn btn-primary" id="next-1">
+                        {{ __('Save') }}
+                    </button>
 
                 </form>
+
             </div>
         </div>
     </div>
