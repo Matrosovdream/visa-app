@@ -2,16 +2,17 @@
 namespace App\Http\Controllers\User;
 
 use App\Actions\Web\OrderActions;
+use App\Actions\Web\OrderApplicantActions;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Order;
-use App\Models\Country;
-use App\Helpers\userSettingsHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Traveller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TravellerDocuments;
+use App\Helpers\TravellerHelper;
+use App\Actions\Web\OrderApplicantActions as ApplicantActions;
 
 
 class OrderController extends Controller
@@ -32,7 +33,12 @@ class OrderController extends Controller
 
     public function tripDetails($order_id)
     {
-        $data = array('title' => '','order' => Order::find($order_id));
+        $data = array(
+            'title' => '',
+            'order' => Order::find($order_id), 
+            'travellerFieldCategories' => TravellerHelper::getTravellerFieldCategories(),
+            'travellerFields' => TravellerHelper::getTravellerFieldList()
+        );
         return view('web.account.orders.trip', $data);
     }
 
@@ -50,9 +56,7 @@ class OrderController extends Controller
 
     public function applicantDocuments($order_id, $applicant_id)
     {
-
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.documents', $data);
+        return view('web.account.orders.applicant.documents', $this->getApplicantData($order_id, $applicant_id));
     }
 
     public function applicantDocumentsUpdate(Request $request, $order_id, $applicant_id)
@@ -83,98 +87,54 @@ class OrderController extends Controller
 
     public function applicantDocumentDelete($order_id, $applicant_id, $document_id)
     {
-        
         TravellerDocuments::find($document_id)->delete();
-
         return redirect()->route('web.account.order.applicant.documents', [$order_id, $applicant_id]);
-    }
-
-    public function applicantPersonal($order_id, $applicant_id)
-    {
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.personal', $data);
-    }
-
-    public function applicantPersonalUpdate(Request $request, $order_id, $applicant_id)
-    {
-
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('full_name', $request->full_name);
-        $applicant->setMeta('name', $request->name);
-        $applicant->setMeta('lastname', $request->lastname);
-        $applicant->setMeta('birthday', $request->birthday);
-
-        return redirect()->route('web.account.order.applicant.personal', [$order_id, $applicant_id]);
     }
 
     public function applicantPassport($order_id, $applicant_id)
     {
-
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.passport', $data);
-    }
-
-    public function applicantPassportUpdate(Request $request, $order_id, $applicant_id)
-    {
-
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('passport', $request->passport);
-
-        return redirect()->route('web.account.order.applicant.passport', [$order_id, $applicant_id]);
+        return view('web.account.orders.applicant.passport', $this->getApplicantData($order_id, $applicant_id));
     }
 
     public function applicantFamily($order_id, $applicant_id)
     {
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.family', $data);
-    }
-
-    public function applicantFamilyUpdate(Request $request, $order_id, $applicant_id)
-    {
-
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('family_status', $request->family_status);
-        $applicant->setMeta('family_status_date', $request->family_status_date);
-        $applicant->setMeta('family_status_number', $request->family_status_number);
-
-        return redirect()->route('web.account.order.applicant.family', [$order_id, $applicant_id]);
+        return view('web.account.orders.applicant.family', $this->getApplicantData($order_id, $applicant_id));
     }
 
     public function applicantPastTravel($order_id, $applicant_id)
     {
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.past-travel', $data);
+        return view('web.account.orders.applicant.past-travel', $this->getApplicantData($order_id, $applicant_id));
     }
-
-    public function applicantPastTravelUpdate(Request $request, $order_id, $applicant_id)
-    {
-
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('past_travel', $request->past_travel);
-
-        return redirect()->route('web.account.order.applicant.past-travel', [$order_id, $applicant_id]);
-    }   
 
     public function applicantDeclarations($order_id, $applicant_id)
     {
-        $data = array('title' => '', 'order' => Order::find($order_id), 'applicant' => Traveller::find($applicant_id));
-        return view('web.account.orders.applicant.declarations', $data);
+        return view('web.account.orders.applicant.declarations', $this->getApplicantData($order_id, $applicant_id));
     }
 
-    public function applicantDeclarationsUpdate(Request $request, $order_id, $applicant_id)
+    public function applicantFieldsUpdate(Request $request, $order_id, $applicant_id)
     {
 
-        $applicant = Traveller::find($applicant_id);
-        // Set meta
-        $applicant->setMeta('declarations', $request->declarations);
+        ApplicantActions::fieldsUpdate($request, $order_id, $applicant_id);
 
-        return redirect()->route('web.account.order.applicant.declarations', [$order_id, $applicant_id]);
+        return redirect()->back();
     }
-    
+
+    public function getApplicantData($order_id, $applicant_id) {
+
+        $fields = [
+            'order' => Order::find($order_id), 
+            'applicant' => Traveller::find($applicant_id),
+            'travellerFieldCategories' => TravellerHelper::getTravellerFieldCategories(),
+            'travellerFields' => TravellerHelper::getTravellerFieldList( $applicant_id )
+        ];
+
+        if( isset( request()->category ) ) {
+            $fields['fields'] = TravellerHelper::getTravellerFieldList($applicant_id)[ request()->category ];
+        }
+
+        return $fields;
+    }
+
     public function createApply(Request $request)
     {
 

@@ -7,7 +7,9 @@
     </a>
     <ul class="nav flex-column ms-3">
         <li class="nav-item">
-            <a class="nav-link nav-link-item active" href="{{ route('web.account.order.trip', $order->id) }}">
+            <a class="nav-link nav-link-item 
+                @if( request()->routeIs('web.account.order.trip')) active @endif" 
+                href="{{ route('web.account.order.trip', $order->id) }}">
                 {{ __('General Information') }}
             </a>
         </li>
@@ -23,9 +25,11 @@
         </a>
 
         <ul class="nav flex-column ms-3">
+
             <li class="nav-item">
                 <a 
-                    class="nav-link nav-link-item" 
+                    class="nav-link nav-link-item 
+                    @if( request()->routeIs('web.account.order.applicant.documents')) active @endif" 
                     href="{{ 
                         route('web.account.order.applicant.documents', 
                         ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
@@ -34,50 +38,20 @@
                     {{ __('Documents') }}
                 </a>
             </li>
-            <li class="nav-item">
-                <a 
-                    class="nav-link nav-link-item" 
-                    href="{{ 
-                        route('web.account.order.applicant.passport', 
-                        ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
-                        }}"
-                    >
-                    {{ __('Passport') }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a 
-                    class="nav-link nav-link-item" 
-                    href="{{ 
-                        route('web.account.order.applicant.family', 
-                        ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
-                        }}"
-                    >
-                    {{ __('Family') }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a 
-                    class="nav-link nav-link-item" 
-                    href="{{ 
-                        route('web.account.order.applicant.past-travel', 
-                        ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
-                        }}"
-                    >
-                    {{ __('Past Travel') }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a 
-                    class="nav-link nav-link-item" 
-                    href="{{ 
-                        route('web.account.order.applicant.declarations', 
-                        ['order_id' => $order->id, 'applicant_id' => $traveller->id]) 
-                        }}"
-                    >
-                    {{ __('Declarations') }}
-                </a>
-            </li>
+
+            @foreach($travellerFieldCategories as $code => $data)
+                <li class="nav-item">
+                    <a 
+                        class="nav-link nav-link-item @if( request()->routeIs($data['route'])) active @endif"
+                        href="{{ 
+                            route($data['route'], 
+                            ['order_id' => $order->id, 'applicant_id' => $traveller->id, 'category' => $code]) 
+                            }}"
+                        >
+                        {{ $data['title'] }}
+                    </a>
+                </li>
+            @endforeach
 
         </ul>
 

@@ -50,3 +50,8 @@
     border: 1px solid #f5c6cb;
     font-size: 14px;
 }
+
+.application-sidebar .nav-link-item.active {
+    color: #7f3b3b;
+    font-weight: bold;
+}
