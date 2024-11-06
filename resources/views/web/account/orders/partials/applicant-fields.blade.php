@@ -18,7 +18,7 @@
             <label for="field-{{ $code }}" class="form-label  w-100">
                 {{ $field['title'] }}
             </label>
-            <textarea class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]"></textarea>
+            <textarea class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">{{ $field['value'] }}</textarea>
         </div>
 
     @endif
@@ -29,7 +29,7 @@
             <label for="field-{{ $code }}" class="form-label  w-100">
                 {{ $field['title'] }}
             </label>
-            <input type="date" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]" value="">
+            <input type="date" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]" value="{{ $field['value'] }}">
         </div>
 
     @endif
@@ -43,7 +43,7 @@
             <select class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">
                 <option selected disabled></option>
                 @foreach($field['options'] as $option)
-                    <option value="{{ $option['value'] }}">
+                    <option value="{{ $option['value'] }}" @if( $option['value'] == $field['value'] ) selected @endif>
                         {{ $option['title'] }}
                     </option>
                 @endforeach
@@ -65,6 +65,38 @@
             @endif    
 
             <input type="file" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">
+        </div>
+
+    @endif
+
+    @if($field['type'] == 'radio')
+
+        <div class="mb-3 xb-item--field">
+            <label for="field-{{ $code }}" class="form-label">{{ $field['title'] }}</label>
+            @foreach($field['options'] as $option)
+                <div class="form-check">
+                    <label class="form-check" for="field-{{ $code }}-{{ $option['value'] }}">
+                        <input class="form-check" type="radio" value="{{ $option['value'] }}"
+                            id="field-{{ $code }}-{{ $option['value'] }}" name="fields[{{ $code }}]"
+                            @if( $option['value'] == $field['value'] ) checked @endif
+                            >
+                        {{ $option['title'] }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
+
+    @endif
+
+    @if($field['type'] == 'checkbox')
+
+        <div class="mb-3 xb-item--field">
+            <label for="field-{{ $code }}" class="form-label">{{ $field['title'] }}</label>
+            <div class="form-check">
+                <input class="form-check w-75" type="checkbox" id="field-{{ $code }}"
+                    @if( $field['value'] == 1 ) checked @endif
+                    name="fields[{{ $code }}]">
+            </div>
         </div>
 
     @endif

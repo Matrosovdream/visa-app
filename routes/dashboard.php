@@ -15,18 +15,25 @@ use App\Http\Controllers\Dashboard\DashboardProfileController;
 
 
 
-Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' => ['auth', 'verified']],function(){
+Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' => ['auth', 'hasRole:admin,manager']],function(){
     
     // Home dashboard page
     Route::get('/', [DashboardHomeController::class, 'index'])->name('dashboard.home');
 
     // Admin routes
-    Route::middleware('isAdmin')->group(function () {
+    Route::middleware('hasRole:admin,manager')->group(function () {
 
-        // User
-        Route::get('users', [DashboardUsersController::class, 'index'])->name('dashboard.users.index');
-        Route::get('users/{user_id}', [DashboardUsersController::class, 'show'])->name('dashboard.users.show');
-        Route::delete('users/{user_id}', [DashboardUsersController::class, 'destroy'])->name('dashboard.users.destroy');
+        Route::middleware('hasRole:admin')->group(function() {
+
+            // User
+            Route::get('users', [DashboardUsersController::class, 'index'])->name('dashboard.users.index');
+            Route::get('users/create', [DashboardUsersController::class, 'create'])->name('dashboard.users.create');
+            Route::post('users', [DashboardUsersController::class, 'store'])->name('dashboard.users.store');
+            Route::get('users/{user_id}', [DashboardUsersController::class, 'show'])->name('dashboard.users.show');
+            Route::post('users/{user_id}', [DashboardUsersController::class, 'update'])->name('dashboard.users.update');
+            Route::delete('users/{user_id}', [DashboardUsersController::class, 'destroy'])->name('dashboard.users.destroy');
+
+        });
 
         // Countries
         Route::get('countries', [DashboardCountriesController::class, 'index'])->name('dashboard.countries.index');
@@ -51,6 +58,15 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
         Route::get('orders/{order_id}/edit', [DashboardOrdersController::class, 'edit'])->name('dashboard.orders.edit');
         Route::post('orders/{order_id}', [DashboardOrdersController::class, 'update'])->name('dashboard.orders.update');
         Route::delete('orders/{order_id}', [DashboardOrdersController::class, 'destroy'])->name('dashboard.orders.destroy');
+
+        // Order travellers
+        Route::get('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersList'])->name('dashboard.orders.travellers');
+        Route::get('orders/{order_id}/travellers/create', [DashboardOrdersController::class, 'travellersCreate'])->name('dashboard.orders.travellers.create');
+        Route::post('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersStore'])->name('dashboard.orders.travellers.store');
+        Route::get('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellerShow'])->name('dashboard.orders.traveller.show');
+        Route::get('orders/{order_id}/travellers/{traveller_id}/edit', [DashboardOrdersController::class, 'travellerEdit'])->name('dashboard.orders.traveller.edit');
+        Route::post('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellersUpdate'])->name('dashboard.orders.traveller.update');
+        Route::delete('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellersDestroy'])->name('dashboard.orders.traveller.destroy');
 
         // Payment gateways
         Route::get('gateways', [DashboardGatewaysController::class, 'index'])->name('dashboard.gateways.index');

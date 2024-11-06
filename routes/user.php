@@ -7,6 +7,7 @@ use App\Http\Controllers\User\ArticleController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\User\AccountController;
+use App\Http\Controllers\User\SiteGlobalsController;
 
 
 // Index page
@@ -27,6 +28,11 @@ Route::get('/account/', [AccountController::class, 'index'])->name('web.account.
 Route::get('/account/settings/', [AccountController::class, 'settings'])->name('web.account.settings');
 Route::post('/account/settings/', [AccountController::class, 'settingsUpdate'])->name('web.account.settings.update');
 Route::get('/account/orders/', [OrderController::class, 'index'])->name('web.account.orders');
+
+// Site settings controller
+Route::post('/set-lang', [SiteGlobalsController::class, 'setLanguage'])->name('web.language.set');
+Route::post('/set-currency', [SiteGlobalsController::class, 'setCurrency'])->name('web.currency.set');
+
 
 Route::group(['as' => '','prefix' =>'/account/order/{order_id}','namespace' => '', 'middleware' => ['auth', 'isUserOrder']],function(){
 
@@ -49,8 +55,8 @@ Route::group(['as' => '','prefix' =>'/account/order/{order_id}','namespace' => '
         Route::post('/applicant/{applicant_id}/fields', [OrderController::class, 'applicantFieldsUpdate'])->name('web.account.order.applicant.fields.update');
         
         // Personal
-        //Route::get('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonal'])->name('web.account.order.applicant.personal');
-        //Route::post('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonalUpdate'])->name('web.account.order.applicant.personal');
+        Route::get('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonal'])->name('web.account.order.applicant.personal');
+        Route::post('/applicant/{applicant_id}/personal', [OrderController::class, 'applicantPersonalUpdate'])->name('web.account.order.applicant.personal');
 
         // Passport
         Route::get('/applicant/{applicant_id}/passport', [OrderController::class, 'applicantPassport'])->name('web.account.order.applicant.passport');
