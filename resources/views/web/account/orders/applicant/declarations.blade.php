@@ -19,7 +19,11 @@
             <div class="col-md-9">
                 <!-- General Information Form -->
                 <div class="card p-4">
-                    <h3 class="card-title">Declarations</h3>
+
+                    <div class="application-section-head mb-25">
+                        <h3 class="card-title">Declarations</h3>
+                        <p class="card-text text-warning"></p>
+                    </div>
 
                     <form method="POST"
                         action="{{ route('web.account.order.applicant.fields.update', ['order_id' => $order->id, 'applicant_id' => $applicant->id]) }}"

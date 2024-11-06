@@ -26,21 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(GlobalsService $globalsService): void
     {
 
-        // if GET parameter is set, set the language
-        if (isset($_GET['setlang'])) {
-            $globalsService->setLanguage($_GET['setlang']);
-        }
-
-        // if GET parameter is set, set the currency
-        if (isset($_GET['setcurrency'])) {
-            $globalsService->setCurrency($_GET['setcurrency']);
-        }
-
-        // set the locale
-        if( isset($globalsService->getActiveLanguage()->code) ) {
-            App::setLocale( strtolower($globalsService->getActiveLanguage()->code) );
-        }
-
         //\View::share('geoData', $globalsService->getGlobals()['geoData']);
         \View::share('languages', $globalsService->getLanguages());
         \View::share('menuTop', $globalsService->getMenuTop());
@@ -50,6 +35,5 @@ class AppServiceProvider extends ServiceProvider
         \View::share('activeCurrency', $globalsService->getActiveCurrency());
         \View::share('siteSettings', $globalsService->getGlobals()['siteSettings']);
 
-        
     }
 }

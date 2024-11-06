@@ -25,8 +25,6 @@ class DashboardOrdersController extends Controller
     {
         $order = Order::find($id);
 
-        //dd($order->getTravellers());
-
         $data = [
             'title' => 'Order',
             'order' => $order,
@@ -49,5 +47,79 @@ class DashboardOrdersController extends Controller
 
         return view('dashboard.orders.edit', $data);
     }
+
+    public function update($id)
+    {
+        $order = Order::find($id);
+
+        $order->status = request('status');
+        $order->save();
+
+        return redirect()->route('dashboard.orders.index');
+    }
+
+    public function destroy($id)
+    {
+        $order = Order::find($id);
+        $order->delete();
+
+        return redirect()->route('dashboard.orders.index');
+    }
+
+    public function travellersCreate($id)
+    {
+
+    }
+
+    public function travellersStore($id)
+    {
+        $order = Order::find($id);
+
+        $order->travellers()->create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'phone' => request('phone'),
+            'passport' => request('passport'),
+            'country' => request('country'),
+            'direction' => request('direction'),
+        ]);
+
+        return redirect()->route('dashboard.orders.travellers', $id);
+    }
+
+    public function travellerShow($orderId, $travellerId)
+    {
+        $order = Order::find($orderId);
+        $traveller = $order->travellers()->find($travellerId);
+
+        $data = [
+            'title' => 'Order Traveller',
+            'order' => $order,
+            'traveller' => $traveller,
+            'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
+            'orderStatuses' => OrderStatus::all(),
+        ];
+
+        return view('dashboard.orders.traveller.show', $data);
+    }
+
+    public function travellersEdit($orderId, $travellerId)
+    {
+
+    }
+
+    public function travellersUpdate($orderId, $travellerId)
+    {
+
+    }
+
+    public function travellersDestroy($orderId, $travellerId)
+    {
+        
+    }
+
+
+
+
 
 }

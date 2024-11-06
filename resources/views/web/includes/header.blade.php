@@ -140,9 +140,15 @@
                                     <ul class="lang_sub_list">
                                         @foreach($languages as $language)
                                             <li>
-                                                <a href="?setlang={{ $language->code }}">
-                                                    {{ $language->name }}
-                                                </a>
+
+                                                <form action="{{ route('web.language.set') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="lang" value="{{ $language->code }}">
+                                                    <button type="submit">
+                                                        {{ $language->name }}
+                                                    </button>
+                                                </form>
+
                                             </li>
                                         @endforeach
                                     </ul>
@@ -163,10 +169,16 @@
                                     <ul class="lang_sub_list">
                                         @foreach($currencies as $currency)
                                             <li>
-                                                <a href="?setcurrency={{ $currency->code }}">
-                                                    <span>{{ $currency->symbol }}</span>
-                                                    {{ $currency->name }}
-                                                </a>
+
+                                                <form action="{{ route('web.currency.set') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="currency" value="{{ $currency->code }}">
+                                                    <button type="submit">
+                                                        <span>{{ $currency->symbol }}</span>
+                                                        {{ $currency->name }}
+                                                    </button>
+                                                </form>
+
                                             </li>
                                         @endforeach
                                     </ul>

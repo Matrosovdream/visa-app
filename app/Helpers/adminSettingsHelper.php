@@ -58,10 +58,14 @@ class adminSettingsHelper {
                 'icon' => 'ki-element-11',
                 'roles' => ['admin'],
                 'childs' => array(
-                    
                     array(
                         'title' => 'General',
                         'url' => route('dashboard.settings.index'),
+                        'roles' => ['admin'],
+                    ),
+                    array(
+                        'title' => 'Users',
+                        'url' => route('dashboard.users.index'),
                         'roles' => ['admin'],
                     ),
                 ),
