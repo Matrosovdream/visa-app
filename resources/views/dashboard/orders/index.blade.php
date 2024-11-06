@@ -186,8 +186,8 @@
 
 @section('toolbar-buttons')
 
-    <a href="{{ route('dashboard.orders.create') }}" class="btn btn-sm fw-bold btn-primary">
-        New Order
+    <a href="{{ route('dashboard.users.create') }}" class="btn btn-sm fw-bold btn-primary">
+        New User
     </a>
 
 @endsection

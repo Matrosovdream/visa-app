@@ -30,12 +30,14 @@
     </div>
 
     <!-- Add-on Services -->
+    @php /*
     <div class="d-flex justify-content-between align-items-center my-3 block-border">
         @include('web.account.orders.partials.order-add-ons')
     </div>
+    */ @endphp
 
     <!-- Order Details -->
-    <div class="order-details mt-25">
+    <div class="order-details mt-50">
         @include('web.account.orders.partials.order-total')
     </div>
 

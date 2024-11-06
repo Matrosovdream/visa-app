@@ -91,6 +91,11 @@ class OrderController extends Controller
         return redirect()->route('web.account.order.applicant.documents', [$order_id, $applicant_id]);
     }
 
+    public function applicantPersonal($order_id, $applicant_id)
+    {
+        return view('web.account.orders.applicant.personal', $this->getApplicantData($order_id, $applicant_id));
+    }
+
     public function applicantPassport($order_id, $applicant_id)
     {
         return view('web.account.orders.applicant.passport', $this->getApplicantData($order_id, $applicant_id));
@@ -113,9 +118,7 @@ class OrderController extends Controller
 
     public function applicantFieldsUpdate(Request $request, $order_id, $applicant_id)
     {
-
         ApplicantActions::fieldsUpdate($request, $order_id, $applicant_id);
-
         return redirect()->back();
     }
 

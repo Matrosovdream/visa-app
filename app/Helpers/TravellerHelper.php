@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use App\Models\Traveller;
 use App\Models\File;
+use App\Models\Country;
 
 class TravellerHelper
 {
@@ -104,24 +105,33 @@ class TravellerHelper
         $cats = self::getTravellerFieldCategories();
 
         $fields = [
+            'personal' => [
+                'residence_country' => ['title' => 'Country of Residence', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'gender' => ['title' => 'Gender', 'type' => 'radio', 'options' => self::getReference('gender'), 'relate' => 'meta'],
+                //'nationality' => ['title' => 'Nationality', 'type' => 'boolean', 'relate' => 'meta'],
+                'residence_address' => ['title' => 'Residence address', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_city' => ['title' => 'Residence city or Town', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_state' => ['title' => 'Residence state or province', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_zip' => ['title' => 'Residence ZIP code', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'occupation' => ['title' => 'Occupation', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+            ],
             'passport' => [
                 'passport' => ['title' => 'Passport', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
-                'passport_expiration_day' => ['title' => 'Passport Expiration Day', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'passport_expiration_month' => ['title' => 'Passport Expiration Month', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'passport_expiration_year' => ['title' => 'Passport Expiration Year', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'passport_issue_date' => ['title' => 'Passport Issue Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
+                'passport_expiration_date' => ['title' => 'Passport Expiration Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
+                'birth_country' => ['title' => 'Country of Birth', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'passport_issue_country' => ['title' => 'Which country issued your passport', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
             ],
             'family' => [
-                'family_name' => ['title' => 'Family Name', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'family_file' => ['title' => 'Family File', 'type' => 'file', 'required' => true, 'relate' => 'file'],
-                'family_lastname' => ['title' => 'Family Lastname', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'family_birthday' => ['title' => 'Family Birthday', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'marital_status' => ['title' => 'Marital status', 'type' => 'select', 'options' => self::getReference('marital_status'), 'relate' => 'meta'],
             ],
             'past_travel' => [
-                'past_travel_country' => ['title' => 'Past Travel Country', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'past_travel_date' => ['title' => 'Past Travel Date', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'past_travel_country' => ['title' => 'Have you previously visited country?', 'type' => 'radio', 'options' => self::getReference('boolean'), 'relate' => 'meta'],
+                'past_travel_date' => ['title' => 'When did you arrive?', 'type' => 'date', 'relate' => 'meta'],
+                'past_travel_departure' => ['title' => 'When did you depart?', 'type' => 'date', 'relate' => 'meta'],
             ],
             'declarations' => [
-                'declaration' => ['title' => 'Declaration', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'is_previous_country_deport' => ['title' => 'Have you ever been deported from country or another country?', 'type' => 'radio', 'options' => self::getReference('boolean'), 'relate' => 'meta'],
             ],
         ];
 
@@ -148,9 +158,71 @@ class TravellerHelper
             }
         }
 
+        //dd($fields);
+
         return $fields;
 
     }
+
+    public static function getReference($ref_code) {
+
+        $references = [
+            'countries' => self::prepareCountryRef(),
+            'gender' => self::prepareGenderRef(),
+            'marital_status' => self::prepareMaritalStatusRef(),
+            'boolean' => self::prepareBooleanRef(),
+        ];
+        return $references[$ref_code];
+
+    }
+
+    public static function prepareBooleanRef() {
+
+        $boolean = [
+            ['value' => 'yes', 'title' => 'Yes'],
+            ['value' => 'no', 'title' => 'No'],
+        ];
+        return $boolean;
+
+    }
+
+    public static function prepareCountryRef() {
+
+        $countries = Country::all();
+        $countriesRef = [];
+        foreach ($countries as $country) {
+            $countriesRef[] = [
+                'value' => $country->id,
+                'title' => $country->name,
+            ];
+        }
+
+        return $countriesRef;
+
+    }
+
+    public static function prepareGenderRef() {
+
+        $genders = [
+            ['value' => 'male', 'title' => 'Male'],
+            ['value' => 'female', 'title' => 'Female'],    
+        ];
+        return $genders;
+
+    }
+
+    public static function prepareMaritalStatusRef() {
+
+        $statuses = [
+            ['value' => 'single', 'title' => 'Single'],
+            ['value' => 'married', 'title' => 'Married'],
+            ['value' => 'divorced', 'title' => 'Divorced'],
+            ['value' => 'widowed', 'title' => 'Widowed'],
+        ];
+        return $statuses;
+
+    }
+
 
     public static function getTravellerFieldListAll() {
 
@@ -216,6 +288,7 @@ class TravellerHelper
     public static function getTravellerFieldCategories() {
 
         $cats = [
+            'personal' => ['title' => __('Personal'), 'route' => 'web.account.order.applicant.personal'],
             'passport' => ['title' => __('Passport'), 'route' => 'web.account.order.applicant.passport'],
             'family' => ['title' => __('Family'), 'route' => 'web.account.order.applicant.family'],
             'past_travel' => ['title' => __('Past Travel'), 'route' => 'web.account.order.applicant.past-travel'],

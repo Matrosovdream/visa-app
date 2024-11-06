@@ -51,6 +51,12 @@ class User extends Authenticatable
         return $this->roles()->first();
     }
 
+    // Check if user has role
+    public function hasRole($roles)
+    {
+        return $this->roles()->whereIn('slug', $roles)->exists();
+    }
+
     // Orders
     public function orders()
     {
@@ -60,10 +66,8 @@ class User extends Authenticatable
     public function setRole($role_slug)
     {
         $role = Role::where('slug', $role_slug)->first();
-        if (!$role) {
-            return false;
-        }
-        return $this->roles()->attach($role);
+        if (!$role) { return false; }
+        return $this->roles()->sync($role->id);
     }
 
     /**

@@ -18,7 +18,10 @@
         <div class="col-md-9">
             <div class="card p-4">
                 
-                <h3 class="card-title mb-25">{{ __('Documents') }}</h3>
+                <div class="application-section-head mb-25">
+                    <h3 class="card-title">{{ __('Documents') }}</h3>
+                    <p class="card-text text-warning">{{ __('Passport page is required') }}</p>
+                </div>
 
                 <div class="row row-cols-1 row-cols-md-2 g-4">
                     @foreach($applicant->documents as $document)

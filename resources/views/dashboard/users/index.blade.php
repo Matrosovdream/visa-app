@@ -1,5 +1,13 @@
 @extends('dashboard.layouts.app')
 
+@section('toolbar-buttons')
+
+    <a href="{{ route('dashboard.users.create') }}" class="btn btn-sm fw-bold btn-primary">
+        New User
+    </a>
+
+@endsection
+
 @section('content')
 
 <div class="card card-flush">
@@ -12,7 +20,7 @@
                     <span class="path2"></span>
                 </i>
                 <input type="text" data-kt-ecommerce-product-filter="search"
-                    class="form-control form-control-solid w-250px ps-12" placeholder="Search Countries">
+                    class="form-control form-control-solid w-250px ps-12" placeholder="Search Users">
             </div>
         </div>
     </div>

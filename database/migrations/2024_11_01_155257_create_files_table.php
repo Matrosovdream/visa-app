@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('disk')->nullable();
             $table->string('visibility')->default('public');
+            $table->foreignId('user_id')->on('users')->nullable();
             $table->timestamps();
         });
     }
