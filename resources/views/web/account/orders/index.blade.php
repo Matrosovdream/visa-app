@@ -34,14 +34,27 @@
 
                     </div>
                     <div class="card-footer bg-white mb-10 mt-10 border-0 d-flex justify-content-between align-items-center">
-                        <a href="{{ route('web.account.order', $order->id) }}" class="text-decoration-none">
-                            @if( $order->getProgress() == 1 )
-                                {{ __('Find out why') }}
-                            @else
-                                {{ __('View details') }}
-                            @endif
-                        </a>
-                        <a href="{{ route('web.account.order', $order->id) }}" class="btn-arrow">&#10132;</a>
+                        
+                        @if( !$order->isPaid() ) 
+
+                            <a href="{{ route('web.account.order', $order->id) }}" class="text-danger">
+                                {{ __('Pay order here') }}
+                            </a>
+                            <a href="{{ route('web.order.show', $order->hash) }}" class="btn-arrow">&#10132;</a>
+                        
+                        @else
+                    
+                            <a href="{{ route('web.account.order', $order->id) }}" class="text-decoration-none">
+                                @if( $order->getProgress() == 1 )
+                                    {{ __('Find out why') }}
+                                @else
+                                    {{ __('View details') }}
+                                @endif
+                            </a>
+                            <a href="{{ route('web.account.order', $order->id) }}" class="btn-arrow">&#10132;</a>
+
+                        @endif
+                    
                     </div>
                 </div>
             </div>

@@ -42,14 +42,17 @@ class OrderPaymentProcesser
         $this->paymentProcessor->charge();
 
         // Check if there are any errors
-        if( $this->paymentProcessor->isErrors() ) {
+        if( count($this->paymentProcessor->getErrors()) > 0 ) {
             $errors = $this->paymentProcessor->getErrors();
             $status = 'failed';
         } else {
             $status = 'success';
         }
 
-        //dd($this->order->getMeta('currency'));
+        // Set order paid
+        if( $status == 'success') {
+            $this->order->setPaid();
+        }
 
         // Save transation into database
         $data = [

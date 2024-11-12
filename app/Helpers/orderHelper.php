@@ -4,6 +4,9 @@ namespace App\Helpers;
 use App\Models\Order;
 use App\Models\ProductOffers;
 use App\Models\File;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCreated;
 
 
 class orderHelper {
@@ -119,6 +122,28 @@ class orderHelper {
         $order->certificates()->create([
             'file_id' => $file->id,
         ]);
+
+    }
+
+    public static function SendMailOrderCreated($order) {
+
+        // Find the user by user_id field in the order
+        $user = User::find($order->user_id);
+
+        if ($user) {
+            // Send the email
+            Mail::to($user->email)->send(new OrderCreated($order, $user));
+        }
+
+    }
+
+    public static function checkUpdateStatus( $order_id ) {
+
+        $order = Order::find($order_id);
+        
+        if( $order->isCompletedForm() ) {
+            $order->setStatus( 2 );
+        }
 
     }
 
