@@ -18,4 +18,8 @@ class ProductExtras extends Model
         return $this->hasMany(ProductExtrasMeta::class);
     }
 
+    public function getPriceAttribute($value) {
+        return number_format($value, 0);
+    }
+
 }

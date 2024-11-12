@@ -7,6 +7,7 @@
     @include('web.includes.direction-search-form')
 
     <!-- brand start -->
+    <!--
     <section class="brand pt-110 pb-90">
         <div class="container">
             <h2 class="brand-title text-center mb-50">
@@ -25,10 +26,11 @@
             </div>
         </div>
     </section>
+    -->
     <!-- brand end -->
 
     <!-- visa type start -->
-    <section class="visa type pb-135">
+    <section class="visa type pb-135 mt-50">
         <div class="container">
             <div class="service-wrap pos-rel">
                 <div class="service-img-wrap">
@@ -259,7 +261,7 @@
     </section>
     <!-- counter end -->
 
-    <!-- country start -->
+    <!--
     <section class="country pt-120 pb-130">
         <div class="container">
             <div class="row mb-30 align-items-center">
@@ -1026,7 +1028,7 @@
             </div>
         </div>
     </section>
-    <!-- country end -->
+-->
 
     <!-- faq start -->
     <section class="faq pt-120 pb-120">
@@ -1073,6 +1075,7 @@
     <!-- faq end -->
 
     <!-- blog start -->
+    <!--
     <section class="blog pb-130">
         <div class="container">
             <div class="blog-wrap">
@@ -1121,9 +1124,11 @@
             </div>
         </div>
     </section>
+    
     <!-- blog end -->
 
     <!-- contact start -->
+    <!--
     <section class="contact contact-pt gray-bg">
         <div class="container">
             <div class="xb-contact pos-rel">
@@ -1193,7 +1198,9 @@
             </div>
         </div>
     </section>
+    -->
     <!-- contact end -->
+    
 
 </main>
 

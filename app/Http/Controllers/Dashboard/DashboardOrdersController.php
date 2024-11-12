@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Helpers\adminSettingsHelper;
 use App\Models\OrderStatus;
+use App\Helpers\TravellerHelper;
 
 class DashboardOrdersController extends Controller
 {
@@ -98,7 +99,11 @@ class DashboardOrdersController extends Controller
             'traveller' => $traveller,
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
             'orderStatuses' => OrderStatus::all(),
+            'travellerFieldCategories' => TravellerHelper::getTravellerFieldCategories(),
+            'travellerFields' => TravellerHelper::getTravellerFieldList( $traveller->id )
         ];
+
+        //dd($data['travellerFields']);
 
         return view('dashboard.orders.traveller.show', $data);
     }

@@ -69,7 +69,7 @@
                     <button type="button" class="btn btn-primary" id="next-1">Next</button>
                 </div>
 
-                <div id="step-2" class="form-step">
+                <div id="step-2" class="form-step form-step-active1">
                     
                     <div class="card-traveler mt-25">
 
@@ -155,7 +155,7 @@
 
                 </div>
 
-                <div id="step-3" class="form-step form-step">
+                <div id="step-3" class="form-step form-step form-step-active1">
                     <h3>Choose your processing time</h3>
 
                     <ul class="list-group">
@@ -163,7 +163,17 @@
                             <li class="list-group-item">
                                 <div class="form-check
                                     @if( $loop->first ) active @endif">
-                                    <input class="form-check-input" type="radio" name="offer_id" id="offer-{{ $offer->id }}" value="{{ $offer->id }}" @if( $loop->first ) checked @endif>
+
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="offer_id" 
+                                        id="offer-{{ $offer->id }}" 
+                                        value="{{ $offer->id }}" 
+                                        data-price="{{ $offer->price }}"
+                                        @if( $loop->first ) checked @endif
+                                        >
+                                    
                                     <label class="form-check label" for="offer-{{ $offer->id }}">
                                         <h5>{{ $offer->name }}</h5>
                                         <p>{{ $offer->description }}</p>
@@ -238,6 +248,9 @@
 
 <script>
     $(document).ready(function () {
+
+        calcTotals();
+
         // Step navigation logic
         function updateStepIndicator(step) {
             $('.step-indicator div').removeClass('active');
@@ -287,16 +300,23 @@
             traveler.find('h3').text('Traveler #' + travelerCount);
             $('.card-traveler').last().after(traveler);
 
+            // clean the fields
+            traveler.find('input').val('');
+
             // Update traveler count
             $('#traveler-count').text(travelerCount + ' travelers');
+            $('input[name="quantity"]').val(travelerCount);
 
             // Update price with currency
-            var price = parseFloat($('input[name="product_price"]').val());
-            var extras_price = parseFloat($('input[name="product_extras_price"]').val());
-            var currency = $('input[name="currency"]').val();
-            $('#price-span').text(price * travelerCount + ' ' + currency);
-            $('#extras-price-span').text(extras_price * travelerCount + ' ' + currency);
+            calcTotals();
             
+        });
+
+        // Offer selection logic
+        $('input[name="offer_id"]').change(function () {
+            var price = $(this).data('price');
+            $('input[name="product_price"]').val(price);
+            calcTotals();
         });
 
         // Submit form
@@ -379,30 +399,6 @@
             }
         });
 
-        /*
-        $('select[name^="travelers[passport-expiration-day]"]').each(function() {
-            console.log( $(this).find('option:selected').attr('value') );
-            if ($(this).val() == '') {
-                $(this).after('<label class="error">This field is required</label>');
-                isValid = false;
-            }
-        });
-
-        $('select[name^="travelers[passport-expiration-month]"]').each(function() {
-            if ($(this).val() == '') {
-                $(this).after('<label class="error">This field is required</label>');
-                isValid = false;
-            }
-        });
-
-        $('select[name^="travelers[passport-expiration-year]"]').each(function() {
-            if ($(this).val() == '') {
-                $(this).after('<label class="error">This field is required</label>');
-                isValid = false;
-            }
-        });
-        */
-
         return isValid;
 
     }
@@ -410,6 +406,19 @@
     function check_email(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
+    }
+
+    function calcTotals() {
+
+        var price = parseFloat($('input[name="product_price"]').val());
+        var extras_price = parseFloat($('input[name="product_extras_price"]').val());
+        var currency = '{{ $currency }}';
+        var travelerCount = $('input[name="quantity"]').val();
+
+        // Update price with currency
+        $('#price-span').text(price * travelerCount + ' ' + currency);
+        $('#extras-price-span').text(extras_price * travelerCount + ' ' + currency);
+
     }
 
 </script>

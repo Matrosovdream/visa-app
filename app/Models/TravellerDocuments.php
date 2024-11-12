@@ -9,10 +9,7 @@ class TravellerDocuments extends Model
 {
     protected $fillable = [
         'traveller_id',
-        'type',
-        'filename',
-        'path',
-        'description',
+        'file_id',
     ];
 
     public function traveller()
@@ -20,9 +17,11 @@ class TravellerDocuments extends Model
         return $this->belongsTo(Traveller::class);
     }
 
-    public function getDocumentPathAttribute()
+    // Has one document
+    public function document()
     {
-        return asset('storage/' . $this->path);
+        return $this->hasOne(File::class, 'id', 'file_id');
     }
+
 
 }

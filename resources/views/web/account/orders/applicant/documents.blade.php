@@ -29,8 +29,18 @@
                             <div class="card shadow-sm h-100">
                                 <!-- We display filename, path, description and remove form -->
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $document->filename }}</h5>
-                                    <p class="card-text">Description: {{ $document->description }}</p>
+                                    <a href="{{ route('file.download', $document->document->id) }}">
+                                        <h5 class="card-title">
+                                            {{ $document->document->filename }}
+                                        </h5>
+                                    </a>
+                                    <p class="card-text">Description: 
+                                        @if( $document->document->description )
+                                            {{ $document->document->description }}
+                                        @else
+                                            -
+                                        @endif
+                                    </p>
 
                                     <form action="{{ route('web.account.order.applicant.document.delete', ['order_id' => $order->id, 'applicant_id' => $applicant->id, 'document_id' => $document->id]) }}" method="POST">
                                         @csrf

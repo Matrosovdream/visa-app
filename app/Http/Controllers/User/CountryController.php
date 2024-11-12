@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Country;
 use App\Helpers\userSettingsHelper;
 use App\Services\CurrencyConverterService;
+use App\Services\GlobalsService;
 
 
 class CountryController extends Controller
@@ -25,14 +26,14 @@ class CountryController extends Controller
 
     }
 
-    public function apply(Request $request)
+    public function apply(Request $request, GlobalsService $globalsService)
     {
 
         $data = $this->getDirectionData( $request );
 
         $data['product'] = Product::find($request->product_id);
-        $data['totalPrice'] = $data['product']->offers->first()->price + $data['product']->extras->sum('price');
-        $data['currency'] = isset($_COOKIE['currency']) ? $_COOKIE['currency'] : 'USD';
+        $data['totalPrice'] = $data['product']->offers->first()->price;
+        $data['currency'] = $globalsService->getActiveCurrency()->code;
         $data['extrasPrice'] = $data['product']->extras->sum('price');
 
         // Convert currency
@@ -45,6 +46,11 @@ class CountryController extends Controller
             $offer->price = CurrencyConverterService::convert('USD', $data['currency'], $offer->price);
         }
         $data['product']->offers = $offers;
+
+        // Calculate price for every offer
+        foreach ($data['product']->offers as $offer) {
+            $offer->price = $offer->price + $data['extrasPrice'];
+        }
 
         // Convert extras price
         $extras = $data['product']->extras;

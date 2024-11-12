@@ -81,4 +81,9 @@ class Product extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
+    // Format price field to 2 decimal places
+    public function getPriceAttribute($value) {
+        return number_format($value, 0);
+    }
+
 }

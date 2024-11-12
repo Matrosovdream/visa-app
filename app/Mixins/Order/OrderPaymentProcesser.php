@@ -26,6 +26,8 @@ class OrderPaymentProcesser
 
     public function charge()
     {
+
+        $errors = [];
         
         $data = [
             'cart_data' => $this->params['cart_data'],
@@ -46,6 +48,8 @@ class OrderPaymentProcesser
         } else {
             $status = 'success';
         }
+
+        //dd($this->order->getMeta('currency'));
 
         // Save transation into database
         $data = [
@@ -86,7 +90,7 @@ class OrderPaymentProcesser
     {
         return [
             'amount' => $this->order->getTotal(),
-            'currency' => $this->order->getMeta('currency'),
+            'currency' => 'USD'
         ];
     }
     

@@ -29,4 +29,8 @@ class ProductOffers extends Model
         return $this->meta->where('key', $key)->first()->value;
     }
 
+    public function getPriceAttribute($value) {
+        return number_format($value, 0);
+    }
+
 }

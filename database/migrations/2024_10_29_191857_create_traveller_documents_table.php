@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('traveller_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('traveller_id')->on('travellers');
-            $table->string('type');
-            $table->string('filename');
-            $table->string('path');
-            $table->text('description')->nullable();
+            $table->foreignId('file_id')->on('files');
             $table->timestamps();
         });
     }

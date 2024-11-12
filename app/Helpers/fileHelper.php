@@ -4,6 +4,10 @@ namespace App\Helpers;
 class fileHelper
 {
 
+   
+
+
+    /*
     public static function prepareFile($request) {
         $file = $request->file('file');
         $filename = $file->getClientOriginalName();
@@ -60,4 +64,6 @@ class fileHelper
     {
         return 'public';
     }
+    */
+
 }
