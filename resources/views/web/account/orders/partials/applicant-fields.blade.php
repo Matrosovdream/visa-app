@@ -4,7 +4,7 @@
 
         <div class="mb-3 xb-item--field">
             <label for="field-{{ $code }}" class="form-label  w-100">
-                {{ $field['title'] }}
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             <input type="text" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]"
                 value="{{ $field['value'] }}">
@@ -16,7 +16,7 @@
 
         <div class="mb-3 xb-item--field">
             <label for="field-{{ $code }}" class="form-label  w-100">
-                {{ $field['title'] }}
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             <textarea class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">{{ $field['value'] }}</textarea>
         </div>
@@ -27,7 +27,7 @@
 
         <div class="mb-3 xb-item--field">
             <label for="field-{{ $code }}" class="form-label  w-100">
-                {{ $field['title'] }}
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             <input type="date" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]" value="{{ $field['value'] }}">
         </div>
@@ -38,7 +38,7 @@
 
         <div class="mb-3 xb-item--field">
             <label for="field-{{ $code }}" class="form-label  w-100">
-                {{ $field['title'] }}
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             <select class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">
                 <option selected disabled></option>
@@ -56,7 +56,7 @@
 
         <div class="mb-3 xb-item--field">
             <label for="field-{{ $code }}" class="form-label  w-100">
-                {{ $field['title'] }}
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             @if( isset($field['value']) )
                 <a href="{{ Storage::url($field['value']->path) }}" target="_blank">
@@ -72,7 +72,9 @@
     @if($field['type'] == 'radio')
 
         <div class="mb-3 xb-item--field">
-            <label for="field-{{ $code }}" class="form-label">{{ $field['title'] }}</label>
+            <label for="field-{{ $code }}" class="form-label">
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
+            </label>
             @foreach($field['options'] as $option)
                 <div class="form-check">
                     <label class="form-check" for="field-{{ $code }}-{{ $option['value'] }}">
@@ -91,7 +93,9 @@
     @if($field['type'] == 'checkbox')
 
         <div class="mb-3 xb-item--field">
-            <label for="field-{{ $code }}" class="form-label">{{ $field['title'] }}</label>
+            <label for="field-{{ $code }}" class="form-label">
+                {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
+            </label>
             <div class="form-check">
                 <input class="form-check w-75" type="checkbox" id="field-{{ $code }}"
                     @if( $field['value'] == 1 ) checked @endif

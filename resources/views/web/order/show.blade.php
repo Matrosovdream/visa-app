@@ -43,13 +43,29 @@
             </div>
         </div>
 
-        <div class="row mt-50">
+        @if( !$order->isPaid() )
 
-            <h1 class="mb-20">{{ __('Payment') }}</h1>
+            <div class="row mt-50">
 
-            @include('web.order.payment')
+                <h1 class="mb-20">{{ __('Payment') }}</h1>
 
-        </div>
+                @include('web.order.payment')
+
+            </div>
+
+        @else
+
+            <div class="row mt-50">
+
+                <h1 class="mb-20">{{ __('Payment') }}</h1>
+
+                <div class="alert alert-success">
+                    {{ __('Payment has been paid successfully') }}
+                </div>
+
+            </div>
+
+        @endif
 
     </div>
 
