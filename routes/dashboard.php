@@ -12,6 +12,8 @@ use App\Http\Controllers\Dashboard\DashboardSettingsController;
 use App\Http\Controllers\Dashboard\DashboardGatewaysController;
 use App\Http\Controllers\Dashboard\DashboardMyOrdersController;
 use App\Http\Controllers\Dashboard\DashboardProfileController;
+use App\Http\Controllers\Dashboard\DashboardOrderCertificatesController;
+
 
 
 
@@ -58,6 +60,11 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
         Route::get('orders/{order_id}/edit', [DashboardOrdersController::class, 'edit'])->name('dashboard.orders.edit');
         Route::post('orders/{order_id}', [DashboardOrdersController::class, 'update'])->name('dashboard.orders.update');
         Route::delete('orders/{order_id}', [DashboardOrdersController::class, 'destroy'])->name('dashboard.orders.destroy');
+
+        // Order certificates
+        Route::post('orders/{order}/certificates/create', [DashboardOrderCertificatesController::class, 'create'])->name('dashboard.orders.certificate.create');
+        Route::delete('orders/{order}/certificates/{certificate}/destroy', [DashboardOrderCertificatesController::class, 'destroy'])->name('dashboard.orders.certificate.destroy');
+        
 
         // Order travellers
         Route::get('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersList'])->name('dashboard.orders.travellers');

@@ -31,6 +31,24 @@ class OrderController extends Controller
         return view('web.account.orders.show', $data);
     }
 
+    public function documents($order_id)
+    {
+
+        $data = array('title' => '', 'order' => Order::find($order_id));
+        return view('web.account.orders.documents', $data);
+    }
+
+    public function showPreview($order_hash)
+    {
+        if( request()->has('lg') ) {
+            dd( Order::getByHash($order_hash)->getCart() );
+        }
+        
+
+        $data = array('title' => '', 'order' => Order::getByHash($order_hash));
+        return view('web.order.show', $data);
+    }
+
     public function tripDetails($order_id)
     {
         $data = array(
@@ -56,29 +74,24 @@ class OrderController extends Controller
 
     public function applicantDocuments($order_id, $applicant_id)
     {
+        $applicant = Traveller::find($applicant_id);
         return view('web.account.orders.applicant.documents', $this->getApplicantData($order_id, $applicant_id));
     }
 
     public function applicantDocumentsUpdate(Request $request, $order_id, $applicant_id)
     {
 
-
         $traveller = Traveller::find($applicant_id);    
 
         // Store the file in the 'uploads' directory
         if ($request->hasFile('document')) {
-            $filePath = $request->file('document')->store('uploads/documents', 'public');
 
-            // Optional: Get the file URL if needed
-            $fileUrl = Storage::url($filePath);
-
-            // Save the file path in the database
-            $traveller->documents()->create([
-                'type' => 'general',
-                'filename' => $request->file('document')->getClientOriginalName(),
-                'path' => $filePath,
-                'description' => 'test',
-            ]);
+            $data = ['description' => $request->description, 'order_id' => $order_id];
+            TravellerHelper::uploadDocument( 
+                $applicant_id, 
+                $request_file = 'document',
+                $data
+            );
 
         }
         
@@ -143,7 +156,7 @@ class OrderController extends Controller
 
         $order = OrderActions::createOrder($request);
         if( isset($order) ) {
-            return redirect()->route('web.order.show', $order->hash);
+            return redirect()->route('web.order.pay', $order->hash);
         } else {
             return redirect()->back();
         }

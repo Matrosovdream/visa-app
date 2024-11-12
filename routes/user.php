@@ -8,6 +8,7 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\SiteGlobalsController;
+use App\Http\Controllers\FileController;
 
 
 // Index page
@@ -20,7 +21,7 @@ Route::get('/country/{country}/apply-now', [CountryController::class, 'apply'])-
 
 // Orders processing
 Route::post('/orders/create-apply', [OrderController::class, 'createApply'])->name('web.order.create-apply');
-Route::get('/orders/{order_hash}', [OrderController::class, 'show'])->name('web.order.show');
+Route::get('/orders/{order_hash}', [OrderController::class, 'showPreview'])->name('web.order.show');
 Route::post('/orders/{order_hash}/pay', [OrderController::class, 'pay'])->name('web.order.pay');
 
 // User account
@@ -85,5 +86,8 @@ Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('web
 
 // Payment
 Route::post('charge', [PaymentController::class, 'charge'])->name('charge');
+
+// Files
+Route::get('file/{file}', [FileController::class, 'download'])->name('file.download');
 
 
