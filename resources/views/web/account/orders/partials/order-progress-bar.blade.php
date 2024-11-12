@@ -1,8 +1,8 @@
-<div class="col active-status-block">
+<div class="col @if($order->getProgress() != 1) non-active-status-block @else active-status-block @endif">
     <div class="card shadow-sm h-100">
         <div class="card-body">
 
-            @if($order->getProgress() == 1)
+            @if( !$order->isCompletedForm() )
                 <h5 class="card-title card-title-small mt-3 alert alert-danger text-center">
                     {{ __('Actions needed') }}
                 </h5>
@@ -14,12 +14,10 @@
 
             <p>{{ $order->createAt }}</p>
 
-            @if($order->getProgress() == 1)
+            @if( !$order->isCompletedForm() )
                 <p class="card-text">{{ __('We need more information from you') }}</p>
-            @elseif($order->getProgress() == 2)
+            @else
                 <p class="card-text">{{ __('We are preparing your order') }}</p>
-            @elseif($order->getProgress() == 3)
-                <p class="card-text">{{ __('Your order is completed') }}</p>
             @endif
 
         </div>
@@ -36,7 +34,7 @@
     </div>
 </div>
 
-<div class="col @if($order->getProgress() == 1) non-active-status-block @endif">
+<div class="col @if($order->getProgress() != 2) non-active-status-block @endif">
     <div class="card shadow-sm h-100">
         <div class="card-body">
             <h5 class="card-title mt-3 text-center mb-30">

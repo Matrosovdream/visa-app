@@ -3,10 +3,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\GlobalsService;
-use App\Models\Language;
-use App\Models\Currency;
-use App;
-use App\Services\CurrencyService;
+use App\Models\User;
+use App\Models\Order;
+use App\Observers\UserObserver;
+use App\Observers\OrderObserver;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         \View::share('activeLanguage', $globalsService->getActiveLanguage());
         \View::share('activeCurrency', $globalsService->getActiveCurrency());
         \View::share('siteSettings', $globalsService->getGlobals()['siteSettings']);
+
+        // Observers
+        User::observe(UserObserver::class);
+        Order::observe(OrderObserver::class);
 
     }
 }

@@ -105,6 +105,11 @@ class Order extends Model
         return true;
     }
 
+    public function setStatus($status_id) {
+        $this->status_id = $status_id;
+        $this->save();
+    }
+
     public function customerFields()
     {
         
@@ -192,6 +197,20 @@ class Order extends Model
 
     public function getTotalPriceAttribute($value) {
         return number_format($value, 0);
+    }
+
+    public function isPaid() {
+        return $this->is_paid;
+    }
+
+    public function setPaid() {
+        $this->is_paid = 1;
+        $this->save();
+    }
+
+    public function setUnpaid() {
+        $this->is_paid = 0;
+        $this->save();
     }
 
 }

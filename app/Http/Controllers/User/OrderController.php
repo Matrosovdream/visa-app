@@ -12,6 +12,7 @@ use App\Models\Traveller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TravellerDocuments;
 use App\Helpers\TravellerHelper;
+use App\Helpers\orderHelper;
 use App\Actions\Web\OrderApplicantActions as ApplicantActions;
 
 
@@ -27,13 +28,14 @@ class OrderController extends Controller
     public function show($order_id)
     {
 
+        $order = Order::find($order_id);
+
         $data = array('title' => '', 'order' => Order::find($order_id));
         return view('web.account.orders.show', $data);
     }
 
     public function documents($order_id)
     {
-
         $data = array('title' => '', 'order' => Order::find($order_id));
         return view('web.account.orders.documents', $data);
     }
@@ -69,6 +71,9 @@ class OrderController extends Controller
         $order->setMeta('time_arrival', $request->time_arrival);
         $order->setMeta('country_from_id', $request->country_from);
 
+        // Check if is completed then update status
+        orderHelper::checkUpdateStatus( $order_id );
+
         return redirect()->route('web.account.order.trip', $order_id);
     }
 
@@ -94,6 +99,9 @@ class OrderController extends Controller
             );
 
         }
+
+        // Check if is completed then update status
+        orderHelper::checkUpdateStatus( $order_id );
         
         return redirect()->route('web.account.order.applicant.documents', [$order_id, $applicant_id]);
     }
@@ -132,6 +140,10 @@ class OrderController extends Controller
     public function applicantFieldsUpdate(Request $request, $order_id, $applicant_id)
     {
         ApplicantActions::fieldsUpdate($request, $order_id, $applicant_id);
+        
+        // Check if is completed then update status
+        orderHelper::checkUpdateStatus( $order_id );
+        
         return redirect()->back();
     }
 
@@ -156,7 +168,7 @@ class OrderController extends Controller
 
         $order = OrderActions::createOrder($request);
         if( isset($order) ) {
-            return redirect()->route('web.order.pay', $order->hash);
+            return redirect()->route('web.order.show', $order->hash);
         } else {
             return redirect()->back();
         }

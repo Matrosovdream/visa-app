@@ -64,12 +64,17 @@ class TravellerHelper
                 return false;
             }
         }
-
+   
         // Check meta fields
         foreach ($fields['meta'] as $field) {
             if (empty($traveller->getMeta($field))) {
                 return false;
             }
+        }
+
+        // Check documents, should be uploaded at least one
+        if( count( $traveller->documents ) == 0) {
+            return false;
         }
 
         return true;
@@ -89,11 +94,19 @@ class TravellerHelper
             'passport',
         ];
 
-        $fields_meta = [
-            'passport_expiration_day',
-            'passport_expiration_month',
-            'passport_expiration_year',
-        ];
+        // Retrieve all required fields
+        $all_fields = self::getTravellerFieldList();
+        foreach( $all_fields as $cat => $fields ) {
+            foreach( $fields as $field_code => $field ) {
+                if( 
+                    isset($field['required']) && 
+                    $field['required'] &&
+                    $field['relate'] == 'meta'
+                    ) {
+                    $fields_meta[] = $field_code;
+                }
+            }
+        }
 
         return [
             'main' => $fields_main,
@@ -109,8 +122,8 @@ class TravellerHelper
 
         $fields = [
             'personal' => [
-                'residence_country' => ['title' => 'Country of Residence', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
-                'gender' => ['title' => 'Gender', 'type' => 'radio', 'options' => self::getReference('gender'), 'relate' => 'meta'],
+                'residence_country' => ['title' => 'Country of Residence', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'gender' => ['title' => 'Gender', 'type' => 'radio', 'required' => true,'options' => self::getReference('gender'), 'relate' => 'meta'],
                 //'nationality' => ['title' => 'Nationality', 'type' => 'boolean', 'relate' => 'meta'],
                 'residence_address' => ['title' => 'Residence address', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
                 'residence_city' => ['title' => 'Residence city or Town', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
@@ -122,19 +135,19 @@ class TravellerHelper
                 'passport' => ['title' => 'Passport', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
                 'passport_issue_date' => ['title' => 'Passport Issue Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
                 'passport_expiration_date' => ['title' => 'Passport Expiration Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
-                'birth_country' => ['title' => 'Country of Birth', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
-                'passport_issue_country' => ['title' => 'Which country issued your passport', 'type' => 'select', 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'birth_country' => ['title' => 'Country of Birth', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'passport_issue_country' => ['title' => 'Which country issued your passport', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
             ],
             'family' => [
-                'marital_status' => ['title' => 'Marital status', 'type' => 'select', 'options' => self::getReference('marital_status'), 'relate' => 'meta'],
+                'marital_status' => ['title' => 'Marital status', 'type' => 'select', 'required' => true, 'options' => self::getReference('marital_status'), 'relate' => 'meta'],
             ],
             'past_travel' => [
-                'past_travel_country' => ['title' => 'Have you previously visited country?', 'type' => 'radio', 'options' => self::getReference('boolean'), 'relate' => 'meta'],
-                'past_travel_date' => ['title' => 'When did you arrive?', 'type' => 'date', 'relate' => 'meta'],
-                'past_travel_departure' => ['title' => 'When did you depart?', 'type' => 'date', 'relate' => 'meta'],
+                'past_travel_country' => ['title' => 'Have you previously visited country?', 'type' => 'radio', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
+                'past_travel_date' => ['title' => 'When did you arrive?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
+                'past_travel_departure' => ['title' => 'When did you depart?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
             ],
             'declarations' => [
-                'is_previous_country_deport' => ['title' => 'Have you ever been deported from country or another country?', 'type' => 'radio', 'options' => self::getReference('boolean'), 'relate' => 'meta'],
+                'is_previous_country_deport' => ['title' => 'Have you ever been deported from country or another country?', 'type' => 'radio', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
             ],
         ];
 

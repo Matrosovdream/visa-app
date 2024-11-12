@@ -1,6 +1,8 @@
 <div class="d-flex justify-content-between mb-40">
     <h4>{{ __('Order Details') }}</h4>
+    @php /*
     <a href="#" class="text-primary">{{ __('View Invoice') }}</a>
+    */ @endphp
 </div>
 <table class="table">
     <thead>
