@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Helpers\orderHelper;
 use App\Models\Traveller;
+use App\Models\User;
+use App\Models\OrderCertificate;
 
 class Order extends Model
 {
@@ -74,6 +76,10 @@ class Order extends Model
     public function history()
     {
         return $this->hasMany(OrderHistory::class);
+    }
+
+    public function certificates() {
+        return $this->hasMany(OrderCertificate::class);
     }
 
     public function scopeFilter($query, array $filters)
@@ -148,6 +154,10 @@ class Order extends Model
         return orderHelper::getProgress($this);
     }
 
+    public function getCart() {
+        return orderHelper::getCart($this);
+    }
+
     public function countryFrom()
     {
         $country_id = $this->meta->where('key', 'country_from_id')->first()->value;
@@ -180,6 +190,8 @@ class Order extends Model
         return static::where('user_id', $user_id)->where('id', $order_id)->exists();
     }
 
-    
+    public function getTotalPriceAttribute($value) {
+        return number_format($value, 0);
+    }
 
 }

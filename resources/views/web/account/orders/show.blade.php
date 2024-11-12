@@ -10,6 +10,10 @@
 
     <hr/>
 
+    <a href="{{ route('web.order.show', $order->hash) }}" class="btn btn-primary">
+        Pay
+    </a>
+
     <!-- Order Summary -->
     <h4 class="mb-15">{{ __('Order Summary') }}</h4>
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-35">

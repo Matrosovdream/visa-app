@@ -27,7 +27,7 @@
                 </td>
                 <td>
                     <a href="{{ route('dashboard.orders.traveller.show', ['order_id' => $order->id, 'traveller_id' => $traveller['id']]) }}"
-                        class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                        class="btn btn-sm btn-light btn-active-light-primary">Show</a>
                     <a href="{{ route('dashboard.orders.traveller.destroy', ['order_id' => $order->id, 'traveller_id' => $traveller['id']]) }}"
                         class="btn btn-sm btn-light btn-active-light-primary">Delete</a>
                 </td>

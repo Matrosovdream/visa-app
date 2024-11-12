@@ -5,35 +5,47 @@
     <div class="container mt-30 mb-30">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="mb-20">Order Details #{{ $order->id }}</h1>
+                <h1 class="mb-20">
+                    {{ __('Order Details') }} #{{ $order->id }}</h1>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th class="text-center">Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
+                            <th>{{ __('Product Name') }}</th>
+                            <th>{{ __('Price') }}</th>
+                            <th class="text-center">{{ __('Quantity') }}</th>
+                            <th>{{ __('Total') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($order->cartProducts as $product)
+                        @foreach($order->getCart() as $item)
                             <tr>
-                                <td>{{ $product->product->name }}</td>
-                                <td class="text-center">{{ $product->quantity }}</td>
-                                <td>{{ $product->price }} {{ $order->getCurrency() }}</td>
-                                <td>{{ $product->total }} {{ $order->getCurrency() }}</td>
+                                <td>{{ $item['product']['name'] }} ({{ $item['offer']['name'] }})</td>
+                                <td>{{ $item['offer']['price'] }} {{ $order->getCurrency() }}</td>
+                                <td class="text-center">{{ $item['quantity'] }}</td>
+                                <td>{{ $item['offer']['total'] }} {{ $order->getCurrency() }}</td>
                             </tr>
+                            @foreach( $item['extras'] as $extra )
+
+                                <tr>
+                                    <td>{{ $extra['name'] }}</td>
+                                    <td>{{ $extra['price'] }} {{ $order->getCurrency() }}</td>
+                                    <td class="text-center">{{ $extra['quantity'] }}</td>
+                                    <td>{{ $extra['total'] }} {{ $order->getCurrency() }}</td>
+                                </tr>
+
+                            @endforeach    
+
                         @endforeach
                     </tbody>
                 </table>
-                <h3>Total: {{ $order->getTotal() }} {{ $order->getCurrency() }}</h3>
+                <h3>{{ __('Total') }}: {{ $order->getTotal() }} {{ $order->getCurrency() }}</h3>
 
             </div>
         </div>
 
         <div class="row mt-50">
 
-            <h1 class="mb-20">Payment</h1>
+            <h1 class="mb-20">{{ __('Payment') }}</h1>
 
             @include('web.order.payment')
 

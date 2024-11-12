@@ -14,22 +14,22 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="xb-item--field">
-                <input type="text" name="cc_number" placeholder="Card Number" />
+                <input type="text" name="cc_number" placeholder="Card Number" value="370000000000002" />
             </div>
         </div>
         <div class="col-lg-6">
             <div class="xb-item--field">
-                <input type="text" name="expiry_month" placeholder="Month" />
+                <input type="text" name="expiry_month" placeholder="Month" value="12" />
             </div>
         </div>
         <div class="col-lg-6">
             <div class="xb-item--field">
-                <input type="number" name="expiry_year" placeholder="Year" />
+                <input type="number" name="expiry_year" placeholder="Year" value="25" />
             </div>
         </div>
         <div class="col-lg-6">
             <div class="xb-item--field">
-                <input type="number" name="cvv" placeholder="CVV" />
+                <input type="number" name="cvv" placeholder="CVV" value="123" />
             </div>
         </div>
         <div class="col-12">

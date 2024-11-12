@@ -4,6 +4,7 @@ namespace App\Helpers;
 use App\Models\Traveller;
 use App\Models\File;
 use App\Models\Country;
+use Illuminate\Support\Facades\Storage;
 
 class TravellerHelper
 {
@@ -14,7 +15,7 @@ class TravellerHelper
         $groupedData = [];
         foreach ($data as $key => $values) {
             foreach ($values as $index => $value) {
-                $groupedData[$index][ $key] = $value;
+                $groupedData[$index][$key] = $value;
             }
         }
 
@@ -52,10 +53,10 @@ class TravellerHelper
 
     }
 
-    public static function isCompletedForm( $traveller )
+    public static function isCompletedForm($traveller)
     {
 
-        $fields = self::getRequiredFields( $traveller->id );
+        $fields = self::getRequiredFields($traveller->id);
 
         // Check main fields
         foreach ($fields['main'] as $field) {
@@ -72,10 +73,11 @@ class TravellerHelper
         }
 
         return true;
-        
+
     }
 
-    public static function getRequiredFields( $traveller_id ) {
+    public static function getRequiredFields($traveller_id)
+    {
 
         $traveller = Traveller::find($traveller_id);
         $order = $traveller->orders()->first();
@@ -100,7 +102,8 @@ class TravellerHelper
 
     }
 
-    public static function getTravellerFieldList( $traveller_id=null, $product_id=null ) {
+    public static function getTravellerFieldList($traveller_id = null, $product_id = null)
+    {
 
         $cats = self::getTravellerFieldCategories();
 
@@ -136,7 +139,7 @@ class TravellerHelper
         ];
 
         // if isset traveller_id then fill in the array with values
-        if( $traveller_id ) {
+        if ($traveller_id) {
             $traveller = Traveller::find($traveller_id);
             foreach ($fields as $cat => $field) {
                 foreach ($field as $field_code => $data) {
@@ -144,14 +147,24 @@ class TravellerHelper
                     switch ($data['relate']) {
                         case 'entity':
                             $fields[$cat][$field_code]['value'] = $traveller->{$field_code};
-                        break;
+                            break;
                         case 'file':
                             $fileId = $traveller->getMeta($field_code);
                             $fields[$cat][$field_code]['value'] = File::find($fileId);
-                        break;
+                            break;
                         case 'meta':
+                            // If it's select then take the value from the
+                            if ($data['type'] == 'select') {
+                                foreach ($data['options'] as $option) {
+                                    if ($option['value'] == $traveller->getMeta($field_code)) {
+                                        $fields[$cat][$field_code]['valueModel'] = $option;
+                                        break;
+                                    }
+                                }
+                            }
+
                             $fields[$cat][$field_code]['value'] = $traveller->getMeta($field_code);
-                        break;
+                            break;
                     }
 
                 }
@@ -164,7 +177,8 @@ class TravellerHelper
 
     }
 
-    public static function getReference($ref_code) {
+    public static function getReference($ref_code)
+    {
 
         $references = [
             'countries' => self::prepareCountryRef(),
@@ -176,7 +190,8 @@ class TravellerHelper
 
     }
 
-    public static function prepareBooleanRef() {
+    public static function prepareBooleanRef()
+    {
 
         $boolean = [
             ['value' => 'yes', 'title' => 'Yes'],
@@ -186,7 +201,8 @@ class TravellerHelper
 
     }
 
-    public static function prepareCountryRef() {
+    public static function prepareCountryRef()
+    {
 
         $countries = Country::all();
         $countriesRef = [];
@@ -201,17 +217,19 @@ class TravellerHelper
 
     }
 
-    public static function prepareGenderRef() {
+    public static function prepareGenderRef()
+    {
 
         $genders = [
             ['value' => 'male', 'title' => 'Male'],
-            ['value' => 'female', 'title' => 'Female'],    
+            ['value' => 'female', 'title' => 'Female'],
         ];
         return $genders;
 
     }
 
-    public static function prepareMaritalStatusRef() {
+    public static function prepareMaritalStatusRef()
+    {
 
         $statuses = [
             ['value' => 'single', 'title' => 'Single'],
@@ -224,7 +242,8 @@ class TravellerHelper
     }
 
 
-    public static function getTravellerFieldListAll() {
+    public static function getTravellerFieldListAll()
+    {
 
         $cats = self::getTravellerFieldList();
 
@@ -240,14 +259,16 @@ class TravellerHelper
 
     }
 
-    public static function getTravellerField($field_code) {
+    public static function getTravellerField($field_code)
+    {
 
         $fields = self::getTravellerFieldListAll();
         return $fields[$field_code];
 
     }
 
-    public static function updateTravellerField($applicant_id, $field, $value) {
+    public static function updateTravellerField($applicant_id, $field, $value)
+    {
 
         $traveller = Traveller::find($applicant_id);
 
@@ -257,10 +278,10 @@ class TravellerHelper
             case 'entity':
                 $traveller->{$field['code']} = $value;
                 $traveller->save();
-            break;
+                break;
             case 'file':
                 // Upload file from request
-                $file_raw = request()->file( 'fields.'.$field['code'] );
+                $file_raw = request()->file('fields.' . $field['code']);
 
                 // Save file
                 $file = $file_raw->store('public/files');
@@ -280,22 +301,59 @@ class TravellerHelper
                 break;
             case 'meta':
                 $traveller->setMeta($field['code'], $value);
-            break;
+                break;
         }
 
-    }            
+    }
 
-    public static function getTravellerFieldCategories() {
+    public static function getTravellerFieldCategories()
+    {
 
         $cats = [
-            'personal' => ['title' => __('Personal'), 'route' => 'web.account.order.applicant.personal'],
-            'passport' => ['title' => __('Passport'), 'route' => 'web.account.order.applicant.passport'],
-            'family' => ['title' => __('Family'), 'route' => 'web.account.order.applicant.family'],
-            'past_travel' => ['title' => __('Past Travel'), 'route' => 'web.account.order.applicant.past-travel'],
-            'declarations' => ['title' => __('Declarations'), 'route' => 'web.account.order.applicant.declarations'],
+            'personal' => ['title' => __('Personal'), 'slug' => 'personal', 'route' => 'web.account.order.applicant.personal'],
+            'passport' => ['title' => __('Passport'), 'slug' => 'passport', 'route' => 'web.account.order.applicant.passport'],
+            'family' => ['title' => __('Family'), 'slug' => 'family', 'route' => 'web.account.order.applicant.family'],
+            'past_travel' => ['title' => __('Past Travel'), 'slug' => 'past_travel', 'route' => 'web.account.order.applicant.past-travel'],
+            'declarations' => ['title' => __('Declarations'), 'slug' => 'declarations', 'route' => 'web.account.order.applicant.declarations'],
         ];
 
         return $cats;
+
+    }
+
+    public static function uploadDocument($applicant_id, $request_file, $data = [])
+    {
+
+        $path = 'uploads/travellers/'.$applicant_id;
+        $disk = 'local';
+
+        $file = request()->file($request_file);
+        $filename = $file->getClientOriginalName();
+        $filesize = $file->getSize();
+        $type = $file->getMimeType();
+        $extension = $file->getClientOriginalExtension();
+
+        // We set an origin filename to the file
+        $filePath = request()->file($request_file)->storeAs($path, $filename, $disk);
+
+        // Insert into the database
+        $file = new File();
+        $file->filename = $filename;
+        $file->path = $filePath;
+        $file->type = $type;
+        $file->size = $filesize;
+        $file->extension = $extension;
+        $file->description = '';
+        $file->disk = $disk;
+        $file->visibility = 'private';
+        $file->user_id = auth('')->user()->id;
+        $file->save();
+
+        // Save the file path in the database
+        $traveller = Traveller::find($applicant_id);
+        $traveller->documents()->create([
+            'file_id' => $file->id,
+        ]);
 
     }
 

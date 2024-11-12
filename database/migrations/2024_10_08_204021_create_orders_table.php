@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->on('users')->nullable();
             $table->string('status_id')->on('order_statuses')->nullable();
             $table->string('payment_method_id')->on('payment_gateways')->nullable();
+            $table->string('currency')->default('USD');
+            $table->boolean('is_paid')->default(false);
             $table->decimal('total_price', 10, 2)->default(0);
             $table->timestamps();
         });

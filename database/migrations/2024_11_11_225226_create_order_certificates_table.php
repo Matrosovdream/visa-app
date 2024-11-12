@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('traveller_meta', function (Blueprint $table) {
+        Schema::create('order_certificates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('traveller_id')->on('travellers');
-            $table->string('key');
-            $table->text('value')->nullable();
+            $table->foreignId('order_id')->on('order');
+            $table->foreignId('file_id')->on('files');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('traveller_meta');
+        Schema::dropIfExists('order_certificates');
     }
 };

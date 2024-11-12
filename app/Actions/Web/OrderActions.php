@@ -20,7 +20,7 @@ class OrderActions {
     public static function createOrder( Request $request ) {
 
         // Create or find user by email
-        $USER = self::createUser($request, $role = 'user');
+        $USER = auth()->user() ?? self::createUser($request, $role = 'user');
 
         // Log in user
         auth()->login($USER);
@@ -137,6 +137,7 @@ class OrderActions {
     public static function addTravellers( $order, $request ) {
 
         $travellers = TravellerHelper::preparePostTraveller( $request->travelers );
+        //dd($travellers);
         foreach ($travellers as $traveller) {
 
             $travellerSet = $order->travellers()->create($traveller['traveller']);
