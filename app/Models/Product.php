@@ -46,6 +46,13 @@ class Product extends Model
         return $this->meta->where('key', $slug)->first()->value;
     }
 
+    public function priceFrom()
+    {
+        return $this->offers()->get()->sortBy(function ($offer) {
+            return $offer->price;
+        })->first()->price;
+    }
+
     // Search by fields
     public function scopeSearch($query, $s)
     {

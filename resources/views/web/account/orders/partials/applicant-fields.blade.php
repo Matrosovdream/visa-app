@@ -8,6 +8,11 @@
             </label>
             <input type="text" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]"
                 value="{{ $field['value'] }}">
+            @if( isset($field['icon']) ) 
+                <span class="icon">
+                    <img src="{{ asset('/user/assets/img/icon/'.$field['icon']) }}" alt="">
+                </span>
+            @endif
         </div>
 
     @endif
@@ -19,6 +24,11 @@
                 {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
             <textarea class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]">{{ $field['value'] }}</textarea>
+            @if( isset($field['icon']) ) 
+                <span class="icon">
+                    <img src="{{ asset('/user/assets/img/icon/'.$field['icon']) }}" alt="">
+                </span>
+            @endif
         </div>
 
     @endif
@@ -29,7 +39,12 @@
             <label for="field-{{ $code }}" class="form-label  w-100">
                 {{ $field['title'] }} {{ $field['required'] ? '*' : '' }}
             </label>
-            <input type="date" class="form-control w-75" id="field-{{ $code }}" name="fields[{{ $code }}]" value="{{ $field['value'] }}">
+            <input type="text" class="form-control w-75 datepicker" id="field-{{ $code }}" name="fields[{{ $code }}]" value="{{ $field['value'] }}">
+            @if( isset($field['icon']) ) 
+                <span class="icon">
+                    <img src="{{ asset('/user/assets/img/icon/'.$field['icon']) }}" alt="">
+                </span>
+            @endif
         </div>
 
     @endif

@@ -55,3 +55,22 @@
     color: #7f3b3b;
     font-weight: bold;
 }
+
+.header__language .lang_sub_list li button {
+    color: #646c76;
+    display: block;
+    padding-right: 29px;
+    min-height: 37px;
+    line-height: 37px;
+    padding-left: 18px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.apply-form .xb-item--field span.icon {
+    top: 53px;
+}
+
+.apply-form .xb-item--field span.icon-select {
+    top: 19px!important;
+}

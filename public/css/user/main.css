@@ -7514,7 +7514,7 @@ a.ui-button:active, .ui-button:active,
 .earth {
   width: 160px;
   height: 160px;
-  background: url("../../../public/user/assets/img/bg/preloader.png");
+  background: url("/user/assets/img/bg/preloader.png");
   border-radius: 100%;
   background-size: 340px;
   animation: earthAnim 12s infinite linear;

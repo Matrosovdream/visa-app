@@ -23,7 +23,7 @@
                 <form 
                     method="POST" 
                     action="{{ route('web.account.order.trip.update', $order->id) }}"
-                    class="xb-item--form contact-from w-75"
+                    class="xb-item--form contact-from w-75 apply-form"
                     >
                     @csrf
 
@@ -33,13 +33,15 @@
                             <label for="phone" class="form-label  w-100">Phone number</label>
                             <input type="tel" class="form-control w-75" id="phone" name="phone"
                                 value="{{ $order->getMeta('phone') }}">
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_call.svg') }}" alt=""></span>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label for="arrivalDate" class="form-label w-100">When do you arrive in
                                 {{ $order->countryTo()->name }}?</label>
-                            <input type="date" class="form-control w-75" name="time_arrival"
+                            <input type="text" class="form-control w-50 datepicker" name="time_arrival"
                                 value="{{ $order->getMeta('time_arrival') }}">
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/location-2.svg') }}" alt=""></span>
                         </div>
 
                         <div class="mb-3 xb-item--field">
