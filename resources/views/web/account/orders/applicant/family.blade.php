@@ -28,7 +28,7 @@
                     <form 
                         method="POST" 
                         action="{{ route('web.account.order.applicant.fields.update', ['order_id' => $order->id, 'applicant_id' => $applicant->id]) }}"
-                        class="xb-item--form contact-from w-75"
+                        class="xb-item--form contact-from w-75 apply-form"
                         enctype="multipart/form-data"
                         >
                         @csrf

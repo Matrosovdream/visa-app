@@ -39,6 +39,13 @@
 						placeholder="Pick date & time" />
 				</div>
 			</div>
+
+			<div class="d-flex justify-content-center mt-30">
+				<button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+					<span class="indicator-label">Save Changes</span>
+				</button>
+			</div>
+
 		</div>
 	</div>
 
@@ -107,7 +114,7 @@
 								<!--end::Label-->
 								<!--begin::Editor-->
 								<div id="kt_ecommerce_add_product_description" class="min-h-200px mb-2">
-									<textarea name="description" id="editor" class="form-control"
+									<textarea name="description" id="editor1" class="form-control"
 										rows="10">{{ $product->description }}</textarea>
 								</div>
 								<!--end::Editor-->
@@ -122,187 +129,6 @@
 					</div>
 					<!--end::General options-->
 
-					<!--begin::Pricing-->
-					<div class="card card-flush py-4">
-						<!--begin::Card header-->
-						<div class="card-header">
-							<div class="card-title">
-								<h2>Pricing</h2>
-							</div>
-						</div>
-
-						<div class="card-body pt-0">
-							<!--begin::Input group-->
-							<div class="mb-10 fv-row fv-plugins-icon-container">
-								<!--begin::Label-->
-								<label class="required form-label">Base Price</label>
-								<input type="text" name="price" class="form-control mb-2" placeholder="Product price"
-									value="{{ $product->price }}" name="price">
-								<div class="text-muted fs-7">Set the product price.</div>
-								<div
-									class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-								</div>
-							</div>
-							<!--end::Input group-->
-							<!--begin::Input group-->
-							<div class="fv-row mb-10">
-								<!--begin::Label-->
-								<label class="fs-6 fw-semibold mb-2">Discount Type
-									<span class="ms-1" data-bs-toggle="tooltip"
-										aria-label="Select a discount type that will be applied to this product"
-										data-bs-original-title="Select a discount type that will be applied to this product"
-										data-kt-initialized="1">
-										<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-											<span class="path1"></span>
-											<span class="path2"></span>
-											<span class="path3"></span>
-										</i>
-									</span></label>
-								<!--End::Label-->
-								<!--begin::Row-->
-								<div class="row row-cols-1 row-cols-md-3 row-cols-lg-1 row-cols-xl-3 g-9"
-									data-kt-buttons="true" data-kt-buttons-target="[data-kt-button='true']"
-									data-kt-initialized="1">
-									<!--begin::Col-->
-									<div class="col">
-										<!--begin::Option-->
-										<label
-											class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 active"
-											data-kt-button="true">
-											<!--begin::Radio-->
-											<span
-												class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-												<input class="form-check-input" type="radio" name="discount_option"
-													value="1">
-											</span>
-											<!--end::Radio-->
-											<!--begin::Info-->
-											<span class="ms-5">
-												<span class="fs-4 fw-bold text-gray-800 d-block">No Discount</span>
-											</span>
-											<!--end::Info-->
-										</label>
-										<!--end::Option-->
-									</div>
-
-									<div class="col">
-										<!--begin::Option-->
-										<label
-											class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6"
-											data-kt-button="true">
-											<!--begin::Radio-->
-											<span
-												class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-												<input class="form-check-input" type="radio" name="discount_option"
-													value="2" checked="checked">
-											</span>
-											<!--end::Radio-->
-											<!--begin::Info-->
-											<span class="ms-5">
-												<span class="fs-4 fw-bold text-gray-800 d-block">Percentage %</span>
-											</span>
-											<!--end::Info-->
-										</label>
-										<!--end::Option-->
-									</div>
-
-									<div class="col">
-										<label
-											class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6"
-											data-kt-button="true">
-											<span
-												class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-												<input class="form-check-input" type="radio" name="discount_option"
-													value="3">
-											</span>
-											<span class="ms-5">
-												<span class="fs-4 fw-bold text-gray-800 d-block">Fixed Price</span>
-											</span>
-										</label>
-									</div>
-
-								</div>
-								<!--end::Row-->
-							</div>
-
-							<div class="mb-10 fv-row d-none" id="kt_ecommerce_add_product_discount_percentage">
-								<!--begin::Label-->
-								<label class="form-label">Set Discount Percentage</label>
-								<!--end::Label-->
-								<!--begin::Slider-->
-								<div class="d-flex flex-column text-center mb-5">
-									<div class="d-flex align-items-start justify-content-center mb-7">
-										<span class="fw-bold fs-3x"
-											id="kt_ecommerce_add_product_discount_label">10</span>
-										<span class="fw-bold fs-4 mt-1 ms-2">%</span>
-									</div>
-									<div id="kt_ecommerce_add_product_discount_slider"
-										class="noUi-sm noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr">
-										<div class="noUi-base">
-											<div class="noUi-connects"></div>
-											<div class="noUi-origin"
-												style="transform: translate(-90.9091%, 0px); z-index: 4;">
-												<div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0"
-													role="slider" aria-orientation="horizontal" aria-valuemin="1.0"
-													aria-valuemax="100.0" aria-valuenow="10.0" aria-valuetext="10.00">
-													<div class="noUi-touch-area"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="text-muted fs-7">Set a percentage discount to be applied on this product.
-								</div>
-
-							</div>
-
-							<div class="mb-10 fv-row d-none" id="kt_ecommerce_add_product_discount_fixed">
-								<!--begin::Label-->
-								<label class="form-label">Fixed Discounted Price</label>
-								<input type="text" name="dicsounted_price" class="form-control mb-2"
-									placeholder="Discounted price">
-
-								<div class="text-muted fs-7">Set the discounted product price. The product will be
-									reduced at the determined fixed price</div>
-								<!--end::Description-->
-							</div>
-
-							<div class="d-flex flex-wrap gap-5">
-								<!--begin::Input group-->
-								<div class="fv-row w-100 flex-md-root fv-plugins-icon-container">
-									<!--begin::Label-->
-									<label class="required form-label">Tax Class</label>
-
-									<select class="form-select mb-2 select2-hidden-accessible" name="tax"
-										data-control="select2" data-hide-search="true"
-										data-placeholder="Select an option" data-select2-id="select2-data-15-jvx0"
-										tabindex="-1" aria-hidden="true" data-kt-initialized="1">
-										<option></option>
-										<option value="0">Tax Free</option>
-										<option value="1" selected="selected" data-select2-id="select2-data-17-78w5">
-											Taxable Goods</option>
-										<option value="2">Downloadable Product</option>
-									</select>
-
-									<div class="text-muted fs-7">Set the product tax class.</div>
-									<!--end::Description-->
-									<div
-										class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-									</div>
-								</div>
-
-								<div class="fv-row w-100 flex-md-root">
-									<label class="form-label">VAT Amount (%)</label>
-									<input type="text" class="form-control mb-2" value="35">
-									<div class="text-muted fs-7">Set the product VAT about.</div>
-								</div>
-								<!--end::Input group-->
-							</div>
-							<!--end:Tax-->
-						</div>
-
-					</div>
 				</div>
 			</div>
 
@@ -397,16 +223,20 @@
 													</div>
 
 													<div class="w-50 w-md-50px">
-														<button type="button" data-repeater-delete=""
-															class="btn btn-sm btn-icon btn-light-danger">
-															<i class="ki-duotone ki-cross fs-1">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>
-														</button>
+
+														<a 
+															href="#" 
+															class="btn btn-sm fw-bold btn-primary" 
+															data-bs-toggle="modal" 
+															data-bs-target="#kt_modal_product_offer_{{ $offer->id }}">
+															Edit
+														</a>
+
 													</div>
 
 												</div>
+
+												@include('dashboard.products.offers.index', ['offer' => $offer])
 
 											@endforeach
 
