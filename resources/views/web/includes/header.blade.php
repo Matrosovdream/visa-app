@@ -6,8 +6,8 @@
                 <div class="header__top-cta">
                     <img src="{{ asset('user/assets/img/icon/n_pad.svg') }}" alt="">
                     <span>
-                        {{ __('Help Desk') }}:</span> 
-                        {{ $siteSettings['phone'] }}
+                        {{ __('Help Desk') }}:</span>
+                    {{ $siteSettings['phone'] }}
                 </div>
                 <ul class="header__top-info ul_li">
                     <li><img src="{{ asset('user/assets/img/icon/time.svg') }}" alt="">
@@ -199,6 +199,7 @@
                         <img src="{{ asset('user/assets/img/logo/logo.svg') }}" alt="">
                     </a>
                 </div>
+                <!--
                 <div class="xb-header-mobile-search xb-hide-xl">
                     <form role="search" action="#">
                         <input type="text" placeholder="Search..." name="s" class="search-field">
@@ -206,48 +207,10 @@
                         </button>
                     </form>
                 </div>
+                -->
                 <nav class="xb-header-nav">
                     <ul class="xb-menu-primary clearfix">
-                        <li class="menu-item menu-item-has-children">
-                            <a href="#"><span>Home</span></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a href="index.html"><span>Immigration</span></a></li>
-                                <li class="menu-item"><a href="home-studient-visa.html"><span>Studient
-                                            Visa</span></a></li>
-                                <li class="menu-item"><a href="home-travel-agency.html"><span>Travel
-                                            Agency</span></a></li>
-                                <li class="menu-item"><a href="home-rtl.html"><span>Demo RTL</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item menu-item-has-children">
-                            <a href="#"><span>Pages</span></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a href="services.html"><span>Services</span></a></li>
-                                <li class="menu-item"><a href="service-single.html"><span>Service
-                                            Details</span></a></li>
-                                <li class="menu-item"><a href="coaching.html"><span>Coaching</span></a></li>
-                                <li class="menu-item"><a href="coaching-single.html"><span>Coaching
-                                            Details</span></a></li>
-                                <li class="menu-item"><a href="visa.html"><span>Visa</span></a></li>
-                                <li class="menu-item"><a href="visa-single.html"><span>Visa Details</span></a>
-                                </li>
-                                <li class="menu-item"><a href="team.html"><span>Team</span></a></li>
-                                <li class="menu-item"><a href="team-single.html"><span>Team Details</span></a>
-                                </li>
-                                <li class="menu-item"><a href="testimonial.html"><span>Testimonials</span></a>
-                                </li>
-                                <li class="menu-item"><a href="faq.html"><span>FAQ</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item"><a href="about.html"><span>About us</span></a></li>
-                        <li class="menu-item menu-item-has-children">
-                            <a href="#"><span>Country</span></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a href="country.html"><span>Country</span></a></li>
-                                <li class="menu-item"><a href="country-single.html"><span>Country
-                                            Details</span></a></li>
-                            </ul>
-                        </li>
+                        <!--
                         <li class="menu-item menu-item-has-children">
                             <a href="#"><span>Blog</span></a>
                             <ul class="sub-menu">
@@ -256,7 +219,66 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="menu-item"><a href="contact.html"><span>Contact</span></a></li>
+                        -->
+
+                        @foreach($menuTop as $menu)
+                            <li class="menu-item">
+                                <a href="{{ $menu['url'] }}"><span>{{ $menu['title'] }}</span></a>
+
+                                @if(isset($menu['childs']))
+                                    <ul class="sub-menu">
+                                        @foreach($menu['childs'] as $subMenu)
+                                            <li class="menu-item">
+                                                <a href="{{ $subMenu->url }}"><span>{{ $subMenu->title }}</span></a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+
+                            </li>
+                        @endforeach
+
+                        @if(Auth::check())
+
+                            <li class="menu-item menu-item-has-children">
+                                <a href="#">
+                                    <span>{{ __('Dashboard') }}</span>
+                                </a>
+                                <ul class="sub-menu">
+
+                                    <li class="menu-item">
+                                        <a href="{{ route('web.account.index') }}">
+                                            {{ __('Account') }}
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{ route('web.account.orders') }}">
+                                            {{ __('Orders') }}
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <span>{{ __('Log out') }}</span>
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        @else
+
+                            <li class="menu-item">
+                                <a href="{{ route('login') }}">
+                                    <span>{{ __('Login') }}</span>
+                                </a>
+                            </li>
+
+                        @endif
+
                     </ul>
                 </nav>
             </div>
@@ -267,6 +289,7 @@
 <!-- header end -->
 
 <!-- header search start -->
+<!--
 <div class="header-search-form-wrapper">
     <div class="xb-search-close xb-close"></div>
     <div class="header-search-container">
@@ -275,4 +298,5 @@
         </form>
     </div>
 </div>
+-->
 

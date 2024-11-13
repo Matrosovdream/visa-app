@@ -24,12 +24,8 @@
     <div class="row">
 
         <div class="col-md-8">
-            <form 
-                id="multiStepForm" 
-                class="xb-item--form contact-from" 
-                method="POST" 
-                action="{{ route('web.order.create-apply') }}"
-                >
+            <form id="multiStepForm" class="xb-item--form contact-from apply-form" method="POST"
+                action="{{ route('web.order.create-apply') }}">
 
                 @csrf
 
@@ -48,29 +44,36 @@
                 <div id="step-1" class="form-step form-step-active">
                     <h3>Trip details</h3>
                     <div class="mb-3 xb-item--field">
-                        <label for="arrivalDate" class="form-label w-100">When do you arrive in {{ $country->name }}?</label>
-                        <input type="date" class="form-control w-75" name="time_arrival" id="arrivalDate" required>
+                    
+                        <label for="arrivalDate" class="form-label w-100">When do you arrive in
+                            {{ $country->name }}?</label>
+                        <input type="text" class="form-control w-50 datepicker" name="time_arrival" id="arrivalDate" required>
+                        <span class="icon"><img src="{{ asset('/user/assets/img/icon/location-2.svg') }}" alt=""></span>
                     </div>
 
                     <div class="mb-3 xb-item--field">
                         <label for="full_name" class="form-label  w-100">Your full name</label>
                         <input type="text" class="form-control w-75" id="full_name" name="full_name" required>
+                        <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt=""></span>
                     </div>
 
                     <div class="mb-3 xb-item--field">
                         <label for="phone" class="form-label  w-100">Phone number</label>
                         <input type="tel" class="form-control w-75" id="phone" name="phone" required>
+                        <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_call.svg') }}" alt=""></span>
                     </div>
-                    
+
                     <div class="mb-3 xb-item--field">
                         <label for="email" class="form-label  w-100">Email address</label>
-                        <input type="email" class="form-control w-75" id="email" name="email" placeholder="example@mail.com" required>
+                        <input type="email" class="form-control w-75" id="email" name="email"
+                            placeholder="example@mail.com" required>
+                        <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_mail.svg') }}" alt=""></span>
                     </div>
                     <button type="button" class="btn btn-primary" id="next-1">Next</button>
                 </div>
 
                 <div id="step-2" class="form-step form-step-active1">
-                    
+
                     <div class="card-traveler mt-25">
 
                         <h3>Traveler #1</h3>
@@ -78,21 +81,27 @@
                         <div class="mb-3 xb-item--field">
                             <label class="form-label w-100">First and middle name</label>
                             <input type="text" name="travelers[name][]" class="form-control w-75" required>
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt=""></span>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label class="form-label w-100">Last name</label>
                             <input type="text" name="travelers[lastname][]" class="form-control w-75" required>
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt=""></span>
                         </div>
 
                         <div class="mb-3 xb-item--field">
-                            <label for="arrivalDate" class="form-label w-100">Birthday</label>
-                            <input type="date" name="travelers[birthday][]" class="form-control w-75" id="arrivalDate" required>
+                            <label for="birthday" class="form-label w-100">Birthday</label>
+                            <input type="text" class="form-control w-50 datepicker" name="travelers[birthday][]" id="birthday"
+                                required>
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt=""></span>
                         </div>
 
                         <div class="mb-3 xb-item--field">
                             <label for="arrivalDate" class="form-label w-100">Passport number</label>
-                            <input type="text" name="travelers[passport][]" class="form-control w-75" id="arrivalDate" required>
+                            <input type="text" name="travelers[passport][]" class="form-control w-75" id="arrivalDate"
+                                required>
+                            <span class="icon"><img src="{{ asset('/user/assets/img/icon/c_user.svg') }}" alt=""></span>
                         </div>
 
                         <div class="row">
@@ -100,18 +109,22 @@
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select day of the month -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-day][]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport"
+                                        name="travelers[passport-expiration-day][]" required>
                                         <option value="" selected>Day</option>
                                         @for ($i = 1; $i <= 31; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
+                                    <span class="icon icon-select"><img src="{{ asset('/user/assets/img/icon/calendar.svg') }}" alt=""></span>
                                 </div>
+                                
                             </div>
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select Month -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-month][]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport"
+                                        name="travelers[passport-expiration-month][]" required>
                                         <option value="" selected>Month</option>
                                         <option value="1">January</option>
                                         <option value="2">February</option>
@@ -124,19 +137,22 @@
                                         <option value="9">September</option>
                                         <option value="10">October</option>
                                         <option value="11">November</option>
-                                        <option value="12">December</option>    
+                                        <option value="12">December</option>
                                     </select>
+                                    <span class="icon icon-select"><img src="{{ asset('/user/assets/img/icon/calendar.svg') }}" alt=""></span>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="xb-item--field">
                                     <!-- Select Year -->
-                                    <select class="nice-select w-100" id="arrivalAirport" name="travelers[passport-expiration-year][]" required>
+                                    <select class="nice-select w-100" id="arrivalAirport"
+                                        name="travelers[passport-expiration-year][]" required>
                                         <option value="" selected>Year</option>
                                         @for ($i = date('Y'); $i <= date('Y') + 10; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
+                                    <span class="icon icon-select"><img src="{{ asset('/user/assets/img/icon/calendar.svg') }}" alt=""></span>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +164,7 @@
                         <button type="button" id="add_traveler" class="btn btn-primary w-100 mt-3">Add traveler</button>
                     </div>
 
-                    <br/>
+                    <br />
 
                     <button type="button" class="btn btn-secondary" id="prev-2">Previous</button>
                     <button type="button" class="btn btn-primary" id="next-2">Next</button>
@@ -159,21 +175,15 @@
                     <h3>Choose your processing time</h3>
 
                     <ul class="list-group">
-                        @foreach( $product->offers as $offer )
+                        @foreach($product->offers as $offer)
                             <li class="list-group-item">
                                 <div class="form-check
-                                    @if( $loop->first ) active @endif">
+                                        @if($loop->first) active @endif">
 
-                                    <input 
-                                        class="form-check-input" 
-                                        type="radio" 
-                                        name="offer_id" 
-                                        id="offer-{{ $offer->id }}" 
-                                        value="{{ $offer->id }}" 
-                                        data-price="{{ $offer->price }}"
-                                        @if( $loop->first ) checked @endif
-                                        >
-                                    
+                                    <input class="form-check-input" type="radio" name="offer_id" id="offer-{{ $offer->id }}"
+                                        value="{{ $offer->id }}" data-price="{{ $offer->price }}" @if($loop->first)
+                                        checked @endif>
+
                                     <label class="form-check label" for="offer-{{ $offer->id }}">
                                         <h5>{{ $offer->name }}</h5>
                                         <p>{{ $offer->description }}</p>
@@ -182,9 +192,9 @@
                                 </div>
                             </li>
                         @endforeach
-                    </ul>    
+                    </ul>
 
-                    <br/>
+                    <br />
                     <button type="button" class="btn btn-secondary" id="prev-3">Previous</button>
 
                 </div>
@@ -209,15 +219,17 @@
                             <td>
                                 <h5>{{ $product->name }}</h5>
                             </td>
-                            <td><p id="traveler-count">1 traveler</p></td>
+                            <td>
+                                <p id="traveler-count">1 traveler</p>
+                            </td>
                         </tr>
 
-                        @foreach( $product->extras as $extra ) 
+                        @foreach($product->extras as $extra) 
                             <tr>
                                 <td>+ {{ $extra->name }}</td>
                                 <td>
                                     <span id="extras-price-span">
-                                        {{ $extra->price }} 
+                                        {{ $extra->price }}
                                         {{ $currency }}
                                     </span>
                                 </td>
@@ -241,8 +253,8 @@
     </div>
 </div>
 
-<br/>
-<br/>
+<br />
+<br />
 
 
 
@@ -263,7 +275,7 @@
         }
 
         $('#next-1').click(function () {
-            if( validate_step1() ) {
+            if (validate_step1()) {
                 $('#step-1').removeClass('form-step-active');
                 $('#step-2').addClass('form-step-active');
                 updateStepIndicator(2);
@@ -271,7 +283,7 @@
         });
 
         $('#next-2').click(function () {
-            if( validate_step2() ) {
+            if (validate_step2()) {
                 $('#step-2').removeClass('form-step-active');
                 $('#step-3').addClass('form-step-active');
                 updateStepIndicator(3);
@@ -309,7 +321,7 @@
 
             // Update price with currency
             calcTotals();
-            
+
         });
 
         // Offer selection logic
@@ -327,7 +339,7 @@
     });
 
     function validate_step1() {
-        
+
         // Manual validation
         var arrivalDate = $('#arrivalDate').val();
         var fullName = $('#full_name').val();
@@ -342,12 +354,12 @@
         if (arrivalDate == '') {
             $('#arrivalDate').after('<label class="error">This field is required</label>');
             isValid = false;
-        } 
+        }
 
         if (fullName == '') {
             $('#full_name').after('<label class="error">This field is required</label>');
             isValid = false;
-        } 
+        }
 
         if (phone == '') {
             $('#phone').after('<label class="error">This field is required</label>');
@@ -371,28 +383,28 @@
         $('label.error').remove();
 
         // Check all fields and if not valid, show error label.error after the fields
-        $('input[name^="travelers[name]"]').each(function() {
+        $('input[name^="travelers[name]"]').each(function () {
             if ($(this).val() == '') {
                 $(this).after('<label class="error">This field is required</label>');
                 isValid = false;
             }
         });
 
-        $('input[name^="travelers[lastname]"]').each(function() {
+        $('input[name^="travelers[lastname]"]').each(function () {
             if ($(this).val() == '') {
                 $(this).after('<label class="error">This field is required</label>');
                 isValid = false;
             }
         });
 
-        $('input[name^="travelers[birthday]"]').each(function() {
+        $('input[name^="travelers[birthday]"]').each(function () {
             if ($(this).val() == '') {
                 $(this).after('<label class="error">This field is required</label>');
                 isValid = false;
             }
         });
 
-        $('input[name^="travelers[passport]"]').each(function() {
+        $('input[name^="travelers[passport]"]').each(function () {
             if ($(this).val() == '') {
                 $(this).after('<label class="error">This field is required</label>');
                 isValid = false;
@@ -426,7 +438,6 @@
 
 
 <style>
-
     label.error {
         color: red;
         font-size: 14px;

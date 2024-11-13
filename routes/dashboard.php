@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\DashboardGatewaysController;
 use App\Http\Controllers\Dashboard\DashboardMyOrdersController;
 use App\Http\Controllers\Dashboard\DashboardProfileController;
 use App\Http\Controllers\Dashboard\DashboardOrderCertificatesController;
+use App\Http\Controllers\Dashboard\ProductOffersController;
 
 
 
@@ -53,6 +54,12 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
         Route::post('products/{product_id}', [DashboardProductsController::class, 'update'])->name('dashboard.products.update');
         Route::delete('products/{product_id}', [DashboardProductsController::class, 'destroy'])->name('dashboard.products.destroy');
 
+        // Product offers
+        Route::get('offers', [ProductOffersController::class, 'index'])->name('dashboard.offers.index');
+        Route::post('offers/create', [DashboardProductsController::class, 'create'])->name('dashboard.offers.create');
+        Route::delete('offers/{offer}', [ProductOffersController::class, 'destroy'])->name('dashboard.offers.destroy');
+        Route::post('offers/{offer}', [DashboardProductsController::class, 'create'])->name('dashboard.offers.update');
+
         // Orders
         Route::get('orders', [DashboardOrdersController::class, 'index'])->name('dashboard.orders.index');
         Route::get('orders/create', [DashboardOrdersController::class, 'edit'])->name('dashboard.orders.create');
@@ -64,7 +71,6 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
         // Order certificates
         Route::post('orders/{order}/certificates/create', [DashboardOrderCertificatesController::class, 'create'])->name('dashboard.orders.certificate.create');
         Route::delete('orders/{order}/certificates/{certificate}/destroy', [DashboardOrderCertificatesController::class, 'destroy'])->name('dashboard.orders.certificate.destroy');
-        
 
         // Order travellers
         Route::get('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersList'])->name('dashboard.orders.travellers');

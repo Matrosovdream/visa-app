@@ -69,7 +69,7 @@ class DashboardProductsController extends Controller
 
         $product->name = request('product_name');
         $product->description = request('description');
-        $product->price = request('price');
+        $product->price = '0.00';
         $product->published = ( request('status') == 'published' ) ? 1 : 0;
         $product->save();
 
@@ -80,14 +80,6 @@ class DashboardProductsController extends Controller
         foreach( request('fields') as $field=>$value ) {
             $product->updateMeta( $field, $value );
         }
-
-        // Offers sync
-        /*foreach( request('offers') as $offer ) {
-            $product->offers()->create([
-                'name' => $offer['name'],
-                'price' => $offer['price'],
-            ]);
-        }*/
 
         return redirect()->route('dashboard.products.show', $id);
     }

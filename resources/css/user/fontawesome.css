@@ -8135,7 +8135,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: normal;
   font-display: auto;
-  src: url("../../../public/user/assets/fonts/fa-brands-400.ttf") format("truetype");
+  src: url("../../../user/assets/fonts/fa-brands-400.ttf") format("truetype");
 }
 
 .fab {
@@ -8146,7 +8146,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 300;
   font-display: auto;
-  src: url("../../../public/user/assets/fonts/fa-light-300.ttf") format("truetype");
+  src: url("../../../user/assets/fonts/fa-light-300.ttf") format("truetype");
 }
 
 .fal {
@@ -8158,7 +8158,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 400;
   font-display: auto;
-  src: url("../../../public/user/assets/fonts/fa-regular-400.ttf") format("truetype");
+  src: url("../../../user/assets/fonts/fa-regular-400.ttf") format("truetype");
 }
 
 .far {
@@ -8170,7 +8170,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 900;
   font-display: auto;
-  src: url("../../../public/user/assets/fonts/fa-solid-900.ttf") format("truetype");
+  src: url("../../../user/assets/fonts/fa-solid-900.ttf") format("truetype");
 }
 
 .fa,

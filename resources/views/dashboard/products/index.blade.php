@@ -86,7 +86,7 @@
                                     */ ?>
                                 </td>
                                 <td class="text-center pe-0">
-                                    {{ $product->price }}$
+                                    from {{ $product->priceFrom() }}$
                                 </td>
                                 <td class="text-center pe-0" data-order="Inactive">
                                     @if( $product->published ) 

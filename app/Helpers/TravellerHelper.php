@@ -122,19 +122,20 @@ class TravellerHelper
 
         $fields = [
             'personal' => [
-                'residence_country' => ['title' => 'Country of Residence', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
-                'gender' => ['title' => 'Gender', 'type' => 'radio', 'required' => true,'options' => self::getReference('gender'), 'relate' => 'meta'],
+                'residence_country' => [
+                    'title' => 'Country of Residence', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
+                'gender' => ['title' => 'Gender', 'type' => 'select', 'required' => true,'options' => self::getReference('gender'), 'relate' => 'meta'],
                 //'nationality' => ['title' => 'Nationality', 'type' => 'boolean', 'relate' => 'meta'],
-                'residence_address' => ['title' => 'Residence address', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'residence_city' => ['title' => 'Residence city or Town', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'residence_state' => ['title' => 'Residence state or province', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'residence_zip' => ['title' => 'Residence ZIP code', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
-                'occupation' => ['title' => 'Occupation', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_address' => ['icon' => 'location-2.svg','title' => 'Residence address', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_city' => ['icon' => 'location-2.svg','title' => 'Residence city or Town', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_state' => ['icon' => 'location-2.svg','title' => 'Residence state or province', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'residence_zip' => ['icon' => 'location-2.svg','title' => 'Residence ZIP code', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
+                'occupation' => ['icon' => 'user.svg','title' => 'Occupation', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
             ],
             'passport' => [
-                'passport' => ['title' => 'Passport', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
-                'passport_issue_date' => ['title' => 'Passport Issue Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
-                'passport_expiration_date' => ['title' => 'Passport Expiration Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
+                'passport' => ['icon' => 'user.svg','title' => 'Passport', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
+                'passport_issue_date' => ['icon' => 'user.svg','title' => 'Passport Issue Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
+                'passport_expiration_date' => ['icon' => 'user.svg','title' => 'Passport Expiration Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
                 'birth_country' => ['title' => 'Country of Birth', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
                 'passport_issue_country' => ['title' => 'Which country issued your passport', 'type' => 'select', 'required' => true, 'options' => self::getReference('countries'), 'relate' => 'meta'],
             ],
@@ -142,12 +143,12 @@ class TravellerHelper
                 'marital_status' => ['title' => 'Marital status', 'type' => 'select', 'required' => true, 'options' => self::getReference('marital_status'), 'relate' => 'meta'],
             ],
             'past_travel' => [
-                'past_travel_country' => ['title' => 'Have you previously visited country?', 'type' => 'radio', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
-                'past_travel_date' => ['title' => 'When did you arrive?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
-                'past_travel_departure' => ['title' => 'When did you depart?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
+                'past_travel_country' => ['title' => 'Have you previously visited country?', 'type' => 'select', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
+                'past_travel_date' => ['icon' => 'location-2.svg','title' => 'When did you arrive?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
+                'past_travel_departure' => ['icon' => 'location-2.svg','title' => 'When did you depart?', 'type' => 'date', 'required' => false, 'relate' => 'meta'],
             ],
             'declarations' => [
-                'is_previous_country_deport' => ['title' => 'Have you ever been deported from country or another country?', 'type' => 'radio', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
+                'is_previous_country_deport' => ['icon' => 'location-2.svg','title' => 'Have you ever been deported from country or another country?', 'type' => 'select', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
             ],
         ];
 
