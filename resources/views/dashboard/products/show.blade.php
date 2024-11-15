@@ -202,24 +202,24 @@
 
 													<div class="w-100 w-md-200px">
 														<input type="text" class="form-control" name="offers[{{ $offer->id }}][name]"
-															placeholder="Offer name" value="{{ $offer->name }}" />
+															value="{{ $offer->name }}" disabled />
 													</div>
 
 													<div class="w-100 w-md-100px">
 														<input type="text" class="form-control" name="offers[{{ $offer->id }}]['price']"
-															placeholder="Offer price" value="{{ $offer->price }}" />
+															value="{{ $offer->price }}" disabled />
 													</div>
 
 													<div class="w-200 w-md-200px">
 														<input type="text" class="form-control"
-															name="offers[{{ $offer->id }}][meta][duration_title]" placeholder="Offer duration title"
-															value="{{ $offer->getMeta('duration') }}" />
+															name="offers[{{ $offer->id }}][meta][duration_title]"
+															value="{{ $offer->getMeta('duration') }}" disabled />
 													</div>
 
 													<div class="w-100 w-md-100px">
 														<input type="text" class="form-control"
-															name="offers[{{ $offer->id }}][meta][duration_hours]" placeholder="Offer duration hours"
-															value="{{ $offer->getMeta('duration_hours') }}" />
+															name="offers[{{ $offer->id }}][meta][duration_hours]"
+															value="{{ $offer->getMeta('duration_hours') }}" disabled />
 													</div>
 
 													<div class="w-50 w-md-50px">
@@ -236,15 +236,15 @@
 
 												</div>
 
-												@include('dashboard.products.offers.index', ['offer' => $offer])
-
 											@endforeach
 
 										</div>
 									</div>
 
 									<div class="form-group mt-5">
-										<button type="button" data-repeater-create=""
+										<button type="button" 
+											data-bs-toggle="modal" 
+											data-bs-target="#kt_modal_product_offer_new"
 											class="btn btn-sm btn-light-primary">
 											<i class="ki-duotone ki-plus fs-2"></i>Add another offer</button>
 									</div>
@@ -294,22 +294,21 @@
 
 													<div class="w-100 w-md-200px">
 														<input type="text" class="form-control" name="offer_name[]"
-															placeholder="Offer name" value="{{ $extra->name }}" />
+															value="{{ $extra->name }}" disabled />
 													</div>
 
 													<div class="w-100 w-md-100px">
 														<input type="text" class="form-control" name="offer_price[]"
-															placeholder="Offer price" value="{{ $extra->price }}" />
+															value="{{ $extra->price }}" disabled />
 													</div>
 
 													<div class="w-50 w-md-50px">
-														<button type="button" data-repeater-delete=""
-															class="btn btn-sm btn-icon btn-light-danger">
-															<i class="ki-duotone ki-cross fs-1">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>
-														</button>
+
+														<a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal"
+															data-bs-target="#kt_modal_product_extra_{{ $extra->id }}">
+															Edit
+														</a>
+
 													</div>
 
 												</div>
@@ -320,9 +319,11 @@
 									</div>
 
 									<div class="form-group mt-5">
-										<button type="button" data-repeater-create=""
+										<button type="button" 
+											data-bs-toggle="modal" 
+											data-bs-target="#kt_modal_product_extra_new"
 											class="btn btn-sm btn-light-primary">
-											<i class="ki-duotone ki-plus fs-2"></i>Add another extra product</button>
+											<i class="ki-duotone ki-plus fs-2"></i>Add another extra service</button>
 									</div>
 
 								</div>
@@ -386,6 +387,20 @@
 
 	</div>
 </form>
+
+
+
+<!-- Modals -->
+@include('dashboard.products.offers.create', ['product' => $product])
+@include('dashboard.products.extras.create', ['product' => $product])
+
+@foreach($product->offers as $offer)
+	@include('dashboard.products.offers.index', ['offer' => $offer])
+@endforeach
+
+@foreach($product->extras as $extra)
+	@include('dashboard.products.extras.index', ['extra' => $extra])
+@endforeach
 
 
 <!-- TinyMCE Editor -->

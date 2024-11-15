@@ -133,6 +133,9 @@ class TravellerHelper
                 'occupation' => ['icon' => 'user.svg','title' => 'Occupation', 'type' => 'text', 'required' => true, 'relate' => 'meta'],
             ],
             'passport' => [
+                'name' => ['icon' => 'user.svg','title' => 'Name', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
+                'lastname' => ['icon' => 'user.svg','title' => 'Last name', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
+                'birthday' => ['icon' => 'user.svg','title' => 'Birthday', 'type' => 'date', 'required' => true, 'relate' => 'entity'],
                 'passport' => ['icon' => 'user.svg','title' => 'Passport', 'type' => 'text', 'required' => true, 'relate' => 'entity'],
                 'passport_issue_date' => ['icon' => 'user.svg','title' => 'Passport Issue Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
                 'passport_expiration_date' => ['icon' => 'user.svg','title' => 'Passport Expiration Date', 'type' => 'date', 'required' => true, 'relate' => 'meta'],
@@ -151,6 +154,13 @@ class TravellerHelper
                 'is_previous_country_deport' => ['icon' => 'location-2.svg','title' => 'Have you ever been deported from country or another country?', 'type' => 'select', 'required' => true, 'options' => self::getReference('boolean'), 'relate' => 'meta'],
             ],
         ];
+
+        // Set an empty value for all
+        foreach ($fields as $cat => $field) {
+            foreach ($field as $field_code => $data) {
+                $fields[$cat][$field_code]['value'] = '';
+            }
+        }
 
         // if isset traveller_id then fill in the array with values
         if ($traveller_id) {
