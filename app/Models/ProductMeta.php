@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductMeta extends Model
 {
-
-    use HasFactory;
-
     protected $table = 'product_meta';
 
     protected $fillable = [

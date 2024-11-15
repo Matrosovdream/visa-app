@@ -21,6 +21,19 @@
                                         <i class="ki-duotone ki-calendar fs-2 me-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
+                                        </i>Status
+                                    </div>
+                                </td>
+                                <td class="fw-bold text-end">
+                                    {{ $order->status->name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ki-duotone ki-calendar fs-2 me-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
                                         </i>Date Added
                                     </div>
                                 </td>
@@ -41,6 +54,21 @@
                                 </td>
                                 <td class="fw-bold text-end">
                                     {{ $order->paymentMethod->name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ki-duotone ki-wallet fs-2 me-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>Payment Status
+                                    </div>
+                                </td>
+                                <td class="fw-bold text-end">
+                                    {{ $order->is_paid ? 'Paid' : 'Unpaid' }}
                                 </td>
                             </tr>
                         </tbody>

@@ -54,4 +54,25 @@ class Traveller extends Model
         return TravellerHelper::isCompletedForm($this);
     }
 
+    public function getFieldCategories() {
+        return TravellerHelper::getTravellerFieldCategories();
+    }
+
+    public function getFieldList() {
+        return TravellerHelper::getTravellerFieldList( $this->id );
+    }
+
+    // Cast full_name when the model is created
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->full_name = $model->name . ' ' . $model->lastname;
+        });
+    }
+
+
+
+
 }

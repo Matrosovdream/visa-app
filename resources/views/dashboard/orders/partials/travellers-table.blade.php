@@ -26,10 +26,20 @@
                     {{ $traveller['passport'] }}
                 </td>
                 <td>
+
+
                     <a href="{{ route('dashboard.orders.traveller.show', ['order_id' => $order->id, 'traveller_id' => $traveller['id']]) }}"
                         class="btn btn-sm btn-light btn-active-light-primary">Show</a>
-                    <a href="{{ route('dashboard.orders.traveller.destroy', ['order_id' => $order->id, 'traveller_id' => $traveller['id']]) }}"
-                        class="btn btn-sm btn-light btn-active-light-primary">Delete</a>
+                    <a href="{{ route('dashboard.orders.traveller.edit', ['order_id' => $order->id, 'traveller_id' => $traveller['id']]) }}"
+                        class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+
+                    <form method="POST" class="d-inline"
+                        action="{{ route('dashboard.orders.traveller.destroy', ['order' => $order->id, 'traveller' => $traveller['id']]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-light btn-active-light-primary">Delete</button>
+                    </form>
+                    
                 </td>
             </tr>
 

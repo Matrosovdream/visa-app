@@ -1,5 +1,4 @@
 @php
-
 $tabs = [
     'summary' => ['title' => 'Order Summary', 'slug' => 'summary', 'active' => true],
     'travellers' => ['title' => 'Travellers', 'slug' => 'travellers', 'active' => false],
@@ -11,8 +10,22 @@ $tabs = [
 if (request()->routeIs('dashboard.orders.traveller.*')) {
     $tabs['travellers']['active'] = true;
     $tabs['summary']['active'] = false;
+
+    // Remove all but the travellers tab
+    $tabs = array_filter($tabs, function ($tab) {
+        return $tab['slug'] === 'travellers';
+    });
 }
 
+$edit = request()->routeIs('dashboard.orders.edit') ? true : false;
+$create = request()->routeIs('dashboard.orders.create') ? true : false;
+
+if ( $edit || $create ) {
+    // Remove all but the travellers tab
+    $tabs = array_filter($tabs, function ($tab) {
+        return $tab['slug'] === 'summary';
+    });
+}
 @endphp
 
 
@@ -21,15 +34,16 @@ if (request()->routeIs('dashboard.orders.traveller.*')) {
 
         @foreach($tabs as $tab)
             <li class="nav-item">
-                <a class="nav-link text-active-primary pb-4 {{ $tab['active'] ? 'active' : '' }}"
-                    data-bs-toggle="tab" href="#kt_ecommerce_sales_order_{{ $tab['slug'] }}">{{ $tab['title'] }}</a>
+                <a class="nav-link text-active-primary pb-4 {{ $tab['active'] ? 'active' : '' }}" data-bs-toggle="tab"
+                    href="#kt_ecommerce_sales_order_{{ $tab['slug'] }}">{{ $tab['title'] }}</a>
             </li>
-
         @endforeach
 
     </ul>
 
-    <a href="{{ route('dashboard.orders.edit', $order->id) }}" class="btn btn-success btn-sm me-lg-n7">Edit Order</a>
-    <a href="{{ route('dashboard.orders.create') }}" class="btn btn-primary btn-sm">Add New Order</a>
+    @if(!$edit && !$create)
+        <a href="{{ route('dashboard.orders.edit', $order->id) }}" class="btn btn-success btn-sm me-lg-n7">Edit Order</a>
+        <a href="{{ route('dashboard.orders.create') }}" class="btn btn-primary btn-sm">Add New Order</a>
+    @endif
 
 </div>
