@@ -2,10 +2,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductOffers;
+use App\Models\ProductExtras;
 use Illuminate\Http\Request;
 
-class ProductOffersController extends Controller {
+class ProductExtrasController extends Controller {
 
 
     public function index() {  }
@@ -19,10 +19,10 @@ class ProductOffersController extends Controller {
         ]);
 
         // Create offer
-        $productOffer = ProductOffers::create($request->all());
+        ProductExtras::create($request->all());
 
         // Create meta
-        $productOffer->setMetaSync($request->meta);
+        //$productOffer->setMetaSync($request->meta);
 
         return redirect()->back()->with("success","Product offer created successfully");
     }
@@ -31,7 +31,7 @@ class ProductOffersController extends Controller {
 
     public function edit($id) { }
 
-    public function update(Request $request, ProductOffers $offer) { 
+    public function update(Request $request, ProductExtras $extra) { 
 
         $request->validate([
             'product_id' => 'required|exists:products,id',
@@ -40,16 +40,16 @@ class ProductOffersController extends Controller {
         ]);
 
         // Update fields
-        $offer->update($request->all());
+        $extra->update($request->all());
 
         // Create meta
-        $offer->setMetaSync($request->meta);
+        //$offer->setMetaSync($request->meta);
 
         return redirect()->back()->with("success","Product offer updated successfully");
     }
 
-    public function destroy(ProductOffers $offer) { 
-        $offer->delete();
+    public function destroy(ProductExtras $extra) { 
+        $extra->delete();
         return redirect()->back()->with("success","Product offer deleted successfully");
 
     }

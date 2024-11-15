@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\DashboardMyOrdersController;
 use App\Http\Controllers\Dashboard\DashboardProfileController;
 use App\Http\Controllers\Dashboard\DashboardOrderCertificatesController;
 use App\Http\Controllers\Dashboard\ProductOffersController;
+use App\Http\Controllers\Dashboard\ProductExtrasController;
 
 
 
@@ -56,16 +57,23 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
 
         // Product offers
         Route::get('offers', [ProductOffersController::class, 'index'])->name('dashboard.offers.index');
-        Route::post('offers/create', [DashboardProductsController::class, 'create'])->name('dashboard.offers.create');
+        Route::post('offers/create', [ProductOffersController::class, 'create'])->name('dashboard.offers.create');
         Route::delete('offers/{offer}', [ProductOffersController::class, 'destroy'])->name('dashboard.offers.destroy');
-        Route::post('offers/{offer}', [DashboardProductsController::class, 'create'])->name('dashboard.offers.update');
+        Route::post('offers/{offer}', [ProductOffersController::class, 'update'])->name('dashboard.offers.update');
+
+        // Product extras
+        Route::get('extras', [ProductExtrasController::class, 'index'])->name('dashboard.extras.index');
+        Route::post('extras/create', [ProductExtrasController::class, 'create'])->name('dashboard.extras.create');
+        Route::delete('extras/{extra}', [ProductExtrasController::class, 'destroy'])->name('dashboard.extras.destroy');
+        Route::post('extras/{extra}', [ProductExtrasController::class, 'update'])->name('dashboard.extras.update');
 
         // Orders
         Route::get('orders', [DashboardOrdersController::class, 'index'])->name('dashboard.orders.index');
-        Route::get('orders/create', [DashboardOrdersController::class, 'edit'])->name('dashboard.orders.create');
+        Route::get('orders/create', [DashboardOrdersController::class, 'create'])->name('dashboard.orders.create');
+        Route::post('orders', [DashboardOrdersController::class, 'store'])->name('dashboard.orders.store');
         Route::get('orders/{order_id}', [DashboardOrdersController::class, 'show'])->name('dashboard.orders.show');
         Route::get('orders/{order_id}/edit', [DashboardOrdersController::class, 'edit'])->name('dashboard.orders.edit');
-        Route::post('orders/{order_id}', [DashboardOrdersController::class, 'update'])->name('dashboard.orders.update');
+        Route::post('orders/{order}', [DashboardOrdersController::class, 'update'])->name('dashboard.orders.update');
         Route::delete('orders/{order_id}', [DashboardOrdersController::class, 'destroy'])->name('dashboard.orders.destroy');
 
         // Order certificates
@@ -74,12 +82,16 @@ Route::group(['as' => '','prefix' =>'dashboard','namespace' => '', 'middleware' 
 
         // Order travellers
         Route::get('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersList'])->name('dashboard.orders.travellers');
-        Route::get('orders/{order_id}/travellers/create', [DashboardOrdersController::class, 'travellersCreate'])->name('dashboard.orders.travellers.create');
-        Route::post('orders/{order_id}/travellers', [DashboardOrdersController::class, 'travellersStore'])->name('dashboard.orders.travellers.store');
+        Route::get('orders/{order}/travellers/create', [DashboardOrdersController::class, 'travellersCreate'])->name('dashboard.orders.traveller.create');
+        Route::post('orders/{order}/travellers', [DashboardOrdersController::class, 'travellersStore'])->name('dashboard.orders.traveller.store');
         Route::get('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellerShow'])->name('dashboard.orders.traveller.show');
         Route::get('orders/{order_id}/travellers/{traveller_id}/edit', [DashboardOrdersController::class, 'travellerEdit'])->name('dashboard.orders.traveller.edit');
-        Route::post('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellersUpdate'])->name('dashboard.orders.traveller.update');
-        Route::delete('orders/{order_id}/travellers/{traveller_id}', [DashboardOrdersController::class, 'travellersDestroy'])->name('dashboard.orders.traveller.destroy');
+        Route::post('orders/{order}/travellers/{traveller}/update', [DashboardOrdersController::class, 'travellerUpdate'])->name('dashboard.orders.traveller.update');
+        Route::delete('orders/{order}/travellers/{traveller}', [DashboardOrdersController::class, 'travellersDestroy'])->name('dashboard.orders.traveller.destroy');
+
+        // Order traveller documents
+        Route::delete('orders/{order}/travellers/{traveller}/documents/{document}/destroy', [DashboardOrdersController::class, 'travellerDocumentDestroy'])->name('dashboard.orders.traveller.document.destroy');
+        Route::post('orders/{order}/travellers/{traveller}/documents/store', [DashboardOrdersController::class, 'travellerDocumentStore'])->name('dashboard.orders.traveller.document.store');
 
         // Payment gateways
         Route::get('gateways', [DashboardGatewaysController::class, 'index'])->name('dashboard.gateways.index');
