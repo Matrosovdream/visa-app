@@ -20,10 +20,17 @@ class CountryController extends Controller
 
         $data = $this->getDirectionData( $request );
 
-        if ( $data['country'] ) {
-            return view('web.country.index', $data);
-        } 
+        if ( empty($data['country']) || empty($data['countryFrom']) ) {
+            return redirect()->route('web.index')
+                ->with('error', 'Unknown country or nationality.');
+        }
 
+        if ( empty($data['direction']) ) {
+            return redirect()->route('web.index')
+                ->with('error', 'No visa information is available for this country pair.');
+        }
+
+        return view('web.country.index', $data);
     }
 
     public function apply(Request $request, GlobalsService $globalsService)
@@ -91,12 +98,15 @@ class CountryController extends Controller
             $direction = TravelDirection::where('country_from_id', $countryFrom->id)
             ->where('country_to_id', $countryTo->id)
             ->first();
-            
-            $product_ids = $direction->products;
 
             $products = [];
-            foreach ($product_ids as $product) {
-                $products[] = Product::find($product->product_id);
+            if ($direction) {
+                foreach ($direction->products as $product) {
+                    $found = Product::find($product->product_id);
+                    if ($found) {
+                        $products[] = $found;
+                    }
+                }
             }
 
         }
