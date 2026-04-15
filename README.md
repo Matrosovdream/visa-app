@@ -1,66 +1,176 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Visa App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 11 application for online visa ordering: product catalog with offers and extras, multi-currency / multi-language storefront, cart and checkout via Omnipay (Authorize.Net), order lifecycle with statuses, CMS articles, and an admin area. Backed by PostgreSQL and Redis, with queue workers and a scheduler running under supervisord.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2 / Laravel 11
+- PostgreSQL 16
+- Redis 7 (cache, session, queue)
+- Nginx + PHP-FPM
+- Vite + Tailwind + Alpine
+- Supervisor (queue worker + scheduler)
+- Adminer (DB UI)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Docker Desktop (or Docker Engine + Compose v2)
+- Git
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clone
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone <repo-url> visa-app
+cd visa-app
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Create `.env`
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Ensure these values point at the container services (already correct if you copied from `.env.example` after our Docker setup):
 
-### Premium Partners
+```env
+APP_URL=http://localhost:8080
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+DB_CONNECTION=pgsql
+DB_HOST=postgres
+DB_PORT=5432
+DB_DATABASE=visa_app
+DB_USERNAME=visa
+DB_PASSWORD=secret
 
-## Contributing
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=null
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+QUEUE_CONNECTION=redis
+CACHE_STORE=redis
+SESSION_DRIVER=redis
+```
 
-## Code of Conduct
+### 3. Build and start containers
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+docker compose -f docker-compose.dev.yml build
+docker compose -f docker-compose.dev.yml up -d
+```
 
-## Security Vulnerabilities
+This brings up: `app` (PHP-FPM), `nginx`, `vite`, `queue-worker`, `scheduler`, `postgres`, `redis`, `adminer`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Install dependencies
+
+```bash
+docker compose -f docker-compose.dev.yml exec app composer install
+```
+
+(Vite runs in its own container and auto-installs npm deps on first boot — check with `docker compose -f docker-compose.dev.yml logs vite`.)
+
+### 5. Generate app key
+
+```bash
+docker compose -f docker-compose.dev.yml exec app php artisan key:generate
+```
+
+### 6. Migrate and seed the database
+
+```bash
+docker compose -f docker-compose.dev.yml exec app php artisan migrate
+docker compose -f docker-compose.dev.yml exec app php artisan db:seed --force
+```
+
+Seeders populate roles, users, countries, travel directions, languages, currencies, products, offers, extras, gateways, order statuses, articles, and site settings.
+
+### 7. Open the app
+
+| Service     | URL                         |
+|-------------|-----------------------------|
+| App         | http://localhost:8080       |
+| Vite (HMR)  | http://localhost:5173       |
+| Adminer     | http://localhost:8081       |
+| Postgres    | `localhost:5432`            |
+| Redis       | `localhost:6379`            |
+
+Adminer login — system: `PostgreSQL`, server: `postgres`, user: `visa`, password: `secret`, database: `visa_app`.
+
+## Everyday commands
+
+```bash
+# Tail app logs
+docker compose -f docker-compose.dev.yml logs -f app
+
+# Open a shell in the app container
+docker compose -f docker-compose.dev.yml exec app bash
+
+# Artisan
+docker compose -f docker-compose.dev.yml exec app php artisan <command>
+
+# Re-seed / reset DB
+docker compose -f docker-compose.dev.yml exec app php artisan migrate:fresh --seed
+
+# Clear caches after config or view-shared data changes
+docker compose -f docker-compose.dev.yml exec app php artisan cache:clear
+docker compose -f docker-compose.dev.yml exec app php artisan config:clear
+
+# Run tests
+docker compose -f docker-compose.dev.yml exec app php artisan test
+
+# Stop everything
+docker compose -f docker-compose.dev.yml down
+
+# Reset volumes (destroys DB data)
+docker compose -f docker-compose.dev.yml down -v
+```
+
+## Background work
+
+- **Queue worker** — the `queue-worker` service runs `php artisan queue:work` under supervisord with 2 processes. Configure in [docker/supervisor/queue-worker.conf](docker/supervisor/queue-worker.conf).
+- **Scheduler** — the `scheduler` service runs `php artisan schedule:work`. Register recurring tasks in `routes/console.php` or `app/Console/Kernel.php`.
+
+## Production
+
+```bash
+# Prepare a real .env: APP_ENV=production, APP_DEBUG=false, strong secrets
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml exec app php artisan migrate --force
+docker compose -f docker-compose.prod.yml exec app php artisan config:cache route:cache view:cache
+```
+
+The prod image bakes in composer deps, built Vite assets, and opcache with `validate_timestamps=0`. Nginx serves `public/` from a dedicated image. Adminer is bound to `127.0.0.1` only.
+
+## Project layout
+
+```
+app/
+  Http/Controllers/       Controllers (storefront + admin)
+  Models/                 Eloquent models (Product, Order, Language, …)
+  Observers/              User & Order observers
+  Services/               GlobalsService, SiteSettingsService, LocationService
+  View/Composers/         GlobalsComposer (shares language/currency/menu to views)
+database/
+  migrations/             Schema
+  seeders/                Seed data
+docker/
+  php/                    Dockerfile, php.ini, www.conf, xdebug.ini
+  nginx/                  default.conf + prod Dockerfile
+  supervisor/             queue-worker.conf, scheduler.conf
+resources/                Blade views, JS, CSS
+routes/                   web.php, api.php, console.php
+```
+
+## Troubleshooting
+
+- **`vendor/autoload.php` not found** → run `composer install` inside the `app` container.
+- **`No application encryption key has been specified`** → `php artisan key:generate`.
+- **`relation "languages" does not exist`** → run `php artisan migrate` (and `db:seed`).
+- **Stale shared view data (menu, languages, currencies)** → `php artisan cache:clear`.
+- **Queue/scheduler not picking up code changes** → restart the worker containers: `docker compose -f docker-compose.dev.yml restart queue-worker scheduler`.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT.
