@@ -1,10 +1,15 @@
 <template>
     <div>
-        <PageHeader title="Countries" subtitle="Reference list used across the site." />
+        <PageHeader title="Payment gateways" subtitle="Configured payment providers." />
 
         <DataTable :rows="rows" :columns="columns" :loading="loading" :error="error"
-            search-placeholder="Search by name or code…"
-            :search-keys="['name', 'code', 'slug']" />
+            search-placeholder="Search gateways…" :search-keys="['name', 'slug']">
+            <template #cell:is_active="{ value }">
+                <span class="adm-badge" :class="value ? 'adm-badge--success' : 'adm-badge--danger'">
+                    {{ value ? 'Enabled' : 'Disabled' }}
+                </span>
+            </template>
+        </DataTable>
     </div>
 </template>
 
@@ -21,16 +26,17 @@ const error = ref('');
 const columns = [
     { key: 'id', label: 'ID', width: '70px' },
     { key: 'name', label: 'Name' },
-    { key: 'code', label: 'Code', width: '100px' },
     { key: 'slug', label: 'Slug' },
+    { key: 'description', label: 'Description' },
+    { key: 'is_active', label: 'Status', width: '110px' },
 ];
 
 onMounted(async () => {
     try {
-        const { data } = await api.get('/countries');
+        const { data } = await api.get('/gateways');
         rows.value = data.data ?? [];
     } catch (e) {
-        error.value = 'Could not load countries.';
+        error.value = 'Could not load gateways.';
     } finally {
         loading.value = false;
     }

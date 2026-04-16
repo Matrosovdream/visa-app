@@ -1,53 +1,105 @@
 <template>
-    <div class="adm-card">
-        <h3 class="adm-card__title">Site settings</h3>
-        <transition name="adm-fade" mode="out-in">
-            <div v-if="loading" key="loading">
-                <div v-for="n in 4" :key="n" class="adm-skel adm-skel-line" style="width: 60%; margin: 12px 0;"></div>
+    <div>
+        <PageHeader title="Site settings" subtitle="Key/value pairs used across the public site." />
+
+        <form class="adm-card" @submit.prevent="save">
+            <div v-if="loading">
+                <div v-for="n in 4" :key="n" class="adm-skel adm-skel-line" style="width: 60%;"></div>
             </div>
-            <div v-else-if="error" key="error" class="adm-empty adm-text-muted">{{ error }}</div>
-            <div v-else key="content">
-                <div v-if="Object.keys(settings).length === 0" class="adm-empty">
-                    No site settings configured yet.
+
+            <div v-else-if="!keys.length" class="adm-empty">
+                No settings yet. Add the first one below.
+            </div>
+
+            <div v-else>
+                <div v-for="key in keys" :key="key" class="adm-grid-2" style="margin-bottom: 8px;">
+                    <div>
+                        <label class="adm-field__label">{{ key }}</label>
+                        <div class="adm-text-soft" style="font-size: 0.75rem;">
+                            <code>{{ key }}</code>
+                        </div>
+                    </div>
+                    <FormField v-model="draft[key]" :error="err(`settings.${key}`)" />
                 </div>
-                <table v-else class="adm-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 240px;">Key</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(val, key) in settings" :key="key">
-                            <td><code>{{ key }}</code></td>
-                            <td style="white-space: pre-wrap; word-break: break-word;">{{ val }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p class="adm-text-soft" style="margin-top: 14px; font-size: 0.85rem;">
-                    Read-only view for now. Inline editing is coming in the next pass.
-                </p>
             </div>
-        </transition>
+
+            <!-- Add new key/value pair -->
+            <div class="adm-grid-2" style="margin-top: 20px;
+                padding-top: 16px; border-top: 1px dashed var(--adm-border);">
+                <FormField v-model="newKey" label="New key (optional)"
+                    placeholder="e.g. support_email" />
+                <FormField v-model="newValue" label="Value" placeholder="" />
+            </div>
+            <div v-if="newKey && newValue" style="text-align: right;">
+                <button type="button" class="adm-btn" @click="addKey">+ Add to list</button>
+            </div>
+
+            <div class="adm-form-actions">
+                <button type="submit" class="adm-btn adm-btn--primary" :disabled="saving">
+                    {{ saving ? 'Saving…' : 'Save settings' }}
+                </button>
+            </div>
+        </form>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import api from '../api';
+import FormField from '../components/FormField.vue';
+import PageHeader from '../components/PageHeader.vue';
+import { useToastStore } from '../stores/toast';
 
-const settings = ref({});
+const toast = useToastStore();
+
+const draft = reactive({});
 const loading = ref(true);
-const error = ref('');
+const saving = ref(false);
+const errors = ref({});
+const newKey = ref('');
+const newValue = ref('');
 
-onMounted(async () => {
+const keys = computed(() => Object.keys(draft));
+
+function err(path) {
+    const v = errors.value[path];
+    return Array.isArray(v) ? v[0] : v || '';
+}
+
+async function load() {
     try {
         const { data } = await api.get('/settings');
-        settings.value = data.data ?? {};
+        const src = data.data ?? {};
+        Object.keys(draft).forEach((k) => delete draft[k]);
+        Object.entries(src).forEach(([k, v]) => { draft[k] = v ?? ''; });
     } catch (e) {
-        error.value = 'Could not load settings.';
+        toast.error('Could not load settings.');
     } finally {
         loading.value = false;
     }
-});
+}
+
+function addKey() {
+    const k = newKey.value.trim();
+    if (!k) return;
+    draft[k] = newValue.value;
+    newKey.value = '';
+    newValue.value = '';
+}
+
+async function save() {
+    saving.value = true;
+    errors.value = {};
+    try {
+        await api.put('/settings', { settings: { ...draft } });
+        toast.success('Settings updated.');
+    } catch (e) {
+        if (e.response?.status === 422) errors.value = e.response.data.errors || {};
+        else toast.error(e.response?.data?.message || 'Could not save settings.');
+    } finally {
+        saving.value = false;
+    }
+}
+
+onMounted(load);
 </script>

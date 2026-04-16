@@ -13,12 +13,18 @@ class ProductExtras extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'description',
         'price',
     ];
 
     public function meta()
     {
         return $this->hasMany(ProductExtrasMeta::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function getPriceAttribute($value)

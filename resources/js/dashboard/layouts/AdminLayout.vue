@@ -77,33 +77,56 @@ const icons = {
     users: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="7" r="3.2"/><path d="M3.5 17c.7-3 3.3-5 6.5-5s5.8 2 6.5 5"/></svg>',
     orders: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="12" height="14" rx="1.5"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>',
     products: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l7-4 7 4-7 4-7-4z"/><path d="M3 7v7l7 4 7-4V7"/></svg>',
+    offers: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3l2 3h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-3z"/></svg>',
+    extras: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>',
     articles: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="14" height="12" rx="1.5"/><path d="M6 8h8M6 11h8M6 14h5"/></svg>',
     countries: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7"/><path d="M3 10h14M10 3c2.5 3 2.5 11 0 14M10 3c-2.5 3-2.5 11 0 14"/></svg>',
+    directions: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h12M12 6l4 4-4 4"/></svg>',
+    gateways: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="14" height="10" rx="1.5"/><path d="M3 9h14M6 13h3"/></svg>',
     settings: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M17 10h-2M5 10H3M15 5l-1.4 1.4M6.4 13.6L5 15M15 15l-1.4-1.4M6.4 6.4L5 5"/></svg>',
     logout: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4h3a2 2 0 012 2v8a2 2 0 01-2 2h-3"/><path d="M8 10h8M13 7l3 3-3 3"/></svg>',
     menu: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M3 6h14M3 10h14M3 14h14"/></svg>',
 };
 
 const topNav = [
-    { name: 'dashboard.home', label: 'Home', icon: icons.home },
-    { name: 'dashboard.users', label: 'Users', icon: icons.users },
+    { name: 'dashboard.home',   label: 'Home',   icon: icons.home },
+    { name: 'dashboard.users',  label: 'Users',  icon: icons.users },
     { name: 'dashboard.orders', label: 'Orders', icon: icons.orders },
 ];
 
 const catalogueNav = [
-    { name: 'dashboard.products', label: 'Products', icon: icons.products },
-    { name: 'dashboard.articles', label: 'Articles', icon: icons.articles },
-    { name: 'dashboard.countries', label: 'Countries', icon: icons.countries },
+    { name: 'dashboard.products',   label: 'Products',   icon: icons.products },
+    { name: 'dashboard.offers',     label: 'Offers',     icon: icons.offers },
+    { name: 'dashboard.extras',     label: 'Extras',     icon: icons.extras },
+    { name: 'dashboard.articles',   label: 'Articles',   icon: icons.articles },
+    { name: 'dashboard.countries',  label: 'Countries',  icon: icons.countries },
+    { name: 'dashboard.directions', label: 'Directions', icon: icons.directions },
+    { name: 'dashboard.gateways',   label: 'Gateways',   icon: icons.gateways },
 ];
 
 const titles = {
-    'dashboard.home': 'Dashboard',
-    'dashboard.users': 'Users',
-    'dashboard.orders': 'Orders',
-    'dashboard.products': 'Products',
-    'dashboard.articles': 'Articles',
-    'dashboard.countries': 'Countries',
-    'dashboard.settings': 'Settings',
+    'dashboard.home':                     'Dashboard',
+    'dashboard.users':                    'Users',
+    'dashboard.user.create':              'New user',
+    'dashboard.user.edit':                'Edit user',
+    'dashboard.orders':                   'Orders',
+    'dashboard.order.create':             'New order',
+    'dashboard.order.show':               'Order',
+    'dashboard.order.traveller.create':   'Add applicant',
+    'dashboard.order.traveller.edit':     'Edit applicant',
+    'dashboard.products':                 'Products',
+    'dashboard.product.create':           'New product',
+    'dashboard.product.edit':             'Edit product',
+    'dashboard.offers':                   'Product offers',
+    'dashboard.extras':                   'Product extras',
+    'dashboard.articles':                 'Articles',
+    'dashboard.article.create':           'New article',
+    'dashboard.article.edit':             'Edit article',
+    'dashboard.countries':                'Countries',
+    'dashboard.directions':               'Directions',
+    'dashboard.direction.show':           'Direction',
+    'dashboard.gateways':                 'Gateways',
+    'dashboard.settings':                 'Settings',
 };
 
 const pageTitle = computed(() => titles[route.name] || 'Dashboard');

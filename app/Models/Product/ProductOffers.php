@@ -13,6 +13,7 @@ class ProductOffers extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'description',
         'price',
     ];
 
