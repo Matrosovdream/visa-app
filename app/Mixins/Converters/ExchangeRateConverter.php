@@ -3,16 +3,14 @@ namespace App\Mixins\Converters;
 
 use GuzzleHttp\Client;
 
-Class ExchangeRateConverter
+class ExchangeRateConverter
 {
-
     protected $apiUrl;
     protected $apiKey;
     protected $client;
 
     public function __construct()
     {
-
         $this->apiUrl = 'https://v6.exchangerate-api.com/v6/';
         $this->apiKey = env('EXCHANGE_RATE_API_KEY');
         $this->client = new Client();
@@ -20,32 +18,25 @@ Class ExchangeRateConverter
 
     public function convert(string $fromCurrency, string $toCurrency, float $amount): float
     {
+        if ($fromCurrency === $toCurrency) {
+            return $amount;
+        }
 
-        // Params
-        $apiUrl = $this->apiUrl;
-        $apiKey = $this->apiKey;
-        $client = new Client();
+        if (empty($this->apiKey)) {
+            return $amount;
+        }
 
-        // Build the API URL
-        $url = $apiUrl . $apiKey . '/latest/' . $fromCurrency;
+        $url = $this->apiUrl . $this->apiKey . '/latest/' . $fromCurrency;
 
-        // Make a request to the API
-        $response = $client->get($url);
+        $response = $this->client->get($url);
+        $data = $this->processResponse($response);
 
-        // Process the response
-        $data = $this->processResponse( $response );
-
-        // Get the exchange rate and return
         $rate = $data['conversion_rates'][$toCurrency];
         return $amount * $rate;
-
     }
 
     protected function processResponse($response)
     {
-        // Parse the response
         return json_decode($response->getBody()->getContents(), true);
-
     }
-
 }
