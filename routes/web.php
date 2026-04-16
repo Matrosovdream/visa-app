@@ -23,3 +23,17 @@ require __DIR__.'/user.php';
 
 // Dashboard routes
 require __DIR__.'/dashboard.php';
+
+/*
+|--------------------------------------------------------------------------
+| User-facing Vue SPA (override)
+|--------------------------------------------------------------------------
+| Declared AFTER the auth/user/dashboard requires so they win on URI clash.
+| Laravel keeps the last-registered route for a given method+URI.
+| Dashboard/admin/account routes stay untouched (Blade).
+*/
+Route::get('/', fn () => view('user.app'))->name('web.index');
+Route::get('/articles', fn () => view('user.app'))->name('web.articles.index');
+Route::get('/articles/{article}', fn () => view('user.app'))->name('web.articles.show');
+Route::get('/country/{country}', fn () => view('user.app'))->name('web.country.index');
+Route::get('/login', fn () => view('user.app'))->name('login');

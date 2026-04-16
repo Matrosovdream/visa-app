@@ -1,0 +1,180 @@
+/* ------------------------------------------------------------------
+   User SPA transitions & subtle motion polish.
+   Designed to live alongside the legacy theme CSS (/css/user/*).
+   ------------------------------------------------------------------ */
+
+/* Route-level transition */
+.page-enter-active,
+.page-leave-active {
+    transition: opacity 220ms ease, transform 260ms ease;
+}
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
+}
+
+/* List item staggered fade */
+.stagger-list-enter-active,
+.stagger-list-leave-active {
+    transition: all 320ms ease;
+}
+.stagger-list-enter-from {
+    opacity: 0;
+    transform: translateY(12px);
+}
+.stagger-list-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+.stagger-list-move {
+    transition: transform 320ms ease;
+}
+
+/* Fade for element swaps (error messages, skeletons → content) */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 200ms ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+    position: relative;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: skeleton-shimmer 1.2s infinite;
+}
+@keyframes skeleton-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 10px;
+}
+.skeleton-line.lg { height: 22px; }
+.skeleton-line.sm { height: 10px; }
+.skeleton-block {
+    height: 180px;
+    margin-bottom: 16px;
+}
+
+/* Button / link subtle press feedback */
+a[href]:not(.lang-btn):not(.thm-btn),
+button:not(.nav-link):not(.acc-btn) {
+    transition: transform 150ms ease, opacity 150ms ease, box-shadow 150ms ease;
+}
+a[href]:not(.lang-btn):not(.thm-btn):active,
+button:not(.nav-link):not(.acc-btn):active {
+    transform: translateY(1px);
+}
+
+/* Ensure the SPA root doesn't flash unstyled */
+#user-app {
+    min-height: 100vh;
+}
+
+/* Articles list separator — replaces the legacy <hr> between posts */
+.article-row {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e9ecef;
+}
+.article-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------
+   Scroll reveal (v-reveal directive)
+   Replaces the theme's WOW skewIn animations.
+   ------------------------------------------------------------------ */
+.reveal {
+    --reveal-delay: 0ms;
+    opacity: 0;
+    transition:
+        opacity 700ms cubic-bezier(0.2, 0.7, 0.3, 1) var(--reveal-delay),
+        transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1) var(--reveal-delay);
+    will-change: opacity, transform;
+}
+.reveal--fade { transform: translateY(14px); }
+.reveal--up { transform: translateY(28px); }
+.reveal--down { transform: translateY(-28px); }
+.reveal--left { transform: translateX(-32px); }
+.reveal--right { transform: translateX(32px); }
+.reveal--skew { transform: skewY(3deg) translateY(24px); transform-origin: left center; }
+.reveal--zoom { transform: scale(0.94); }
+.reveal.reveal--in {
+    opacity: 1;
+    transform: none;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        transition: opacity 200ms ease !important;
+        transform: none !important;
+    }
+    .page-enter-active,
+    .page-leave-active,
+    .stagger-list-enter-active,
+    .stagger-list-leave-active,
+    .stagger-list-move,
+    .fade-enter-active,
+    .fade-leave-active {
+        transition-duration: 100ms !important;
+    }
+}
+
+/* Country view — visa-info card (replaces legacy inline style block) */
+.country-product-card {
+    background-color: #e0f7fa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.country-product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.country-product-card h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.country-product-list {
+    text-align: left;
+    list-style: none;
+    padding-left: 0;
+}
+.country-product-list li {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+}
+.country-product-list li::before {
+    content: "✔";
+    color: #12b886;
+    margin-right: 8px;
+}

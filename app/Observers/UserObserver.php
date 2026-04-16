@@ -9,7 +9,11 @@ class UserObserver
 {
     public function created(User $user): void
     {
-        UserHelper::sendUserCreatedEmail($user);
+        // Intentionally empty: the previous implementation generated a random
+        // password and emailed it on every user creation, which clobbered
+        // self-registration and admin-supplied passwords alike.
+        // If an admin "invite with random password" flow is needed,
+        // call UserHelper::sendUserCreatedEmail($user) explicitly from there.
     }
 
     public function updated(User $user): void {}
