@@ -17,25 +17,27 @@
                                 <div class="row g-3">
                                     <div class="col-md-5">
                                         <label class="form-label">Where am I from?</label>
-                                        <select v-model="form.from" class="form-control" required>
-                                            <option value="" disabled></option>
-                                            <option v-for="country in globals.countries" :key="country.id"
-                                                :value="country.code">
-                                                {{ country.name }} - {{ country.code }}
-                                            </option>
-                                        </select>
+                                        <SiteSelect v-model="form.from"
+                                            :options="globals.countries"
+                                            value-key="code"
+                                            :format-label="countryLabel"
+                                            placeholder="Select your country"
+                                            search-placeholder="Type a country or code"
+                                            searchable
+                                            :invalid="!!errors.from" />
                                         <div v-if="errors.from" class="text-danger small mt-1">{{ errors.from }}</div>
                                     </div>
 
                                     <div class="col-md-5">
                                         <label class="form-label">Where am I going?</label>
-                                        <select v-model="form.to" class="form-control" required>
-                                            <option value="" disabled></option>
-                                            <option v-for="country in globals.countries" :key="country.id"
-                                                :value="country.code">
-                                                {{ country.name }} - {{ country.code }}
-                                            </option>
-                                        </select>
+                                        <SiteSelect v-model="form.to"
+                                            :options="globals.countries"
+                                            value-key="code"
+                                            :format-label="countryLabel"
+                                            placeholder="Select destination"
+                                            search-placeholder="Type a country or code"
+                                            searchable
+                                            :invalid="!!errors.to" />
                                         <div v-if="errors.to" class="text-danger small mt-1">{{ errors.to }}</div>
                                     </div>
 
@@ -64,6 +66,7 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '../api';
 import { useGlobalsStore } from '../stores/globals';
+import SiteSelect from './SiteSelect.vue';
 
 const globals = useGlobalsStore();
 const router = useRouter();
@@ -74,6 +77,7 @@ const loading = ref(false);
 const serverError = ref('');
 
 const asset = (path) => `/${path.replace(/^\/+/, '')}`;
+const countryLabel = (c) => `${c.name} — ${c.code}`;
 
 async function submit() {
     errors.from = form.from ? '' : 'Please select your country of origin';

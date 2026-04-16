@@ -61,12 +61,14 @@
                             v-reveal="{ delay: 150 }">
                             <div class="mb-4">
                                 <label class="form-label">What is your nationality?</label>
-                                <select v-model="nationalitySlug" class="form-select" @change="onNationalityChange">
-                                    <option value="">— Select —</option>
-                                    <option v-for="c in otherCountries" :key="c.id" :value="c.slug">
-                                        {{ c.name }} - {{ c.code }}
-                                    </option>
-                                </select>
+                                <SiteSelect v-model="nationalitySlug"
+                                    :options="otherCountries"
+                                    value-key="slug"
+                                    :format-label="countryLabel"
+                                    placeholder="Select your nationality"
+                                    search-placeholder="Type a country or code"
+                                    searchable
+                                    @change="onNationalityChange" />
                                 <small class="form-text text-muted">
                                     Ensure you select the nationality of the passport you'll be traveling with.
                                 </small>
@@ -75,16 +77,16 @@
                             <transition name="fade">
                                 <div v-if="products.length" class="mb-4">
                                     <label class="form-label">Applying for</label>
-                                    <select v-model="selectedProductId" class="form-select">
-                                        <option v-for="product in products" :key="product.id" :value="product.id">
-                                            {{ product.name }}
-                                        </option>
-                                    </select>
+                                    <SiteSelect v-model="selectedProductId"
+                                        :options="products"
+                                        value-key="id"
+                                        label-key="name"
+                                        placeholder="Choose a visa type" />
                                 </div>
                             </transition>
 
                             <div class="d-grid" v-if="products.length">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                                <button type="submit" class="btn btn-success btn-lg">
                                     Start your application
                                 </button>
                             </div>
@@ -119,6 +121,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import api from '../api';
 import { useGlobalsStore } from '../stores/globals';
+import SiteSelect from '../components/SiteSelect.vue';
+
+const countryLabel = (c) => `${c.name} — ${c.code}`;
 
 const props = defineProps({
     slug: { type: String, required: true },
