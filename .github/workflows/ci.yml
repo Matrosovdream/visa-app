@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-tests:
+    name: PHP tests (Pest/PHPUnit)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, curl, pdo_sqlite, sqlite3, bcmath, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env || true
+          php artisan key:generate --ansi
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --colors=always
+
+  js-tests:
+    name: JS tests (Vitest)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Run Vitest
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build
+
+  lint:
+    name: PHP lint (Pint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run Pint (check only)
+        run: vendor/bin/pint --test
