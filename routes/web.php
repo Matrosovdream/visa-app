@@ -38,6 +38,12 @@ Route::get('/articles/{article}', fn () => view('user.app'))->name('web.articles
 Route::get('/country/{country}', fn () => view('user.app'))->name('web.country.index');
 Route::get('/login', fn () => view('user.app'))->name('login');
 
+// Authenticated user pages — the SPA handles auth in the browser (token in
+// localStorage). Server returns the shell for any /account/* deep link.
+Route::get('/account', fn () => view('user.app'))->name('web.account.index');
+Route::get('/account/orders', fn () => view('user.app'))->name('web.account.orders');
+Route::get('/account/orders/{id}', fn () => view('user.app'))->name('web.account.order');
+
 /*
 |--------------------------------------------------------------------------
 | Backend / admin login (Blade, session auth)
@@ -50,3 +56,36 @@ Route::get('/login', fn () => view('user.app'))->name('login');
 Route::get('/backend-login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
     ->middleware('guest')
     ->name('backend.login');
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard SPA + session-authed admin JSON API
+|--------------------------------------------------------------------------
+| The dashboard is a separate Vue SPA. It uses the existing session cookie
+| (admin logs in via /backend-login) rather than Sanctum tokens, so its
+| read endpoints live in the web group where session middleware is active.
+|
+| /api/v1/admin/* → JSON used by the dashboard SPA
+| /dashboard*     → serves the SPA shell (Vue Router handles sub-paths)
+*/
+Route::prefix('api/v1/admin')
+    ->middleware(['auth', 'hasRole:admin,manager'])
+    ->group(function () {
+        Route::get('me',        [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'me']);
+        Route::get('stats',     [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'stats']);
+        Route::get('users',     [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'users']);
+        Route::get('orders',    [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'orders']);
+        Route::get('products',  [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'products']);
+        Route::get('articles',  [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'articles']);
+        Route::get('countries', [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'countries']);
+        Route::get('settings',  [App\Http\Controllers\Api\V1\Admin\AdminController::class, 'settings']);
+    });
+
+// New admin SPA lives at /admin-panel/* so the legacy Blade /dashboard keeps
+// working while we rebuild CRUD. Vue Router handles sub-paths client-side.
+Route::middleware(['auth', 'hasRole:admin,manager'])->group(function () {
+    Route::get('/admin-panel', fn () => view('dashboard.spa'))->name('admin.spa');
+    Route::get('/admin-panel/{any}', fn () => view('dashboard.spa'))
+        ->where('any', '.*')
+        ->name('admin.spa.any');
+});

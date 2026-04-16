@@ -34,6 +34,8 @@ class SiteGlobalsController extends Controller
      */
     public function bootstrap(): JsonResponse
     {
+        $activeLanguage = $this->globals->getActiveLanguage();
+
         return response()->json([
             'data' => [
                 'site_settings'   => $this->globals->getSiteSettings(),
@@ -41,8 +43,10 @@ class SiteGlobalsController extends Controller
                 'languages'       => $this->globals->getLanguages(),
                 'currencies'      => $this->globals->getCurrencies(),
                 'countries'       => $this->globals->getCountries(),
-                'active_language' => $this->globals->getActiveLanguage(),
+                'active_language' => $activeLanguage,
                 'active_currency' => $this->globals->getActiveCurrency(),
+                'locale'          => strtolower($activeLanguage->code ?? 'en'),
+                'translations'    => $this->globals->getTranslations(),
             ],
         ]);
     }

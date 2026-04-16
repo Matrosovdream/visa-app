@@ -5,8 +5,8 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="p-5 bg-light rounded shadow">
                         <div class="text-center mb-4">
-                            <h1 class="fw-bolder mb-2">Sign In</h1>
-                            <p class="text-muted mb-0">Welcome back — please enter your details.</p>
+                            <h1 class="fw-bolder mb-2">{{ $t('Sign In') }}</h1>
+                            <p class="text-muted mb-0">{{ $t('Welcome back — please enter your details.') }}</p>
                         </div>
 
                         <transition name="fade">
@@ -18,7 +18,7 @@
 
                         <form @submit.prevent="submit" novalidate>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">{{ $t('Email') }}</label>
                                 <input id="email" v-model="form.email" type="email" autocomplete="username" required
                                     class="form-control" :class="{ 'is-invalid': fieldErrors.email }"
                                     @input="clearFieldError('email')">
@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">{{ $t('Password') }}</label>
                                 <input id="password" v-model="form.password" type="password" required
                                     autocomplete="current-password"
                                     class="form-control" :class="{ 'is-invalid': fieldErrors.password }"
@@ -44,7 +44,7 @@
 
                             <div class="d-flex justify-content-end mb-4">
                                 <SmartLink href="/forgot-password" class="small text-muted">
-                                    Forgot password?
+                                    {{ $t('Forgot password?') }}
                                 </SmartLink>
                             </div>
 
@@ -52,13 +52,13 @@
                                 <button type="submit" class="btn btn-success" :disabled="loading">
                                     <span v-if="loading" class="spinner-border spinner-border-sm me-2"
                                         role="status" aria-hidden="true"></span>
-                                    {{ loading ? 'Signing in…' : 'Log in' }}
+                                    {{ loading ? $t('Signing in…') : $t('Log in') }}
                                 </button>
                             </div>
 
                             <div class="text-center text-muted small">
-                                Not a member yet?
-                                <SmartLink href="/register" class="text-success">Sign up</SmartLink>
+                                {{ $t('Not a member yet?') }}
+                                <SmartLink href="/register" class="text-success">{{ $t('Sign up') }}</SmartLink>
                             </div>
                         </form>
                     </div>
@@ -71,12 +71,14 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '../stores/auth';
 import SmartLink from '../components/SmartLink.vue';
 
 const auth = useAuthStore();
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const form = reactive({ email: '', password: '' });
 const fieldErrors = ref({});
@@ -106,9 +108,9 @@ async function submit() {
         if (res?.status === 422) {
             fieldErrors.value = res.data.errors || {};
         } else if (res?.status === 401) {
-            generalError.value = res.data?.message || 'Invalid credentials.';
+            generalError.value = res.data?.message || t('Invalid credentials.');
         } else {
-            generalError.value = 'Something went wrong. Please try again.';
+            generalError.value = t('Something went wrong. Please try again.');
         }
     } finally {
         loading.value = false;

@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/css/admin/styles.css',
                 // User-facing Vue SPA entry
                 'resources/js/user/main.js',
+                // Admin dashboard Vue SPA entry (separate template)
+                'resources/js/dashboard/main.js',
             ],
             refresh: true,
         }),

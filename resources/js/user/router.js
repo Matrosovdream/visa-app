@@ -35,6 +35,25 @@ const routes = [
         meta: { layout: 'user', guestOnly: true },
     },
     {
+        path: '/account',
+        name: 'account',
+        component: () => import('./views/AccountView.vue'),
+        meta: { layout: 'user', requiresAuth: true },
+    },
+    {
+        path: '/account/orders',
+        name: 'account.orders',
+        component: () => import('./views/OrdersView.vue'),
+        meta: { layout: 'user', requiresAuth: true },
+    },
+    {
+        path: '/account/orders/:id',
+        name: 'account.order',
+        component: () => import('./views/OrderView.vue'),
+        meta: { layout: 'user', requiresAuth: true },
+        props: true,
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: () => import('./views/NotFoundView.vue'),
@@ -54,6 +73,9 @@ router.beforeEach((to) => {
     const auth = useAuthStore();
     if (to.meta.guestOnly && auth.isAuthenticated) {
         return { name: 'home' };
+    }
+    if (to.meta.requiresAuth && !auth.isAuthenticated) {
+        return { name: 'login', query: { redirect: to.fullPath } };
     }
     return true;
 });

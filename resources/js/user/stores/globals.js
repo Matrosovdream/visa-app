@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import api from '../api';
+import { setTranslations } from '../i18n';
 
 export const useGlobalsStore = defineStore('globals', {
     state: () => ({
@@ -12,6 +13,7 @@ export const useGlobalsStore = defineStore('globals', {
         countries: [],
         activeLanguage: null,
         activeCurrency: null,
+        locale: 'en',
     }),
     actions: {
         async load() {
@@ -27,6 +29,8 @@ export const useGlobalsStore = defineStore('globals', {
                 this.countries = payload.countries ?? [];
                 this.activeLanguage = payload.active_language ?? null;
                 this.activeCurrency = payload.active_currency ?? null;
+                this.locale = payload.locale ?? 'en';
+                setTranslations(this.locale, payload.translations ?? {});
                 this.loaded = true;
             } finally {
                 this.loading = false;

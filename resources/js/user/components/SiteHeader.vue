@@ -5,7 +5,7 @@
                 <div class="header__top ul_li_between">
                     <div class="header__top-cta">
                         <img :src="asset('user/assets/img/icon/n_pad.svg')" alt="">
-                        <span>Help Desk:</span>
+                        <span>{{ $t('Help Desk') }}:</span>
                         {{ globals.siteSettings?.phone }}
                     </div>
                     <ul class="header__top-info ul_li">
@@ -60,16 +60,16 @@
                                             <div class="flag">
                                                 <img :src="asset('user/assets/img/icon/c_user.svg')" alt="">
                                             </div>
-                                            {{ auth.user?.name || 'Account' }}
+                                            {{ auth.user?.name || $t('Account') }}
                                             <div class="arrow_down">
                                                 <img :src="asset('user/assets/img/icon/arrow_down.svg')" alt="">
                                             </div>
                                         </a>
                                         <ul class="lang_sub_list">
-                                            <li><SmartLink href="/account">Account</SmartLink></li>
-                                            <li><SmartLink href="/account/orders">Orders</SmartLink></li>
+                                            <li><SmartLink href="/account">{{ $t('Account') }}</SmartLink></li>
+                                            <li><SmartLink href="/account/orders">{{ $t('Orders') }}</SmartLink></li>
                                             <li>
-                                                <a href="#" @click.prevent="handleLogout">Log out</a>
+                                                <a href="#" @click.prevent="handleLogout">{{ $t('Log out') }}</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -84,7 +84,7 @@
                                             <div class="flag">
                                                 <img :src="asset('user/assets/img/icon/c_user.svg')" alt="">
                                             </div>
-                                            Login
+                                            {{ $t('Login') }}
                                         </router-link>
                                     </li>
                                 </ul>

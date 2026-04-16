@@ -91,6 +91,19 @@ class GlobalsService
         return $this->safe(fn () => userSettingsHelper::getTopMenu(), []);
     }
 
+    public function getTranslations(): array
+    {
+        $active = $this->getActiveLanguage();
+        $code = strtolower($active->code ?? 'en');
+        $path = base_path("lang/{$code}.json");
+
+        if (!is_file($path)) {
+            $path = base_path('lang/en.json');
+        }
+
+        return $this->safe(fn () => json_decode(file_get_contents($path), true) ?: [], []);
+    }
+
     public static function setCurrency($code): void
     {
         setcookie('currency', $code, time() + 60 * 60 * 24 * 30, '/');

@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
+import { i18n } from './i18n';
 import { useAuthStore } from './stores/auth';
 import { useGlobalsStore } from './stores/globals';
 import revealDirective from './directives/reveal';
@@ -12,6 +13,7 @@ const pinia = createPinia();
 
 app.use(pinia);
 app.use(router);
+app.use(i18n);
 app.directive('reveal', revealDirective);
 
 // Rehydrate auth from localStorage and warm the globals store before mount.

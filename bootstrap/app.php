@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isUser;
@@ -25,6 +26,17 @@ return Application::configure(basePath: dirname(__DIR__))
             'isUserOrder' => isUserOrder::class,
             'isOrderPaid' => isOrderPaid::class,
         ]);
+
+        // Send unauthenticated visitors of admin-only paths to the Blade
+        // login (session auth). The public SPA /login only issues Sanctum
+        // tokens, so landing there wouldn't give them access to /dashboard.
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if ($request->is('dashboard', 'dashboard/*', 'admin', 'admin/*',
+                             'admin-panel', 'admin-panel/*', 'api/v1/admin/*')) {
+                return route('backend.login');
+            }
+            return route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
