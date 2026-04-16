@@ -69,6 +69,28 @@ class DashboardUsersController extends Controller
             return redirect()->route('dashboard.users.index');
         }
 
+        if ($request->action == 'save_pin') {
+            $user = $this->userRepo->getByID($user_id);
+            $model = $user['Model'];
+
+            // Remove button clicked — clear the PIN.
+            if ($request->filled('remove_pin')) {
+                $model->forceFill(['pin' => null])->saveQuietly();
+                return back()->with('pin_status', 'PIN removed.');
+            }
+
+            $request->validate([
+                'pin' => ['required', 'string', 'min:3', 'max:20'],
+            ]);
+
+            // Model has 'pin' => 'hashed' cast, so assigning plain text
+            // stores the bcrypt hash automatically.
+            $model->pin = $request->input('pin');
+            $model->save();
+
+            return back()->with('pin_status', 'PIN updated.');
+        }
+
         $this->userRepo->update($user_id, request()->all());
         return redirect()->route('dashboard.users.index');
     }

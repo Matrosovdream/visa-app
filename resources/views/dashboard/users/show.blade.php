@@ -204,12 +204,83 @@
                                 
                             </div>
                         </form>
-                        
+
                     </div>
-                    
+
+                </div>
+
+                {{-- PIN management --}}
+                <div class="card pt-4 mb-6 mb-xl-9">
+                    <div class="card-header border-0">
+                        <div class="card-title">
+                            <h2>Staff PIN</h2>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0 pb-5">
+                        <p class="text-muted mb-5">
+                            A short PIN lets this user sign in via the PIN tab on the backend
+                            login screen. Leave empty to keep the current PIN.
+                        </p>
+
+                        @if(session('pin_status'))
+                            <div class="alert alert-success py-2 mb-5">{{ session('pin_status') }}</div>
+                        @endif
+                        @if($errors->has('pin'))
+                            <div class="alert alert-danger py-2 mb-5">{{ $errors->first('pin') }}</div>
+                        @endif
+
+                        <form class="form" method="POST"
+                            action="{{ route('dashboard.users.update', $user->id) }}">
+                            @csrf
+                            <input type="hidden" name="action" value="save_pin" />
+
+                            <div class="row row-cols-1 row-cols-md-2">
+                                <div class="col">
+                                    <div class="fv-row mb-7">
+                                        <label class="fs-6 fw-semibold mb-2">
+                                            <span class="required">New PIN</span>
+                                        </label>
+                                        <input
+                                            type="password"
+                                            class="form-control form-control-solid"
+                                            name="pin"
+                                            value=""
+                                            autocomplete="off"
+                                            inputmode="numeric"
+                                            pattern="[0-9]*"
+                                            minlength="3"
+                                            maxlength="20"
+                                            placeholder="e.g. 1234"
+                                        />
+                                        <div class="form-text">
+                                            Status:
+                                            <strong>
+                                                {{ $user->pin ? 'PIN is currently set' : 'No PIN on file' }}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                @if($user->pin)
+                                    <button type="submit"
+                                        name="remove_pin" value="1"
+                                        class="btn btn-light-danger"
+                                        onclick="return confirm('Remove this user\u0027s PIN?');">
+                                        Remove PIN
+                                    </button>
+                                @endif
+                                <button type="submit" class="btn btn-light-primary">
+                                    <span class="indicator-label">Save PIN</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

@@ -57,6 +57,11 @@ Route::get('/backend-login', [App\Http\Controllers\Auth\AuthenticatedSessionCont
     ->middleware('guest')
     ->name('backend.login');
 
+// PIN-based login for staff (same login page, second tab).
+Route::post('/backend-login/pin', [App\Http\Controllers\Auth\PinLoginController::class, 'store'])
+    ->middleware('guest')
+    ->name('backend.login.pin');
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard SPA + session-authed admin JSON API

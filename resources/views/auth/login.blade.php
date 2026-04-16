@@ -2,15 +2,44 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <div class="text-center mb-8">
+        <h1 class="text-gray-900 fw-bolder mb-3">Sign In</h1>
+        <div class="text-gray-500 fw-semibold fs-6">Choose a sign-in method</div>
+    </div>
+
+    @php
+        // When validation fails on the pin form we want to show the PIN tab
+        // on reload, otherwise default to the email tab.
+        $activeTab = $errors->hasAny(['pin']) ? 'pin' : 'email';
+    @endphp
+
+    <ul class="nav nav-tabs nav-fill mb-6 w-100" id="loginTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {{ $activeTab === 'email' ? 'active' : '' }}"
+                id="email-tab" data-login-tab="email-pane"
+                type="button" role="tab" aria-controls="email-pane"
+                aria-selected="{{ $activeTab === 'email' ? 'true' : 'false' }}">
+                {{ __('Email') }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {{ $activeTab === 'pin' ? 'active' : '' }}"
+                id="pin-tab" data-login-tab="pin-pane"
+                type="button" role="tab" aria-controls="pin-pane"
+                aria-selected="{{ $activeTab === 'pin' ? 'true' : 'false' }}">
+                {{ __('PIN') }}
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content w-100" id="loginTabsContent">
+    <div class="tab-pane fade {{ $activeTab === 'email' ? 'show active' : '' }}"
+        id="email-pane" role="tabpanel" aria-labelledby="email-tab">
+
     <form class="form w-100" id="kt_sign_in_form"
         method="POST" action="{{ route('login') }}">
 
         @csrf
-
-        <div class="text-center mb-11">
-            <h1 class="text-gray-900 fw-bolder mb-3">Sign In</h1>
-            <div class="text-gray-500 fw-semibold fs-6"></div>
-        </div>
 
         <!--
         <div class="row g-3 mb-9">
@@ -74,6 +103,69 @@
             <a href="{{ route('register') }}" class="link-primary">Sign up</a>
         </div>
     </form>
+
+    </div>{{-- /email-pane --}}
+
+    <div class="tab-pane fade {{ $activeTab === 'pin' ? 'show active' : '' }}"
+        id="pin-pane" role="tabpanel" aria-labelledby="pin-tab">
+
+        <form class="form w-100" method="POST" action="{{ route('backend.login.pin') }}">
+            @csrf
+
+            <div class="fv-row mb-8">
+                <x-input-label for="pin" :value="__('PIN')" />
+                <x-text-input id="pin" class="form-control bg-transparent text-center"
+                    type="password" name="pin" required autofocus autocomplete="off"
+                    inputmode="numeric" pattern="[0-9]*"
+                    style="letter-spacing: 0.5em; font-size: 1.2rem;" />
+                <x-input-error :messages="$errors->get('pin')" class="mt-2" />
+                <div class="form-text small text-muted mt-2">
+                    Enter your staff PIN.
+                </div>
+            </div>
+
+            <div class="d-grid mb-6">
+                <x-primary-button class="btn btn-primary">
+                    {{ __('Sign in with PIN') }}
+                </x-primary-button>
+            </div>
+
+            <div class="text-gray-500 text-center fw-semibold fs-7">
+                Your PIN is set by an administrator.
+            </div>
+        </form>
+
+    </div>{{-- /pin-pane --}}
+    </div>{{-- /tab-content --}}
+
+    {{-- Minimal tab switcher. The guest layout doesn't load Bootstrap JS, so
+         we swap active classes ourselves instead of pulling the whole
+         bootstrap.bundle.js into the auth page. --}}
+    <script>
+        (function () {
+            var triggers = document.querySelectorAll('[data-login-tab]');
+            var panes = document.querySelectorAll('#loginTabsContent .tab-pane');
+            triggers.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var target = btn.getAttribute('data-login-tab');
+                    triggers.forEach(function (t) {
+                        var on = t === btn;
+                        t.classList.toggle('active', on);
+                        t.setAttribute('aria-selected', on ? 'true' : 'false');
+                    });
+                    panes.forEach(function (p) {
+                        var on = p.id === target;
+                        p.classList.toggle('show', on);
+                        p.classList.toggle('active', on);
+                    });
+                    // Move focus into the first input of the active pane.
+                    var pane = document.getElementById(target);
+                    var input = pane && pane.querySelector('input:not([type=hidden])');
+                    if (input) setTimeout(function () { input.focus(); }, 50);
+                });
+            });
+        })();
+    </script>
 
     <?php /*
     <form method="POST" action="{{ route('login') }}">
