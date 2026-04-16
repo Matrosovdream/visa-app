@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\SiteSettings;
+use App\Models\Content\SiteSettings;
 
 class SiteSettingsSeeder extends Seeder
 {

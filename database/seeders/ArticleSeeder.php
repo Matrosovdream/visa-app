@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Article;
+use App\Models\Content\Article;
 
 class ArticleSeeder extends Seeder
 {

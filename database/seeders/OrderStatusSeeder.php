@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\OrderStatus;
+use App\Models\Order\OrderStatus;
 
 class OrderStatusSeeder extends Seeder
 {

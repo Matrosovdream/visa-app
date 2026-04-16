@@ -3,11 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Order;
-use App\Models\User;
+use App\Models\Order\Order;
+use App\Models\User\User;
 
 class OrderCreated extends Mailable
 {
@@ -20,7 +19,6 @@ class OrderCreated extends Mailable
     {
         $this->order = $order;
         $this->user = $user;
-
     }
 
     public function build()

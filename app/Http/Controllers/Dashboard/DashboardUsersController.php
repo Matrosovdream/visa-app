@@ -2,20 +2,25 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
-use App\Models\User;
+use App\Repositories\User\UserRepo;
+use App\Repositories\User\RoleRepo;
 use App\Helpers\adminSettingsHelper;
 use Illuminate\Http\Request;
 
 class DashboardUsersController extends Controller
 {
+    public function __construct(
+        private UserRepo $userRepo,
+        private RoleRepo $roleRepo
+    ) {}
 
     public function index()
     {
+        $result = $this->userRepo->getAll([], 10);
 
         $data = [
             'title' => 'Users',
-            'users' => User::paginate(10),
+            'users' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -24,12 +29,13 @@ class DashboardUsersController extends Controller
 
     public function show($user_id)
     {
-        $user = User::find($user_id);
+        $user = $this->userRepo->getByID($user_id);
+        $roles = $this->roleRepo->getAll([], 100);
 
         $data = [
             'title' => 'User details',
-            'user' => $user,
-            'roles' => Role::all(),
+            'user' => $user['Model'],
+            'roles' => $roles['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -38,47 +44,42 @@ class DashboardUsersController extends Controller
 
     public function update($user_id, Request $request)
     {
-
-        if( $request->action == 'save_general' ) {
-
+        if ($request->action == 'save_general') {
             $request->validate([
                 'name' => 'required',
                 'role' => 'required',
             ]);
 
-            $user = User::find($user_id);
-            $user->update(request()->all());
-
-            $user->setRole($request->role);
+            $this->userRepo->update($user_id, request()->all());
+            $user = $this->userRepo->getByID($user_id);
+            $user['Model']->setRole($request->role);
 
             return redirect()->route('dashboard.users.index');
         }
 
-        if( $request->action == 'save_password' ) {
-
+        if ($request->action == 'save_password') {
             $request->validate([
                 'password' => 'required',
             ]);
 
-            $user = User::find($user_id);
-            $user->password = bcrypt($request->password);
-            $user->save();
+            $user = $this->userRepo->getByID($user_id);
+            $user['Model']->password = bcrypt($request->password);
+            $user['Model']->save();
 
             return redirect()->route('dashboard.users.index');
         }
 
-        $user = User::find($user_id);
-        $user->update(request()->all());
-
+        $this->userRepo->update($user_id, request()->all());
         return redirect()->route('dashboard.users.index');
     }
 
     public function create()
     {
+        $roles = $this->roleRepo->getAll([], 100);
 
         $data = [
             'title' => 'Create user',
-            'roles' => Role::all(),
+            'roles' => $roles['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -94,23 +95,20 @@ class DashboardUsersController extends Controller
             'role' => 'required',
         ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        $result = $this->userRepo->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
 
-        $user->setRole($request->role);
+        $result['Model']->setRole($request->role);
 
         return redirect()->route('dashboard.users.index');
     }
 
     public function destroy($user_id)
     {
-        $user = User::find($user_id);
-        $user->delete();
-
+        $this->userRepo->delete($user_id);
         return redirect()->route('dashboard.users.index');
     }
-
 }

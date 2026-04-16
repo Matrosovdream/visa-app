@@ -1,12 +1,12 @@
 <?php
 namespace App\Services;
 
-use App\Models\SiteSettings;
-use App\Models\Language;
+use App\Models\Content\SiteSettings;
 
-class SiteSettingsService {
-
-    public static function getAllSettings() {
+class SiteSettingsService
+{
+    public static function getAllSettings()
+    {
         $settings = SiteSettings::getSettings();
 
         $list = [];
@@ -15,7 +15,5 @@ class SiteSettingsService {
         }
 
         return $list;
-
     }
-
 }

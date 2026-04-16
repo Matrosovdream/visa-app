@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Order;
-use App\Models\OrderProducts;
-use App\Models\Product;
+use App\Models\Order\Order;
+use App\Models\Order\OrderProducts;
+use App\Models\Product\Product;
 
 class OrderSeeder extends Seeder
 {

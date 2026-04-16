@@ -1,7 +1,7 @@
 <?php
 namespace App\Mixins\Order;
 
-use App\Models\Order;
+use App\Models\Order\Order;
 use App\Mixins\Gateways\AuthnetGateway;
 
 class OrderPaymentProcesser

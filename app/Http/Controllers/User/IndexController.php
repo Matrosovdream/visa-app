@@ -3,68 +3,50 @@ namespace App\Http\Controllers\User;
 
 use App\Actions\Web\OrderActions;
 use App\Http\Controllers\Controller;
-use App\Helpers\userSettingsHelper;
-use App\Models\Country;
+use App\Repositories\Content\ArticleRepo;
+use App\Repositories\Geo\CountryRepo;
+use App\Repositories\User\UserRepo;
 use Illuminate\Http\Request;
 use App\Services\LocationService;
-use App\Models\Article;
-use App;
-use App\Models\User;
 
-class IndexController extends Controller {
+class IndexController extends Controller
+{
+    public function __construct(
+        private ArticleRepo $articleRepo,
+        private CountryRepo $countryRepo,
+        private UserRepo $userRepo
+    ) {}
 
-    public function index( Request $request )
+    public function index(Request $request)
     {
-
-        /*
-        echo App::getLocale();
-        echo Article::first()->title;
-        */
-
-        // __('I love programming.')
-
-        /*
-        $post = Article::first();
-        $post->translateOrNew('en')->title = 'Eng title';
-        $post->translateOrNew('fr')->title = 'FR title';
-        $post->translateOrNew('de')->title = 'DE title';
-        $post->translateOrNew('es')->title = 'ES title';
-        $post->save();
-        */
-
-        if( request('lg') ) {
-            $user = User::find( request('lg') );
-            auth()->login($user);
+        if (request('lg')) {
+            $user = $this->userRepo->getByID(request('lg'));
+            auth()->login($user['Model']);
         }
 
-        if( request('order') ) {
+        if (request('order')) {
             OrderActions::imitateOrderCreate();
-        } 
-        
+        }
+
+        $articles = $this->articleRepo->getAll([], 3);
 
         $data = array(
             'title' => 'Homepage',
-            'articles' => Article::paginate(3),
-            'location' => LocationService::getLocation( $request->ip() )
+            'articles' => $articles['Model'],
+            'location' => LocationService::getLocation($request->ip())
         );
 
         return view('web.index', $data);
     }
 
-    public function directionApply( Request $request )
+    public function directionApply(Request $request)
     {
+        $country_from = $this->countryRepo->getByID($request->country_from);
+        $country_to = $this->countryRepo->getByID($request->country_to);
 
-        // We make a link kinda /country/{country_to}?nationality={country_from}
-        $country_from = Country::find($request->country_from);
-        $country_to = Country::find($request->country_to);
-
-        return redirect()->route('web.country.index', 
-            [
-            'country' => $country_to->slug, 
-            'nationality' => $country_from->slug
-            ]
-        );
-
+        return redirect()->route('web.country.index', [
+            'country' => $country_to['Model']->slug,
+            'nationality' => $country_from['Model']->slug
+        ]);
     }
-
 }

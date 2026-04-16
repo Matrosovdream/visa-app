@@ -2,20 +2,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Repositories\Order\OrderRepo;
+use App\Repositories\Order\OrderStatusRepo;
 use App\Helpers\adminSettingsHelper;
-use App\Models\OrderStatus;
 
 class AdminOrdersController extends Controller
 {
-    
+    public function __construct(
+        private OrderRepo $orderRepo,
+        private OrderStatusRepo $orderStatusRepo
+    ) {}
+
     public function index()
     {
+        $orders = $this->orderRepo->getAll([], 10);
+        $statuses = $this->orderStatusRepo->getAll([], 100);
 
         $data = [
             'title' => 'Orders',
-            'orders' => Order::paginate(10),
-            'orderStatuses' => OrderStatus::all(),
+            'orders' => $orders['Model'],
+            'orderStatuses' => $statuses['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
         return view('admin.orders.index', $data);
@@ -23,14 +29,13 @@ class AdminOrdersController extends Controller
 
     public function show($id)
     {
-        $order = Order::find($id);
-
-        //dd($order->getTravellers());
+        $order = $this->orderRepo->getByID($id);
+        $statuses = $this->orderStatusRepo->getAll([], 100);
 
         $data = [
             'title' => 'Order',
-            'order' => $order,
-            'orderStatuses' => OrderStatus::all(),
+            'order' => $order['Model'],
+            'orderStatuses' => $statuses['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -39,15 +44,14 @@ class AdminOrdersController extends Controller
 
     public function edit($id)
     {
-        $order = Order::find($id);
+        $order = $this->orderRepo->getByID($id);
 
         $data = [
             'title' => 'Edit Order',
-            'order' => $order,
+            'order' => $order['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('admin.orders.edit', $data);
     }
-
 }

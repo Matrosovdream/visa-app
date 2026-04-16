@@ -2,25 +2,24 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Helpers\userSettingsHelper;
-use App\Models\Country;
+use App\Repositories\Content\ArticleRepo;
 use Illuminate\Http\Request;
-use App\Models\Article;
 
 class ArticleController extends Controller
 {
-    
-    public function index( Request $request )
+    public function __construct(private ArticleRepo $articleRepo) {}
+
+    public function index(Request $request)
     {
-        $data = array('title' => 'Articles', 'articles' => Article::paginate(10));
+        $result = $this->articleRepo->getAll([], 10);
+        $data = array('title' => 'Articles', 'articles' => $result['Model']);
         return view('web.articles.index', $data);
     }
 
     public function show($article_slug)
     {
-        $article = Article::where('slug', $article_slug)->first();
-        $data = array('title' => 'Homepage','article' => $article);
+        $article = $this->articleRepo->getBySlug($article_slug);
+        $data = array('title' => 'Homepage', 'article' => $article['Model']);
         return view('web.articles.show', $data);
     }
-
 }

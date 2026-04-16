@@ -7,18 +7,15 @@ use App\Services\GlobalsService;
 
 class SiteGlobalsController extends Controller
 {
-    
-    public function setLanguage( Request $request )
+    public function setLanguage(Request $request)
     {
-        GlobalsService::setLanguage( $request->input('lang') );
+        GlobalsService::setLanguage($request->input('lang'));
         return redirect()->back();
     }
 
-    public function setCurrency( Request $request )
+    public function setCurrency(Request $request)
     {
-        GlobalsService::setCurrency( $request->input('currency') );
+        GlobalsService::setCurrency($request->input('currency'));
         return redirect()->back();
     }
-
-
 }

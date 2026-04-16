@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\Country;
-use App\Models\Product;
+use App\Models\Geo\Country;
+use App\Models\Product\Product;
 
 class ProductSeeder extends Seeder
 {

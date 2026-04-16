@@ -2,18 +2,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Repositories\User\UserRepo;
 use App\Helpers\adminSettingsHelper;
 
 class AdminUsersController extends Controller
 {
+    public function __construct(private UserRepo $userRepo) {}
 
     public function index()
     {
+        $result = $this->userRepo->getAll([], 10);
 
         $data = [
             'title' => 'Users',
-            'users' => User::paginate(10),
+            'users' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -22,11 +24,11 @@ class AdminUsersController extends Controller
 
     public function show($user_id)
     {
-        $user = User::find($user_id);
+        $user = $this->userRepo->getByID($user_id);
 
         $data = [
             'title' => 'User details',
-            'user' => $user,
+            'user' => $user['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -35,10 +37,7 @@ class AdminUsersController extends Controller
 
     public function destroy($user_id)
     {
-        $user = User::find($user_id);
-        $user->delete();
-
+        $this->userRepo->delete($user_id);
         return redirect()->route('admin.users.index');
     }
-
 }

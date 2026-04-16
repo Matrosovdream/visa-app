@@ -2,9 +2,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Helpers\adminSettingsHelper;
-
 
 class DashboardProfileController {
 
@@ -38,5 +36,4 @@ class DashboardProfileController {
 
         return view('dashboard.profile.update_password', $data);
     }
-
 }

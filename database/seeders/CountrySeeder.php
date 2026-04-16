@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Country;
+use App\Models\Geo\Country;
 use Illuminate\Support\Str;
 
 class CountrySeeder extends Seeder

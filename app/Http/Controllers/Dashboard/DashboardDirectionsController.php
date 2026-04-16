@@ -2,18 +2,20 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\TravelDirection;
+use App\Repositories\Geo\TravelDirectionRepo;
 use App\Helpers\adminSettingsHelper;
 
 class DashboardDirectionsController extends Controller
 {
-    
+    public function __construct(private TravelDirectionRepo $directionRepo) {}
+
     public function index()
     {
+        $result = $this->directionRepo->getAll([], 30);
 
         $data = [
             'title' => 'Directions',
-            'directions' => TravelDirection::paginate(30),
+            'directions' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -22,15 +24,14 @@ class DashboardDirectionsController extends Controller
 
     public function show($direction_id)
     {
-        $direction = TravelDirection::find($direction_id);
+        $direction = $this->directionRepo->getByID($direction_id);
 
         $data = [
             'title' => 'Direction',
-            'direction' => $direction,
+            'direction' => $direction['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('dashboard.directions.show', $data);
     }
-
 }

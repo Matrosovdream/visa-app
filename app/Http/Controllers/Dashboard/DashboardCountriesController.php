@@ -2,30 +2,29 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Country;
+use App\Repositories\Geo\CountryRepo;
 use App\Helpers\adminSettingsHelper;
 
 class DashboardCountriesController extends Controller
 {
-
     public $perPage = 30;
-    
+
+    public function __construct(private CountryRepo $countryRepo) {}
+
     public function index()
     {
-
-        if( request('s') ) {
-            $items = Country::search(request('s'))->paginate($this->perPage);
+        if (request('s')) {
+            $result = $this->countryRepo->search(request('s'), $this->perPage);
         } else {
-            $items = Country::paginate($this->perPage);
+            $result = $this->countryRepo->getAll([], $this->perPage);
         }
 
         $data = [
             'title' => 'Countries',
-            'countries' => $items,
+            'countries' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('dashboard.countries.index', $data);
     }
-
 }

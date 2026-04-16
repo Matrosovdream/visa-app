@@ -3,29 +3,32 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\adminSettingsHelper;
-use App\Models\Product;
-use App\Models\Country;
+use App\Repositories\Product\ProductRepo;
+use App\Repositories\Geo\CountryRepo;
 use Str;
 
 class DashboardProductsController extends Controller
 {
-
     public $perPage = 10;
-    
+
+    public function __construct(
+        private ProductRepo $productRepo,
+        private CountryRepo $countryRepo
+    ) {}
+
     public function index()
     {
-
         $perPage = $this->perPage;
 
-        if( request('s') ) {
-            $products = Product::search(request('s'))->paginate($perPage);
+        if (request('s')) {
+            $result = $this->productRepo->search(request('s'), $perPage);
         } else {
-            $products = Product::paginate($perPage);
+            $result = $this->productRepo->getAll([], $perPage);
         }
 
         $data = [
             'title' => 'Products',
-            'products' => $products,
+            'products' => $result['Model'],
             'perPage' => $perPage,
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
@@ -35,13 +38,14 @@ class DashboardProductsController extends Controller
 
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = $this->productRepo->getByID($id);
+        $countries = $this->countryRepo->getAll([], 300);
 
         $data = [
             'title' => 'Product',
-            'product' => $product,
-            'countries' => Country::all(),
-            'productFields' => $this->getProductFields( $product ),
+            'product' => $product['Model'],
+            'countries' => $countries['Model'],
+            'productFields' => $this->getProductFields($product['Model']),
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -50,12 +54,13 @@ class DashboardProductsController extends Controller
 
     public function edit($id)
     {
-        $product = Product::find($id);
+        $product = $this->productRepo->getByID($id);
+        $countries = $this->countryRepo->getAll([], 300);
 
         $data = [
             'title' => 'Edit Product',
-            'product' => $product,
-            'countries' => Country::all(),
+            'product' => $product['Model'],
+            'countries' => $countries['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
             'productFields' => $this->getProductFields(),
         ];
@@ -65,20 +70,19 @@ class DashboardProductsController extends Controller
 
     public function update($id)
     {
-        $product = Product::find($id);
+        $product = $this->productRepo->getByID($id);
+        $model = $product['Model'];
 
-        $product->name = request('product_name');
-        $product->description = request('description');
-        $product->price = '0.00';
-        $product->published = ( request('status') == 'published' ) ? 1 : 0;
-        $product->save();
+        $model->name = request('product_name');
+        $model->description = request('description');
+        $model->price = '0.00';
+        $model->published = (request('status') == 'published') ? 1 : 0;
+        $model->save();
 
-        // Sync countries
-        $product->countries()->sync(request('countries'));
+        $model->countries()->sync(request('countries'));
 
-        // Create meta fields
-        foreach( request('fields') as $field=>$value ) {
-            $product->updateMeta( $field, $value );
+        foreach (request('fields') as $field => $value) {
+            $model->updateMeta($field, $value);
         }
 
         return redirect()->route('dashboard.products.show', $id);
@@ -86,54 +90,50 @@ class DashboardProductsController extends Controller
 
     public function store()
     {
-        $product = new Product();
-
-        $product->name = request('product_name');
-        $product->slug = Str::slug(request('product_name'));
-        $product->description = request('description');
-        $product->price = request('price');
-        $product->published = ( request('status') == 'published' ) ? 1 : 0;
-        $product->save();
+        $result = $this->productRepo->create([
+            'name' => request('product_name'),
+            'slug' => Str::slug(request('product_name')),
+            'description' => request('description'),
+            'price' => request('price'),
+            'published' => (request('status') == 'published') ? 1 : 0,
+        ]);
 
         return redirect()->route('dashboard.products.index');
     }
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
-
+        $this->productRepo->delete($id);
         return redirect()->route('dashboard.products.index');
     }
 
     public function create()
     {
+        $countries = $this->countryRepo->getAll([], 300);
+
         $data = [
             'title' => 'Create Product',
-            'countries' => Country::all(),
+            'countries' => $countries['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
         return view('dashboard.products.create', $data);
     }
 
-    public function getProductFields( $product=null ) {
-
+    public function getProductFields($product = null)
+    {
         $fields = [
             ['slug' => 'valid_for', 'title' => 'Valid For (days)', 'type' => 'text', 'value' => ''],
             ['slug' => 'entries_number', 'title' => 'Number entries', 'type' => 'text', 'value' => ''],
             ['slug' => 'max_stay', 'title' => 'Max stay (days)', 'type' => 'text', 'value' => ''],
         ];
 
-        if( isset($product) ) {
+        if (isset($product)) {
             foreach ($fields as $key => $field) {
                 $fields[$key]['value'] = $product->getMeta($field['slug']);
             }
         }
 
         return $fields;
-
     }
-
-
 }

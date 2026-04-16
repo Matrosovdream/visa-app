@@ -2,9 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Order;
+use App\Models\Order\Order;
 use App\Helpers\orderHelper;
-
 
 class OrderObserver
 {
@@ -13,23 +12,11 @@ class OrderObserver
         orderHelper::SendMailOrderCreated($order);
     }
 
-    public function updated(Order $order): void
-    {
-        //
-    }
+    public function updated(Order $order): void {}
 
-    public function deleted(Order $order): void
-    {
-        //
-    }
+    public function deleted(Order $order): void {}
 
-    public function restored(Order $order): void
-    {
-        //
-    }
+    public function restored(Order $order): void {}
 
-    public function forceDeleted(Order $order): void
-    {
-        //
-    }
+    public function forceDeleted(Order $order): void {}
 }

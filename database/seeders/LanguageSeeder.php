@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Language;
+use App\Models\Geo\Language;
 
 class LanguageSeeder extends Seeder
 {

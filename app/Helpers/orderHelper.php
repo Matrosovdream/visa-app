@@ -1,18 +1,17 @@
 <?php
 namespace App\Helpers;
 
-use App\Models\Order;
-use App\Models\ProductOffers;
-use App\Models\File;
-use App\Models\User;
+use App\Models\Order\Order;
+use App\Models\Product\ProductOffers;
+use App\Models\Content\File;
+use App\Models\User\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
 
-
-class orderHelper {
-
-    public static function getProgress( $order ) {
-
+class orderHelper
+{
+    public static function getProgress($order)
+    {
         $status = $order->status->slug;
         $progress = 0;
         switch ($status) {
@@ -28,16 +27,14 @@ class orderHelper {
         }
 
         return $progress;
-
     }
 
-    public static function getCart( $order ) {
-
+    public static function getCart($order)
+    {
         $cart = [];
         foreach ($order->cartProducts as $cartProduct) {
             $productData = $cartProduct->product;
-            
-            // Product data
+
             $product = [
                 'id' => $productData->id,
                 'name' => $productData->name,
@@ -49,18 +46,16 @@ class orderHelper {
                 'Model' => $productData,
             ];
 
-            // Offer data
-            $offerData = ProductOffers::find($cartProduct->offer_id); 
+            $offerData = ProductOffers::find($cartProduct->offer_id);
             $offer = [
                 'id' => $offerData->id,
                 'name' => $offerData->name,
-                'price' =>  $offerData->price,
+                'price' => $offerData->price,
                 'quantity' => $cartProduct->quantity,
-                'total' =>  $offerData->price * $cartProduct->quantity,
-                'Model' =>  $offerData,
+                'total' => $offerData->price * $cartProduct->quantity,
+                'Model' => $offerData,
             ];
-            
-            // Extras
+
             $extras = [];
             foreach ($productData->extras as $extra) {
                 $extras[] = [
@@ -84,15 +79,13 @@ class orderHelper {
         }
 
         return $cart;
-
     }
 
     public static function uploadDocument($order_id, $request_file, $data = [])
     {
-
         $order = Order::find($order_id);
 
-        $path = 'uploads/orders/'.$order_id.'/certificates';
+        $path = 'uploads/orders/' . $order_id . '/certificates';
         $disk = 'local';
 
         $file = request()->file($request_file);
@@ -101,10 +94,8 @@ class orderHelper {
         $type = $file->getMimeType();
         $extension = $file->getClientOriginalExtension();
 
-        // We set an origin filename to the file
         $filePath = request()->file($request_file)->storeAs($path, $filename, $disk);
 
-        // Insert into the database
         $file = new File();
         $file->filename = $filename;
         $file->path = $filePath;
@@ -117,34 +108,27 @@ class orderHelper {
         $file->user_id = $order->user_id;
         $file->save();
 
-        // Save the file path in the database
         $order = Order::find($order_id);
         $order->certificates()->create([
             'file_id' => $file->id,
         ]);
-
     }
 
-    public static function SendMailOrderCreated($order) {
-
-        // Find the user by user_id field in the order
+    public static function SendMailOrderCreated($order)
+    {
         $user = User::find($order->user_id);
 
         if ($user) {
-            // Send the email
             Mail::to($user->email)->send(new OrderCreated($order, $user));
         }
-
     }
 
-    public static function checkUpdateStatus( $order_id ) {
-
+    public static function checkUpdateStatus($order_id)
+    {
         $order = Order::find($order_id);
-        
-        if( $order->isCompletedForm() ) {
-            $order->setStatus( 2 );
+
+        if ($order->isCompletedForm()) {
+            $order->setStatus(2);
         }
-
     }
-
 }

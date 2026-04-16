@@ -2,20 +2,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PaymentGateway;
+use App\Repositories\Payment\PaymentGatewayRepo;
 use App\Helpers\adminSettingsHelper;
 
 class AdminGatewaysController extends Controller
 {
-    
+    public function __construct(private PaymentGatewayRepo $gatewayRepo) {}
+
     public function index()
     {
+        $result = $this->gatewayRepo->getAll([], 10);
+
         $data = [
             'title' => 'Payment Gateways',
-            'gateways' => PaymentGateway::paginate(10),
+            'gateways' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
         return view('admin.gateways.index', $data);
     }
-
 }

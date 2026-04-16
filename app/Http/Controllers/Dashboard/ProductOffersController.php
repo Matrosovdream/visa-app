@@ -2,56 +2,51 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductOffers;
+use App\Repositories\Product\ProductOffersRepo;
+use App\Models\Product\ProductOffers;
 use Illuminate\Http\Request;
 
-class ProductOffersController extends Controller {
+class ProductOffersController extends Controller
+{
+    public function __construct(private ProductOffersRepo $offersRepo) {}
 
+    public function index() {}
 
-    public function index() {  }
-
-    public function create(Request $request) {
-
+    public function create(Request $request)
+    {
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'name' => 'required',
             'price' => 'required|numeric',
         ]);
 
-        // Create offer
-        $productOffer = ProductOffers::create($request->all());
+        $result = $this->offersRepo->create($request->all());
+        $result['Model']->setMetaSync($request->meta);
 
-        // Create meta
-        $productOffer->setMetaSync($request->meta);
-
-        return redirect()->back()->with("success","Product offer created successfully");
+        return redirect()->back()->with("success", "Product offer created successfully");
     }
 
-    public function show($id) { }
+    public function show($id) {}
 
-    public function edit($id) { }
+    public function edit($id) {}
 
-    public function update(Request $request, ProductOffers $offer) { 
-
+    public function update(Request $request, ProductOffers $offer)
+    {
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'name' => 'required',
             'price' => 'required|numeric',
         ]);
 
-        // Update fields
         $offer->update($request->all());
-
-        // Create meta
         $offer->setMetaSync($request->meta);
 
-        return redirect()->back()->with("success","Product offer updated successfully");
+        return redirect()->back()->with("success", "Product offer updated successfully");
     }
 
-    public function destroy(ProductOffers $offer) { 
+    public function destroy(ProductOffers $offer)
+    {
         $offer->delete();
-        return redirect()->back()->with("success","Product offer deleted successfully");
-
+        return redirect()->back()->with("success", "Product offer deleted successfully");
     }
-
 }

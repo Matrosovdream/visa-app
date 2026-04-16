@@ -2,26 +2,26 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Article;
+use App\Repositories\Content\ArticleRepo;
 use App\Helpers\adminSettingsHelper;
 
 class DashboardArticlesController extends Controller
 {
-
     public $perPage = 10;
-    
+
+    public function __construct(private ArticleRepo $articleRepo) {}
+
     public function index()
     {
-
-        if( request('s') ) {
-            $items = Article::search(request('s'))->paginate($this->perPage);
+        if (request('s')) {
+            $result = $this->articleRepo->search(request('s'), $this->perPage);
         } else {
-            $items = Article::paginate($this->perPage);
+            $result = $this->articleRepo->getAll([], $this->perPage);
         }
 
         $data = [
             'title' => 'Articles',
-            'articles' => $items,
+            'articles' => $result['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -30,11 +30,11 @@ class DashboardArticlesController extends Controller
 
     public function show($id)
     {
-        $article = Article::find($id);
+        $article = $this->articleRepo->getByID($id);
 
         $data = [
-            'title' => 'Edit '.$article->title,
-            'article' => $article,
+            'title' => 'Edit '.$article['Model']->title,
+            'article' => $article['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -53,21 +53,21 @@ class DashboardArticlesController extends Controller
 
     public function store()
     {
-        $article = new Article();
-        $article->title = request('title');
-        $article->content = request('content');
-        $article->save();
+        $this->articleRepo->create([
+            'title' => request('title'),
+            'content' => request('content'),
+        ]);
 
         return redirect()->route('dashboard.articles.index');
     }
 
     public function edit($id)
     {
-        $article = Article::find($id);
+        $article = $this->articleRepo->getByID($id);
 
         $data = [
-            'title' => 'Edit '.$article->title,
-            'article' => $article,
+            'title' => 'Edit '.$article['Model']->title,
+            'article' => $article['Model'],
             'sidebarMenu' => adminSettingsHelper::getSidebarMenu(),
         ];
 
@@ -76,20 +76,17 @@ class DashboardArticlesController extends Controller
 
     public function update($id)
     {
-        $article = Article::find($id);
-        $article->title = request('title');
-        $article->content = request('content');
-        $article->save();
+        $this->articleRepo->update($id, [
+            'title' => request('title'),
+            'content' => request('content'),
+        ]);
 
         return redirect()->route('dashboard.articles.index');
     }
 
     public function destroy($id)
     {
-        $article = Article::find($id);
-        $article->delete();
-
+        $this->articleRepo->delete($id);
         return redirect()->route('dashboard.articles.index');
     }
-
 }

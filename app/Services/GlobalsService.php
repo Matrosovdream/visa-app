@@ -1,9 +1,9 @@
 <?php
 namespace App\Services;
 
-use App\Models\Language;
-use App\Models\Currency;
-use App\Models\Country;
+use App\Models\Geo\Language;
+use App\Models\Geo\Currency;
+use App\Models\Geo\Country;
 use App\Services\LocationService;
 use App\Services\SiteSettingsService;
 use App\Helpers\userSettingsHelper;
