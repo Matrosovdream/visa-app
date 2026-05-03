@@ -1,112 +1,164 @@
-name: visa-app-prod
-
 services:
-  app:
+  web:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
-      target: prod
-    image: visa-app/php:prod
-    container_name: visa-app-php
-    restart: always
-    env_file: .env
+      dockerfile: ./docker/production/nginx/Dockerfile
+    restart: unless-stopped
     volumes:
-      - app-storage:/var/www/html/storage
+      - visa-app-storage-production:/var/www/storage:ro
+      - visa-app-public-assets:/var/www/public/build:ro
+    networks:
+      - visa-app-production
+      - traefik-network
     depends_on:
-      postgres:
+      php-fpm:
         condition: service_healthy
-      redis:
-        condition: service_started
-    networks: [appnet]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.goapp.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.goapp.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.goapp.entrypoints=websecure"
+      - "traefik.http.services.goapp.loadbalancer.server.port=8080"
 
-  nginx:
+  php-fpm:
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile
-    image: visa-app/nginx:prod
-    container_name: visa-app-nginx
-    restart: always
-    ports:
-      - "80:80"
-    depends_on: [app]
-    networks: [appnet]
-
-  queue-worker:
-    image: visa-app/php:prod
-    container_name: visa-app-queue
-    restart: always
-    env_file: .env
-    command: ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
-    user: root
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
     volumes:
-      - app-storage:/var/www/html/storage
-      - ./docker/supervisor/queue-worker.conf:/etc/supervisor/conf.d/queue-worker.conf:ro
-    depends_on:
-      app:
-        condition: service_started
-      redis:
-        condition: service_started
-      postgres:
-        condition: service_healthy
-    networks: [appnet]
-
-  scheduler:
-    image: visa-app/php:prod
-    container_name: visa-app-scheduler
-    restart: always
-    env_file: .env
-    command: ["supervisord", "-c", "/etc/supervisor/conf.d/scheduler.conf"]
-    user: root
-    volumes:
-      - app-storage:/var/www/html/storage
-      - ./docker/supervisor/scheduler.conf:/etc/supervisor/conf.d/scheduler.conf:ro
-    depends_on:
-      app:
-        condition: service_started
-    networks: [appnet]
-
-  postgres:
-    image: postgres:16-alpine
-    container_name: visa-app-postgres
-    restart: always
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - visa-app-public-assets:/var/www/public/build
+      - visa-app-storage-production:/var/www/storage
+    env_file:
+      - .env
+    networks:
+      - visa-app-production
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 10
-    networks: [appnet]
+      retries: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  horizon:
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
+    volumes:
+      - visa-app-storage-production:/var/www/storage
+    env_file:
+      - .env
+    networks:
+      - visa-app-production
+    depends_on:
+      php-fpm:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    entrypoint: []
+    command: ["php", "artisan", "horizon"]
+    stop_signal: SIGTERM
+    stop_grace_period: 60s
+    healthcheck:
+      test: ["CMD-SHELL", "php artisan horizon:status | grep -q running || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  reverb:
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - visa-app-production
+    depends_on:
+      redis:
+        condition: service_healthy
+    entrypoint: []
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    restart: unless-stopped
+    environment:
+      - MEILI_MASTER_KEY=${MEILISEARCH_KEY}
+      - MEILI_ENV=production
+      - MEILI_NO_ANALYTICS=true
+    volumes:
+      - meilisearch-data-production:/meili_data
+    networks:
+      - visa-app-production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
+    volumes:
+      - visa-app-storage-production:/var/www/storage
+    env_file:
+      - .env
+    networks:
+      - visa-app-production
+    depends_on:
+      php-fpm:
+        condition: service_healthy
+    entrypoint: []
+    command: ["php", "artisan", "schedule:work"]
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    user: postgres
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-freshdesk}
+      - POSTGRES_USER=${DB_USERNAME:-freshdesk}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
+    volumes:
+      - postgres-data-production:/var/lib/postgresql/data
+    networks:
+      - visa-app-production
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
-    image: redis:7-alpine
-    container_name: visa-app-redis
-    restart: always
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
-    volumes:
-      - redis-data:/data
-    networks: [appnet]
-
-  adminer:
-    image: adminer:4
-    container_name: visa-app-adminer
-    restart: always
-    ports:
-      - "127.0.0.1:8081:8080"
-    environment:
-      ADMINER_DEFAULT_SERVER: postgres
-    depends_on: [postgres]
-    networks: [appnet]
-
-volumes:
-  postgres-data:
-  redis-data:
-  app-storage:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - visa-app-production
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
-  appnet:
+  visa-app-production:
     driver: bridge
+  traefik-network:
+    external: true
+
+volumes:
+  postgres-data-production:
+  visa-app-storage-production:
+  visa-app-public-assets:
+  meilisearch-data-production:
